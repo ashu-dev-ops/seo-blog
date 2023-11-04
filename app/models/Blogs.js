@@ -12,8 +12,10 @@ const blogSchema = new Schema(
     html: String,
     stats: Object,
     title:String,
+    seo:Object,
+    blogStatus:String,
   },
   { timestamps: true }
 );
 
-export default mongoose.models.User || mongoose.model("Blog", blogSchema);
+export default mongoose.models.Blog || mongoose.model("Blog", blogSchema);
