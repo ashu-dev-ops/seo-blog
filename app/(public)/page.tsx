@@ -109,12 +109,14 @@ export default function Home() {
         </a>
       </div> */}
       <div className={`container mx-auto px-10`}>
-        <h1 className={`mb-5 text-7xl font-semibold text-center px-10`}>
-          The Best Alternative for WordPress and Medium blogs
+        <h1 className={`mb-5 text-6xl font-semibold text-center px-10`}>
+          An excellent substitute for WordPress and Medium for creating and
+          managing blogs.
         </h1>
         <h3 className={`mb-3 text-4xl  text-center px-10 text-gray-400`}>
-          Powerblog is auto-optimized for SEO and speed. You can focus on
-          writing content instead of setup, maintenance, and optimization
+          Powerblog takes care of the SEO and speed optimization, so you can
+          stay in the creative zone, leaving the setup and maintenance worries
+          behind!
         </h3>
       </div>
     </main>

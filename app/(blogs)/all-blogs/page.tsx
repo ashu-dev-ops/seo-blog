@@ -58,7 +58,7 @@ export default async function page() {
                   backgroundColor: "rgb(238,250,241)",
                 },
               }}
-              href={`/user/editor/${blog._id}`}
+              href={`/${blog._id}`}
             >
               <Stack>
                 <Typography variant="h5" color="GrayTexts">
