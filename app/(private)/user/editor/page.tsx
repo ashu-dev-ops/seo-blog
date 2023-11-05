@@ -80,7 +80,7 @@ export default function Page() {
         formData.append("file", files[0]);
 
         const { data } = await axios.post(
-          "http://localhost:3000/api/file-upload",
+          `${process.env.BASE_URL}/api/file-upload`,
           formData
         );
 
@@ -102,7 +102,7 @@ export default function Page() {
   }
   const handleDraft = async () => {
     try {
-      const { data } = await axios.post("http://localhost:3000/api/blogs", {
+      const { data } = await axios.post(`${process.env.BASE_URL}/api/blogs`, {
         blogStatus: "Draft",
         html: `${editor.current.getContents()}`,
         title: title,

@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 
 export default async function ReadSingleBlog({ params }: any) {
-  const data = await fetch(`http://localhost:3000/api/blogs/${params.id}`);
+  const data = await fetch(`${process.env.BASE_URL}/api/blogs/${params.id}`);
   const data2 = await data.json();
   console.log(data2);
   return (

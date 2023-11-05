@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     path.join(destinationDirPath, file.name),
     Buffer.from(fileArrayBuffer)
   );
-  const fileUrl = `http://localhost:3000/upload/${file.name}`;
+  const fileUrl = `${process.env.BASE_URL}/upload/${file.name}`;
   return NextResponse.json({
     fileName: file.name,
     size: file.size,

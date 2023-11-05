@@ -4,7 +4,7 @@ import { Box, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 const getData = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/blogs", {
+    const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
       // fetch new every time
       cache: "no-store",
       // next: {

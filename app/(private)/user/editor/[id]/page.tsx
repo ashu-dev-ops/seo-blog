@@ -40,7 +40,7 @@ export default function Page({ params }: any) {
   const fetchData = async () => {
     const data = await axios.get(
       //   `http://localhost:3000/api/blogs/65463dbb3ec15979c76ae7ea`
-      `http://localhost:3000/api/blogs/${params.id}`
+      `${process.env.BASE_URL}/api/blogs/${params.id}`
     );
     console.log(data);
     setEditorHtml(data.data.data.html);
@@ -122,7 +122,7 @@ export default function Page({ params }: any) {
         formData.append("file", files[0]);
 
         const { data } = await axios.post(
-          "http://localhost:3000/api/file-upload",
+          `${process.env.BASE_URL}/api/file-upload`,
           formData
         );
 
@@ -146,7 +146,7 @@ export default function Page({ params }: any) {
     try {
       setIsLoading(true);
       const { data } = await axios
-        .patch("http://localhost:3000/api/blogs", {
+        .patch(`${process.env.BASE_URL}/api/blogs`, {
           blogStatus: "Draft",
           html: `${editor.current.getContents()}`,
           title: title,
@@ -170,7 +170,7 @@ export default function Page({ params }: any) {
     try {
       setIsLoading(true);
       const { data } = await axios
-        .patch("http://localhost:3000/api/blogs", {
+        .patch(`${process.env.BASE_URL}/api/blogs`, {
           blogStatus: "Publish",
           html: `${editor.current.getContents()}`,
           title: title,
