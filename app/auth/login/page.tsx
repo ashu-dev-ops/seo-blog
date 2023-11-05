@@ -11,7 +11,8 @@ const Login = () => {
   const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
-    console.log(sessionStatus)
+    // console.log(sessionStatus)
+    console.log("on login>>>>>>>>>>");
     if (sessionStatus === "authenticated") {
       router.replace("/user/editor");
     }

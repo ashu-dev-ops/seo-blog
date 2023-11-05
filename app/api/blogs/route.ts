@@ -38,7 +38,7 @@ export const POST = async (request: any) => {
 };
 export const GET = async (request: any) => {
   await connect();
-  const data = await Blog.find({});
+  const data = await Blog.find({}).populate("writtenBy");
   console.log("data below api >>>>>>>>>....");
   // console.log(data);
   const jsonData = JSON.stringify(data);

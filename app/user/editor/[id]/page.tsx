@@ -1,5 +1,12 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import React, { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
@@ -13,11 +20,12 @@ const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
 });
 
-export default function page({ params }: any) {
+export default function Page({ params }: any) {
   //   console.log(usePathname, useSearchParams);
   const { data: session }: any = useSession();
   //   const { blogId } = useRouter();
   //   const router = useRouter();
+  const router = useRouter();
   const [noOfHeading, setNoOfHeading] = useState("");
   const [noOfSubHeading, setNoSubOfHeading] = useState("");
   const [noOfWords, setNoOfWords] = useState("");
@@ -26,6 +34,8 @@ export default function page({ params }: any) {
   const [noOfLinks, setNoLinks] = useState("");
   const [title, setTitle] = useState("");
   const [editorHtml, setEditorHtml] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [blogStatus, setBlogStatus] = useState("");
   const editor = useRef();
   const fetchData = async () => {
     const data = await axios.get(
@@ -46,6 +56,9 @@ export default function page({ params }: any) {
         ? data.data.data.stats.noOfSubHeading
         : ""
     );
+    setBlogStatus(data.data.data.blogStatus);
+    setNoLinks(data.data.data.stats.noOfLinks);
+    setIsLoading(false);
   };
   useEffect(() => {
     fetchData();
@@ -72,7 +85,7 @@ export default function page({ params }: any) {
     const links = tempDiv.querySelectorAll("a");
 
     setNoSubOfHeading(h2Elements.length);
-    setNoOfHeading(h1Elements);
+    setNoOfHeading(h1Elements.length);
     setNoImages(editor.current.getFilesInfo("image").length);
     setNoOfWords(words.length);
     setNoLinks(links.length);
@@ -131,24 +144,66 @@ export default function page({ params }: any) {
   }
   const handleDraft = async () => {
     try {
-      const { data } = await axios.patch("http://localhost:3000/api/blogs", {
-        blogStatus: "Draft",
-        html: `${editor.current.getContents()}`,
-        title: title,
-        writtenBy: session.user.email,
-        blogId: params.id,
-        stats: {
-          noOfSubHeading,
-          noOfImage,
-          noOfWords,
-          noOfLinks,
-        },
-      });
+      setIsLoading(true);
+      const { data } = await axios
+        .patch("http://localhost:3000/api/blogs", {
+          blogStatus: "Draft",
+          html: `${editor.current.getContents()}`,
+          title: title,
+          writtenBy: session.user.email,
+          blogId: params.id,
+          stats: {
+            noOfSubHeading,
+            noOfHeading,
+            noOfImage,
+            noOfWords,
+            noOfLinks,
+          },
+        })
+        .then(() => router.push("/user/all-blogs"));
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
+  const handlePublish = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios
+        .patch("http://localhost:3000/api/blogs", {
+          blogStatus: "Publish",
+          html: `${editor.current.getContents()}`,
+          title: title,
+          writtenBy: session.user.email,
+          blogId: params.id,
+          stats: {
+            noOfSubHeading,
+            noOfImage,
+            noOfWords,
+            noOfLinks,
+          },
+        })
+        .then(() => router.push("/user/all-blogs"));
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+          backgroundColor: "rgb(226,232,240)",
+        }}
+      >
+        <CircularProgress size="5rem" />
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -240,6 +295,22 @@ export default function page({ params }: any) {
             </Box>
             <Box>
               <Typography variant="body2" color="GrayText">
+                Headings should be at least 2.
+                <br></br> Current: {`${noOfHeading ? noOfHeading : 0}`}
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack direction="row" gap={1}>
+            <Box>
+              {" "}
+              {noOfSubHeading >= 1 ? (
+                <DoneIcon sx={{ color: "green" }} />
+              ) : (
+                <CloseIcon sx={{ color: "red" }} />
+              )}
+            </Box>
+            <Box>
+              <Typography variant="body2" color="GrayText">
                 Subheadings should be at least 1. <br></br> Current:{" "}
                 {`${noOfSubHeading ? noOfSubHeading : 0}`}
               </Typography>
@@ -303,6 +374,7 @@ export default function page({ params }: any) {
             onChange={handleChange}
             onImageUploadBefore={onImageUploadBefore()}
             minHeight="400px"
+            height="100%"
             defaultValue={editorHtml}
             setOptions={{
               formats: ["h1", "h2", "p", "blockquote"],
@@ -332,12 +404,16 @@ export default function page({ params }: any) {
           }}
         >
           <Stack direction="row" gap={1}>
-            <Button variant="contained" fullWidth={true}>
-              Publish
-            </Button>
             <Button variant="outlined" fullWidth={true} onClick={handleDraft}>
               {" "}
               Draft
+            </Button>
+            <Button
+              variant="contained"
+              fullWidth={true}
+              onClick={handlePublish}
+            >
+              Publish
             </Button>
           </Stack>
           <Box
@@ -356,21 +432,34 @@ export default function page({ params }: any) {
               alignItems="center"
             >
               <Typography variant="body2">Status:</Typography>
-              <Box
-                padding="0.5rem"
-                sx={{
-                  backgroundColor: "#BEE3F8",
-                  borderRadius: "10px",
-                  color: "GrayText",
-                }}
-              >
-                Draft
-              </Box>
+              {blogStatus === "Draft" ? (
+                <Box
+                  padding="0.5rem"
+                  sx={{
+                    backgroundColor: "#BEE3F8",
+                    borderRadius: "10px",
+                    color: "GrayText",
+                  }}
+                >
+                  Draft
+                </Box>
+              ) : (
+                <Box
+                  padding="0.5rem"
+                  sx={{
+                    backgroundColor: "rgb(198,246,213)",
+                    borderRadius: "10px",
+                    color: "GrayText",
+                  }}
+                >
+                  Publish
+                </Box>
+              )}
             </Stack>
             <Stack justifyContent="space-between" direction="row">
               <Typography variant="body2">Read time:</Typography>
               <Typography variant="body2" color="GrayText">
-                2 min
+                {`${Math.ceil(noOfWords / 200)} minute(s)`}
               </Typography>
             </Stack>
           </Box>

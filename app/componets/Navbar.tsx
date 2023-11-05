@@ -15,6 +15,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useRouter } from "next/navigation";
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
@@ -59,6 +60,7 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export default function Navbar() {
+  const router = useRouter();
   const { data: session }: any = useSession();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -135,10 +137,13 @@ export default function Navbar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose} disableRipple>
-                  <HomeIcon />
-                  Home
-                </MenuItem>
+                <Link href="/user/all-blogs">
+                  <MenuItem onClick={handleClose} disableRipple>
+                    <HomeIcon />
+                    Home
+                  </MenuItem>
+                </Link>
+
                 <MenuItem onClick={handleClose} disableRipple>
                   <AccountCircleIcon />
                   Account
@@ -148,6 +153,8 @@ export default function Navbar() {
                 <MenuItem
                   onClick={() => {
                     handleClose();
+
+                    router.push("/");
                     signOut();
                   }}
                   disableRipple

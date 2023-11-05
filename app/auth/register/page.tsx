@@ -10,6 +10,7 @@ const Register = () => {
   const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
+    console.log("running register>>>>>>")
     if (sessionStatus === "authenticated") {
       router.replace("/user/editor");
     }

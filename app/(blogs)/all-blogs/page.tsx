@@ -1,6 +1,6 @@
 import React from "react";
-import { getServerSession } from "next-auth";
-import { Box, Stack, TextField, Typography } from "@mui/material";
+// import { getServerSession } from "next-auth";
+import { Box, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 const getData = async () => {
   try {
@@ -55,9 +55,8 @@ export default async function page() {
                 cursor: "pointer",
                 textDecoration: "none",
                 "&:hover": {
-                  backgroundColor: 'rgb(238,250,241)'
-                }
-
+                  backgroundColor: "rgb(238,250,241)",
+                },
               }}
               href={`/user/editor/${blog._id}`}
             >
@@ -69,17 +68,18 @@ export default async function page() {
 
                 <Typography variant="body" color="gray">
                   {" "}
-                By  {blog.writtenBy.email}
+                  By {blog.writtenBy.email}
                 </Typography>
               </Stack>
-              
+
               <Box
                 sx={{
-                  backgroundColor: blog.blogStatus==='Draft' ?"#BEE3F8":'#C6F6D5',
+                  backgroundColor:
+                    blog.blogStatus === "Draft" ? "#BEE3F8" : "#C6F6D5",
                   borderRadius: "10px",
                   color: "GrayText",
                   padding: "0.3rem",
-                  height:'25px'
+                  height: "25px",
                 }}
               >
                 {blog.blogStatus}
