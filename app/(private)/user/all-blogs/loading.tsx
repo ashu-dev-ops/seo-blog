@@ -8,6 +8,7 @@ export default function loading() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "rgb(226,232,240)",
       }}
     >
       <CircularProgress size="5rem" />

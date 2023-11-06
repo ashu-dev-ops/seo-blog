@@ -1,10 +1,11 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography,  CircularProgress, } from "@mui/material";
 import React, { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 const SunEditor = dynamic(() => import("suneditor-react"), {
@@ -13,6 +14,7 @@ const SunEditor = dynamic(() => import("suneditor-react"), {
 
 export default function Page() {
   const { data: session }: any = useSession();
+  const router = useRouter();
   const [noOfHeading, setNoOfHeading] = useState("");
   const [noOfSubHeading, setNoSubOfHeading] = useState("");
   const [noOfWords, setNoOfWords] = useState("");
@@ -20,6 +22,7 @@ export default function Page() {
   const [noOfImage, setNoImages] = useState("");
   const [noOfLinks, setNoLinks] = useState("");
   const [title, setTitle] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const editor = useRef();
   // The sunEditor parameter will be set to the core suneditor instance when this function is called
   const getSunEditorInstance = (sunEditor) => {
@@ -98,6 +101,7 @@ export default function Page() {
     };
   }
   const handleDraft = async () => {
+    setIsLoading(true);
     console.log("running handle dragt");
     try {
       const { data } = await axios
@@ -141,6 +145,22 @@ export default function Page() {
       console.log(error);
     }
   };
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+          backgroundColor: "rgb(226,232,240)",
+        }}
+      >
+        <CircularProgress size="5rem" />
+      </Box>
+    );
+  }
+
   return (
     <>
       <Box

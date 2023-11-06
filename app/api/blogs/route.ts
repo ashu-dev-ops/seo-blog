@@ -28,11 +28,12 @@ export const POST = async (request: any) => {
     // console.log(request.json());
   } catch (error) {
     console.log(error);
+    return new NextResponse(error, { status: 500 });
   }
 
   try {
     // await newUser.save();
-    return new NextResponse("working", { status: 200 });
+    return new NextResponse("blogs saved", { status: 200 });
   } catch (err: any) {
     return new NextResponse(err, {
       status: 500,
