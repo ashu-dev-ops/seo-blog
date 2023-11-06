@@ -49,9 +49,8 @@ export const GET = async (req: any) => {
   // console.log("user >>>>>>>>", user);
   const data = await Blog.find({ writtenBy: user._id }).populate("writtenBy");
   // const data = await Blog.find({}).populate("writtenBy");
-  console.log("data below api >>>>>>>>>....");
-  // console.log(data);
-  const jsonData = JSON.stringify(data);
+  // console.log("data below api >>>>>>>>>....", data);
+
   return NextResponse.json({ message: "ok", data }, { status: 200 });
 };
 export const PATCH = async (request: any) => {

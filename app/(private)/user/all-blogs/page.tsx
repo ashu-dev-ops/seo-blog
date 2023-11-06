@@ -5,22 +5,12 @@ import Link from "next/link";
 
 const getData = async () => {
   try {
-    // const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
-    //   // fetch new every time
-    //   cache: "no-store",
-    //   // next: {
-    //   //   revalidate: 10,
-    //   //
-    // });
     const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
       method: "GET",
       headers: headers(),
     });
     const posts = await res.json();
-    // console.log(
-    //   "we got the data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
-    //   posts
-    // );
+    console.log(posts);
     return posts;
   } catch (error) {
     console.log(error);
