@@ -1,26 +1,27 @@
 import React from "react";
-// import { headers } from "next/headers";
-import { Box, Stack,  Typography } from "@mui/material";
+import { headers } from "next/headers";
+import { Box, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 
 const getData = async () => {
   console.log("running get data to get all blogs >>>>>>>>>>>.");
+  console.log("headers i want to see insdie getData", headers());
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
       method: "GET",
-      // headers: headers(),
+      headers: headers(),
     });
     const posts = await res.json();
-    console.log("data that we are getting back", posts);
+    console.log("data that we are getting back", posts.data.length);
     return posts;
   } catch (error) {
     console.log(error);
   }
 };
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 export default async function page() {
   const data = await getData();
-  console.log(" property on which i am looping", data.data);
+  console.log(" property on which i am looping", data.data.length);
   if (data.data.length === 0) {
     return (
       <Box
