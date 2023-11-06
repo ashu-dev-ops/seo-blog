@@ -43,7 +43,7 @@ export default function Page({ params }: any) {
     console.log("running>>>>>>>>>>>>>.", params.id);
     const data = await axios.get(
       // `http://localhost:3000/api/blogs/65463dbb3ec15979c76ae7ea`
-      `/api/blogs/${params.id}`
+      `${process.env.BASE_URL}/api/blogs/${params.id}`
     );
     console.log(data);
     setEditorHtml(data.data.data.html);

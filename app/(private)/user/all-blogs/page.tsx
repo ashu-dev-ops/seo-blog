@@ -1,6 +1,6 @@
 import React from "react";
 import { headers } from "next/headers";
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import { Box, Stack,  Typography } from "@mui/material";
 import Link from "next/link";
 
 const getData = async () => {
@@ -17,6 +17,7 @@ const getData = async () => {
     console.log(error);
   }
 };
+export const dynamic = "force-dynamic"
 export default async function page() {
   const data = await getData();
   console.log(" property on which i am looping", data.data);
