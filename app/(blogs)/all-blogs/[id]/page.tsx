@@ -2,10 +2,10 @@ import React from "react";
 // import { getServerSession } from "next-auth";
 import { Box, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-const getData = async () => {
+const getData = async (params: any) => {
   try {
     //i changed here
-    const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
+    const res = await fetch(`${process.env.BASE_URL}/api/all-blogs/${params}`, {
       // fetch new every time
       cache: "no-store",
       // next: {
@@ -22,8 +22,8 @@ const getData = async () => {
     console.log(error);
   }
 };
-export default async function page() {
-  const data = await getData();
+export default async function page({ params }: any) {
+  const data = await getData(params.id);
   // console.log(""data.data);
   return (
     <Box
@@ -59,7 +59,7 @@ export default async function page() {
                   backgroundColor: "rgb(238,250,241)",
                 },
               }}
-              href={`/${blog._id}`}
+              href={`/single-blog/${blog._id}`}
             >
               <Stack>
                 <Typography variant="h5" color="GrayTexts">
