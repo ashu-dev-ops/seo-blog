@@ -21,6 +21,9 @@ const getData = async () => {
 export const dynamic = "force-dynamic";
 export default async function page() {
   const data = await getData();
+  if(!data){
+    return <Box>Error occur</Box>
+  }
   console.log(" property on which i am looping", data.data.length);
   if (data.data.length === 0) {
     return (

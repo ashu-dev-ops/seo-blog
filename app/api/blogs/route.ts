@@ -56,6 +56,7 @@ export const GET = async (req: any) => {
     return NextResponse.json({ message: "ok", data }, { status: 200 });
   } catch (error) {
     console.log(error);
+    return NextResponse.json({ message: "ok", error }, { status: 500 });
   }
 };
 export const PATCH = async (request: any) => {
