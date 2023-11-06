@@ -79,10 +79,7 @@ export default function Page() {
         const formData = new FormData();
         formData.append("file", files[0]);
 
-        const { data } = await axios.post(
-          `${process.env.BASE_URL}/api/file-upload`,
-          formData
-        );
+        const { data } = await axios.post(`/api/file-upload`, formData);
 
         const res = {
           result: [
@@ -101,19 +98,44 @@ export default function Page() {
     };
   }
   const handleDraft = async () => {
+    console.log("running handle dragt");
     try {
-      const { data } = await axios.post(`${process.env.BASE_URL}/api/blogs`, {
-        blogStatus: "Draft",
-        html: `${editor.current.getContents()}`,
-        title: title,
-        writtenBy: session.user.email,
-        stats: {
-          noOfSubHeading,
-          noOfImage,
-          noOfWords,
-          noOfLinks,
-        },
-      });
+      const { data } = await axios
+        .post(`/api/blogs`, {
+          blogStatus: "Draft",
+          html: `${editor.current.getContents()}`,
+          title: title,
+          writtenBy: session.user.email,
+          stats: {
+            noOfSubHeading,
+            noOfImage,
+            noOfWords,
+            noOfLinks,
+          },
+        })
+        .then(() => router.push("/user/all-blogs"));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handlePublish = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios
+        .patch(`/api/blogs`, {
+          blogStatus: "Publish",
+          html: `${editor.current.getContents()}`,
+          title: title,
+          writtenBy: session.user.email,
+          blogId: params.id,
+          stats: {
+            noOfSubHeading,
+            noOfImage,
+            noOfWords,
+            noOfLinks,
+          },
+        })
+        .then(() => router.push("/user/all-blogs"));
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -286,7 +308,7 @@ export default function Page() {
                 ["align", "codeView"],
                 ["undo", "redo", "removeFormat"],
               ],
-              mediaAutoSelect: false
+              mediaAutoSelect: false,
             }}
           />
         </Box>
@@ -304,10 +326,21 @@ export default function Page() {
           }}
         >
           <Stack direction="row" gap={1}>
-            <Button variant="contained" fullWidth={true}>
+            <Button
+              variant="contained"
+              fullWidth={true}
+              onClick={handlePublish}
+            >
               Publish
             </Button>
-            <Button variant="outlined" fullWidth={true} onClick={handleDraft}>
+            <Button
+              variant="outlined"
+              fullWidth={true}
+              onClick={() => {
+                console.log("runingk click>>>>>>>>>>>.....");
+                handleDraft();
+              }}
+            >
               {" "}
               Draft
             </Button>

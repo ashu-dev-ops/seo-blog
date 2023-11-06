@@ -73,7 +73,13 @@ export default function Navbar() {
       className={`flex  flex-row  justify-between px-10 py-2 fixed  bg-white z-50`}
       style={{ width: "95%" }}
     >
-      <h1 className="text-3xl ">Powerblog </h1>
+      <Link
+        href="/user/all-blogs"
+        style={{ textDecoration: "none", color: "gray" }}
+      >
+        <h1 className="text-3xl "> Powerblog </h1>
+      </Link>
+
       <div className={`flex  flex-row  gap-3 items-center`}>
         {/* <Link href="/example">example</Link>
         <Link href="/example/9111505782">checking param</Link> */}
