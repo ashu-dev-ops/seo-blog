@@ -11,9 +11,12 @@ const getData = async () => {
       method: "GET",
       headers: headers(),
     });
-    const posts = await res.json();
-    console.log("data that we are getting back", posts.data.length);
-    return posts;
+    if (res) {
+      const posts = await res.json();
+      console.log("data that we are getting back", posts.data.length);
+      return posts;
+    }
+    console.log("error occur>>>>> ", res);
   } catch (error) {
     console.log(error);
   }
@@ -21,8 +24,22 @@ const getData = async () => {
 export const dynamic = "force-dynamic";
 export default async function page() {
   const data = await getData();
-  if(!data){
-    return <Box>Error occur</Box>
+  if (!data) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          // justifyContent: "center",
+          minHeight: "100vh",
+          backgroundColor: "#E2E8F0",
+          paddingTop: "20vh",
+        }}
+      >
+        Error occur
+      </Box>
+    );
   }
   console.log(" property on which i am looping", data.data.length);
   if (data.data.length === 0) {
