@@ -4,13 +4,14 @@ import { Box, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 
 const getData = async () => {
+  console.log("running get data to get all blogs >>>>>>>>>>>.");
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
       method: "GET",
       headers: headers(),
     });
     const posts = await res.json();
-    console.log(posts);
+    console.log("data that we are getting back", posts);
     return posts;
   } catch (error) {
     console.log(error);
@@ -18,7 +19,7 @@ const getData = async () => {
 };
 export default async function page() {
   const data = await getData();
-
+  console.log(" property on which i am looping", data.data);
   if (data.data.length === 0) {
     return (
       <Box

@@ -40,6 +40,7 @@ export const POST = async (request: any) => {
   }
 };
 export const GET = async (req: any) => {
+  console.log("running get all blogs>>>>>>>>>>>>>API route");
   await connect();
   const session = await getServerSession();
   // const session = await getServerSession(authOptions);
