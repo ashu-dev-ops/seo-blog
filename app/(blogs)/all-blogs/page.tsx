@@ -23,7 +23,7 @@ const getData = async () => {
 };
 export default async function page() {
   const data = await getData();
-  console.log(data.dat);
+  console.log("ser>>>>>>>>",data.data);
   return (
     <Box
       sx={{
