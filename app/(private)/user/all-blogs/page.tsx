@@ -1,5 +1,5 @@
 import React from "react";
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 import { Box, Stack,  Typography } from "@mui/material";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ const getData = async () => {
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
       method: "GET",
-      headers: headers(),
+      // headers: headers(),
     });
     const posts = await res.json();
     console.log("data that we are getting back", posts);

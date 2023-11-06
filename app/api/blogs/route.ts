@@ -42,14 +42,14 @@ export const POST = async (request: any) => {
 export const GET = async (req: any) => {
   console.log("running get all blogs>>>>>>>>>>>>>API route");
   await connect();
-  const session = await getServerSession();
+  // const session = await getServerSession();
   // const session = await getServerSession(authOptions);
-  console.log("session on api route", session);
-  const user = await User.findOne({ email: session?.user?.email });
+  // console.log("session on api route", session);
+  // const user = await User.findOne({ email: session?.user?.email });
   // console.log("user session", session);
   // console.log("user >>>>>>>>", user);
-  const data = await Blog.find({ writtenBy: user._id }).populate("writtenBy");
-  // const data = await Blog.find({}).populate("writtenBy");
+  // const data = await Blog.find({ writtenBy: user._id }).populate("writtenBy");
+  const data = await Blog.find({}).populate("writtenBy");
   // console.log("data below api >>>>>>>>>....", data);
 
   return NextResponse.json({ message: "ok", data }, { status: 200 });
