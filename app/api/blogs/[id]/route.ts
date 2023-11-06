@@ -6,6 +6,7 @@ export const GET = async (request: Request) => {
   console.log("rung>>>>>>>>>>>>>>>>get single");
   const pathSegments = request.url.split("/");
   const id = pathSegments[pathSegments.length - 1];
+  console.log("running get single blog request")
   console.log(id);
   //   console.log(request.url)
   await connect();

@@ -7,7 +7,7 @@ import Menu, { MenuProps } from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Avatar, alpha, styled } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 import Divider from "@mui/material/Divider";
 
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -135,9 +135,23 @@ export default function Navbar() {
                 onClose={handleClose}
               >
                 <Link href="/user/all-blogs">
-                  <MenuItem onClick={handleClose} disableRipple>
+                  <MenuItem
+                    onClick={handleClose}
+                    disableRipple
+                    sx={{ textDecoration: "none", color: "gray" }}
+                  >
                     <HomeIcon />
                     Home
+                  </MenuItem>
+                </Link>
+                <Link href="/user/editor">
+                  <MenuItem
+                    onClick={handleClose}
+                    disableRipple
+                    sx={{ textDecoration: "none", color: "gray" }}
+                  >
+                    <BorderColorIcon />
+                    Editor
                   </MenuItem>
                 </Link>
 

@@ -21,6 +21,7 @@ const SunEditor = dynamic(() => import("suneditor-react"), {
 });
 
 export default function Page({ params }: any) {
+  console.log(params);
   //   console.log(usePathname, useSearchParams);
   const { data: session }: any = useSession();
   //   const { blogId } = useRouter();
@@ -38,9 +39,11 @@ export default function Page({ params }: any) {
   const [blogStatus, setBlogStatus] = useState("");
   const editor = useRef();
   const fetchData = async () => {
+    // console.log();
+    console.log("running>>>>>>>>>>>>>.", params.id);
     const data = await axios.get(
-      //   `http://localhost:3000/api/blogs/65463dbb3ec15979c76ae7ea`
-      `${process.env.BASE_URL}/api/blogs/${params.id}`
+      // `http://localhost:3000/api/blogs/65463dbb3ec15979c76ae7ea`
+      `/api/blogs/${params.id}`
     );
     console.log(data);
     setEditorHtml(data.data.data.html);
@@ -121,10 +124,7 @@ export default function Page({ params }: any) {
         const formData = new FormData();
         formData.append("file", files[0]);
 
-        const { data } = await axios.post(
-          `${process.env.BASE_URL}/api/file-upload`,
-          formData
-        );
+        const { data } = await axios.post(`/api/file-upload`, formData);
 
         const res = {
           result: [
@@ -146,7 +146,7 @@ export default function Page({ params }: any) {
     try {
       setIsLoading(true);
       const { data } = await axios
-        .patch(`${process.env.BASE_URL}/api/blogs`, {
+        .patch(`/api/blogs`, {
           blogStatus: "Draft",
           html: `${editor.current.getContents()}`,
           title: title,
@@ -170,7 +170,7 @@ export default function Page({ params }: any) {
     try {
       setIsLoading(true);
       const { data } = await axios
-        .patch(`${process.env.BASE_URL}/api/blogs`, {
+        .patch(`/api/blogs`, {
           blogStatus: "Publish",
           html: `${editor.current.getContents()}`,
           title: title,

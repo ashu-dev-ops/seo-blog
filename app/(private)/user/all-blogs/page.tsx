@@ -1,21 +1,26 @@
 import React from "react";
-import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
+
 const getData = async () => {
   try {
+    // const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
+    //   // fetch new every time
+    //   cache: "no-store",
+    //   // next: {
+    //   //   revalidate: 10,
+    //   //
+    // });
     const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
-      // fetch new every time
-      cache: "no-store",
-      // next: {
-      //   revalidate: 10,
-      //
+      method: "GET",
+      headers: headers(),
     });
     const posts = await res.json();
-    console.log(
-      "we got the data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
-      posts
-    );
+    // console.log(
+    //   "we got the data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
+    //   posts
+    // );
     return posts;
   } catch (error) {
     console.log(error);
@@ -23,7 +28,27 @@ const getData = async () => {
 };
 export default async function page() {
   const data = await getData();
-  console.log(data.dat);
+
+  if (data.data.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          // justifyContent: "center",
+          minHeight: "100vh",
+          backgroundColor: "#E2E8F0",
+          paddingTop: "20vh",
+        }}
+      >
+        <Typography variant="h2" textAlign="center" mb={3}>
+          No Blogs Found
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -39,6 +64,7 @@ export default async function page() {
       <Typography variant="h2" textAlign="center" mb={3}>
         All Blogs
       </Typography>
+
       <Stack direction="column" gap={3}>
         {data.data.map((blog: any, idx: Number) => {
           return (
@@ -55,9 +81,8 @@ export default async function page() {
                 cursor: "pointer",
                 textDecoration: "none",
                 "&:hover": {
-                  backgroundColor: 'rgb(238,250,241)'
-                }
-
+                  backgroundColor: "rgb(238,250,241)",
+                },
               }}
               href={`/user/editor/${blog._id}`}
             >
@@ -69,17 +94,18 @@ export default async function page() {
 
                 <Typography variant="body" color="gray">
                   {" "}
-                By  {blog.writtenBy.email}
+                  By {blog.writtenBy.email}
                 </Typography>
               </Stack>
-              
+
               <Box
                 sx={{
-                  backgroundColor: blog.blogStatus==='Draft' ?"#BEE3F8":'#C6F6D5',
+                  backgroundColor:
+                    blog.blogStatus === "Draft" ? "#BEE3F8" : "#C6F6D5",
                   borderRadius: "10px",
                   color: "GrayText",
                   padding: "0.3rem",
-                  height:'25px'
+                  height: "25px",
                 }}
               >
                 {blog.blogStatus}

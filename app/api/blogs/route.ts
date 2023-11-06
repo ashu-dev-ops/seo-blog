@@ -1,8 +1,11 @@
 import User from "../../models/User";
 import Blog from "../../models/Blogs";
 import connect from "../../lib/mongodb";
+import { getServerSession } from "next-auth";
+
 // import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
+import { authOptions } from "@/app/lib/authOptions";
 export const POST = async (request: any) => {
   try {
     const { title, html, stats, email, password, seo, writtenBy, blogStatus } =
@@ -36,9 +39,16 @@ export const POST = async (request: any) => {
     });
   }
 };
-export const GET = async (request: any) => {
+export const GET = async (req: any) => {
   await connect();
-  const data = await Blog.find({}).populate("writtenBy");
+  const session = await getServerSession();
+  // const session = await getServerSession(authOptions);
+  console.log("session on api route", session);
+  const user = await User.findOne({ email: session?.user?.email });
+  // console.log("user session", session);
+  // console.log("user >>>>>>>>", user);
+  const data = await Blog.find({ writtenBy: user._id }).populate("writtenBy");
+  // const data = await Blog.find({}).populate("writtenBy");
   console.log("data below api >>>>>>>>>....");
   // console.log(data);
   const jsonData = JSON.stringify(data);

@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Button, Box, Card } from "@mui/material";
 
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isEmail, setIsEmail] = useState(false);
   //   const session = useSession();
   const { data: session, status: sessionStatus } = useSession();
 
@@ -58,48 +60,78 @@ const Login = () => {
 
   return (
     sessionStatus !== "authenticated" && (
-      <div className="flex min-h-screen flex-col items-center justify-between p-24">
-        <div className="max-w-sm rounded overflow-hidden shadow-lg p-8 rounded shadow-md w-96">
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "90vh",
+        }}
+      >
+        <Card
+          sx={{
+            padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            minWidth: "350px",
+            gap: 2,
+            borderRadius: "16px",
+            elevation:3
+          }}
+        >
           <h1 className="text-4xl  text-center font-semibold mb-8 ">Login</h1>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
-              placeholder="Email"
-              required
-            />
-            <input
-              type="password"
-              className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
-              placeholder="Password"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          {isEmail ? (
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
+                placeholder="Email"
+                required
+              />
+              <input
+                type="password"
+                className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
+                placeholder="Password"
+                required
+              />
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+              >
+                {" "}
+                Sign In
+              </button>
+              <p className="text-red-600 text-[16px] mb-4">{error && error}</p>
+            </form>
+          ) : (
+            <Button variant="contained" onClick={() => setIsEmail(true)}>
+              continue with email
+            </Button>
+          )}
+          {!isEmail ? (
+            <Button
+              // className="w-full  bg-blue-500 text-white py-2 rounded hover:bg-blue-800"
+              onClick={() => {
+                signIn("google");
+              }}
+              variant="contained"
             >
-              {" "}
-              Sign In
-            </button>
-            <p className="text-red-600 text-[16px] mb-4">{error && error}</p>
-          </form>
-          <button
-            className="w-full  bg-blue-500 text-white py-2 rounded hover:bg-blue-800"
-            onClick={() => {
-              signIn("google");
-            }}
-          >
-            Sign In with Google
-          </button>
-          <div className="text-center text-gray-500 mt-4">- OR -</div>
-          <Link
-            className="block text-center text-blue-500 hover:underline mt-2"
-            href="/auth/register"
-          >
-            Register Here
-          </Link>
-        </div>
-      </div>
+              continue with Google
+            </Button>
+          ) : (
+            ""
+          )}
+          <div className="">
+            <div className="text-center text-gray-500 mt-4">- OR -</div>
+            <Link
+              className="block text-center text-blue-500 hover:underline mt-2"
+              href="/auth/register"
+            >
+              Register Here
+            </Link>
+          </div>
+        </Card>
+      </Box>
     )
   );
 };
