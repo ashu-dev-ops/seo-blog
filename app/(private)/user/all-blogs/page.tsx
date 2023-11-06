@@ -12,6 +12,7 @@ const getData = async () => {
       headers: headers(),
     });
     if (res) {
+      console.log("res we get from fetch on deploy ", res);
       const posts = await res.json();
       console.log("data that we are getting back", posts.data.length);
       return posts;
