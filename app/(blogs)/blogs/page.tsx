@@ -1,3 +1,9 @@
+// import React from "react";
+
+// export default function page({ searchParams }: any) {
+//   console.log(searchParams);
+//   return <div>params page {searchParams.userId}</div>;
+// }
 import React from "react";
 // import { getServerSession } from "next-auth";
 import { Box, Stack, Typography } from "@mui/material";
@@ -22,8 +28,9 @@ const getData = async (params: any) => {
     console.log(error);
   }
 };
-export default async function page({ params }: any) {
-  const data = await getData(params.id);
+export default async function page({ searchParams }: any) {
+  console.log("search params >>>>>>>>>>", searchParams);
+  const data = await getData(searchParams.userId);
   // console.log(""data.data);
   return (
     <Box
@@ -59,7 +66,7 @@ export default async function page({ params }: any) {
                   backgroundColor: "rgb(238,250,241)",
                 },
               }}
-              href={`/single-blog/${blog._id}`}
+              href={`/blogs/${blog._id}`}
             >
               <Stack>
                 <Typography variant="h5" color="GrayTexts">
