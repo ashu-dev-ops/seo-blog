@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Button, Box, Card } from "@mui/material";
+import { Button, Box, Card, CircularProgress } from "@mui/material";
 
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [isEmail, setIsEmail] = useState(false);
+  const [isLoading, setIsloading] = useState(true);
   //   const session = useSession();
   const { data: session, status: sessionStatus } = useSession();
 
@@ -18,6 +19,7 @@ const Login = () => {
     if (sessionStatus === "authenticated") {
       router.replace("/user/editor");
     }
+    setIsloading(false);
   }, [sessionStatus, router]);
 
   const isValidEmail = (email: string) => {
@@ -55,7 +57,19 @@ const Login = () => {
   };
 
   if (sessionStatus === "loading") {
-    return <h1>Loading...</h1>;
+    return (
+      <Box
+        sx={{
+          minHeight: "90vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "rgb(226,232,240)",
+        }}
+      >
+        <CircularProgress size="5rem" />
+      </Box>
+    );
   }
 
   return (
@@ -76,7 +90,7 @@ const Login = () => {
             minWidth: "350px",
             gap: 2,
             borderRadius: "16px",
-            elevation:3
+            elevation: 3,
           }}
         >
           <h1 className="text-4xl  text-center font-semibold mb-8 ">Login</h1>

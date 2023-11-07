@@ -1,5 +1,12 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography,  CircularProgress, } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import React, { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
@@ -104,7 +111,7 @@ export default function Page() {
     setIsLoading(true);
     console.log("running handle dragt");
     try {
-      const { data } = await axios
+      await axios
         .post(`/api/blogs`, {
           blogStatus: "Draft",
           html: `${editor.current.getContents()}`,
@@ -125,13 +132,13 @@ export default function Page() {
   const handlePublish = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios
-        .patch(`/api/blogs`, {
+      await axios
+        .post(`/api/blogs`, {
           blogStatus: "Publish",
           html: `${editor.current.getContents()}`,
           title: title,
           writtenBy: session.user.email,
-          blogId: params.id,
+
           stats: {
             noOfSubHeading,
             noOfImage,
