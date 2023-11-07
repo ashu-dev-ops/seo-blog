@@ -23,6 +23,7 @@ const getData = async (params: any) => {
       "we got the data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
       posts
     );
+
     return posts;
   } catch (error) {
     console.log(error);

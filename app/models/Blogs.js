@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const blogSchema = new Schema(
+const BlogSchema = new Schema(
   {
     writtenBy: {
       type: mongoose.Schema.ObjectId,
@@ -11,11 +11,13 @@ const blogSchema = new Schema(
     },
     html: String,
     stats: Object,
-    title:String,
-    seo:Object,
-    blogStatus:String,
+    title: String,
+    seo: Object,
+    blogStatus: String,
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Blog || mongoose.model("Blog", blogSchema);
+
+const Blog = mongoose?.models?.Blog || mongoose.model("Blog", BlogSchema);
+export default Blog;

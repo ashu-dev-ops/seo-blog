@@ -71,7 +71,7 @@ export default function Navbar() {
   return (
     <div
       className={`flex  flex-row  justify-between px-10 py-2 fixed  bg-white z-50`}
-      style={{ width: "95%" }}
+      style={{ width: "100%%" }}
     >
       <Link
         href="/user/all-blogs"
