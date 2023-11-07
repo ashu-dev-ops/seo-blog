@@ -13,7 +13,7 @@ export const GET = async (request: any) => {
   console.log(id);
 
   await connect();
-  const allBlogs = await Blog.find({ writtenBy: id }).populate("writtenBy");
+  const allBlogs = await Blog.find({ writtenBy: id, blogStatus:'Publish' }).populate("writtenBy");
   console.log(allBlogs);
   //   console.log("we got the data");
   try {

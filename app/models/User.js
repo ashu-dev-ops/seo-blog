@@ -13,6 +13,7 @@ const userSchema = new Schema(
       type: String,
       required: false,
     },
+    siteDetails: Object,
   },
   { timestamps: true }
 );

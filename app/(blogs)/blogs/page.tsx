@@ -41,11 +41,11 @@ export default async function page({ searchParams }: any) {
         // justifyContent: "center",
         minHeight: "100vh",
         backgroundColor: "#E2E8F0",
-        paddingTop: "20vh",
+        paddingTop: "5vh",
       }}
     >
       <Typography variant="h2" textAlign="center" mb={3}>
-        All Blogs
+        SheetWA Blogs
       </Typography>
       <Stack direction="column" gap={3}>
         {data.data.map((blog: any, idx: Number) => {
@@ -80,18 +80,6 @@ export default async function page({ searchParams }: any) {
                 </Typography>
               </Stack>
 
-              <Box
-                sx={{
-                  backgroundColor:
-                    blog.blogStatus === "Draft" ? "#BEE3F8" : "#C6F6D5",
-                  borderRadius: "10px",
-                  color: "GrayText",
-                  padding: "0.3rem",
-                  height: "25px",
-                }}
-              >
-                {blog.blogStatus}
-              </Box>
             </Box>
           );
         })}
