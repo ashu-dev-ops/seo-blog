@@ -5,7 +5,7 @@ import { signOut, useSession } from "next-auth/react";
 import Button from "@mui/material/Button";
 import Menu, { MenuProps } from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Avatar, alpha, styled } from "@mui/material";
+import { Avatar, alpha, styled, Box } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import Divider from "@mui/material/Divider";
@@ -69,9 +69,19 @@ export default function Navbar() {
   };
   console.log(session);
   return (
-    <div
-      className={`flex  flex-row  justify-between px-10 py-2 fixed  bg-white z-50`}
-      style={{ width: "100%%" }}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: 2,
+        position: "fixed",
+        height: "80px",
+        zIndex: 99,
+        width: "100vw",
+        backgroundColor: "white",
+      }}
+      // className={`flex  flex-row  justify-between px-10 py-2 fixed  bg-white z-50`}
+      // style={{ width: "100%%" }}
     >
       <Link
         href="/user/all-blogs"
@@ -184,6 +194,6 @@ export default function Navbar() {
           </>
         )}
       </div>
-    </div>
+    </Box>
   );
 }

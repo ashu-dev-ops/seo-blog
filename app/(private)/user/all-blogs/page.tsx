@@ -4,17 +4,17 @@ import { Box, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 
 const getData = async () => {
-  console.log("running get data to get all blogs >>>>>>>>>>>.");
-  console.log("headers i want to see insdie getData", headers());
+  // console.log("running get data to get all blogs >>>>>>>>>>>.");
+  // console.log("headers i want to see insdie getData", headers());
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
       method: "GET",
       headers: headers(),
     });
     if (res) {
-      console.log("res we get from fetch on deploy ", res);
+      // console.log("res we get from fetch on deploy ", res);
       const posts = await res.json();
-      console.log("data that we are getting back", posts.data.length);
+      // console.log("data that we are getting back", posts.data.length);
       return posts;
     }
     console.log("error occur>>>>> ", res);

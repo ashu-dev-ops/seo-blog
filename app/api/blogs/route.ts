@@ -8,8 +8,17 @@ import { NextResponse } from "next/server";
 import { authOptions } from "@/app/lib/authOptions";
 export const POST = async (request: any) => {
   try {
-    const { title, html, stats, email, password, seo, writtenBy, blogStatus } =
-      await request.json();
+    const {
+      title,
+      html,
+      stats,
+      email,
+      password,
+      seo,
+      writtenBy,
+      blogStatus,
+      tableOfContentsId,
+    } = await request.json();
     console.log("running");
     console.log(title, html, stats, writtenBy, blogStatus);
     await connect();
@@ -22,6 +31,7 @@ export const POST = async (request: any) => {
       stats,
       writtenBy: user._id,
       blogStatus,
+      tableOfContentsId,
     });
     const a = await newBlog.save();
     console.log(a);
@@ -71,11 +81,15 @@ export const PATCH = async (request: any) => {
     writtenBy,
     blogStatus,
     blogId,
+    tableOfContentsId,
   } = await request.json();
   await connect();
+  console.log("ids", tableOfContentsId);
+  console.log("modified html", html);
   const data = await Blog.findOneAndUpdate(
     { _id: blogId },
-    { html, stats, title, blogStatus }
+    { html, stats, title, blogStatus, tableOfContentsId },
+    { new: true }
   );
   console.log("data below api >>>>>>>>>....");
   console.log(data);

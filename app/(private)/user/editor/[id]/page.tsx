@@ -144,11 +144,34 @@ export default function Page({ params }: any) {
   }
   const handleDraft = async () => {
     try {
+      var tableOfContentsId: any = [];
       setIsLoading(true);
+      var htmlString = `${editor.current.getContents()}`;
+
+      // Create a temporary DOM element to manipulate the HTML string
+      var tempElement = document.createElement("div");
+      tempElement.innerHTML = htmlString;
+
+      // Select all <h2> elements within the temporary element
+      var h2Elements = tempElement.querySelectorAll("h2");
+
+      // Loop through each <h2> element and set its id based on its content
+      h2Elements.forEach(function (h2Element) {
+        var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
+        tableOfContentsId.push({
+          headingId: content.replace(/\s+/g, "-").toLocaleLowerCase(),
+          headingTitle: content,
+        });
+        h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
+      });
+
+      // Get the modified HTML string from the temporary element
+      var modifiedHtmlString = tempElement.innerHTML;
       const { data } = await axios
         .patch(`/api/blogs`, {
           blogStatus: "Draft",
-          html: `${editor.current.getContents()}`,
+          html: modifiedHtmlString,
+          tableOfContentsId,
           title: title,
           writtenBy: session.user.email,
           blogId: params.id,
@@ -168,11 +191,34 @@ export default function Page({ params }: any) {
   };
   const handlePublish = async () => {
     try {
+      var tableOfContentsId: any = [];
       setIsLoading(true);
+      var htmlString = `${editor.current.getContents()}`;
+
+      // Create a temporary DOM element to manipulate the HTML string
+      var tempElement = document.createElement("div");
+      tempElement.innerHTML = htmlString;
+
+      // Select all <h2> elements within the temporary element
+      var h2Elements = tempElement.querySelectorAll("h2");
+
+      // Loop through each <h2> element and set its id based on its content
+      h2Elements.forEach(function (h2Element) {
+        var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
+        tableOfContentsId.push({
+          headingId: content.replace(/\s+/g, "-").toLocaleLowerCase(),
+          headingTitle: content,
+        });
+        h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
+      });
+
+      // Get the modified HTML string from the temporary element
+      var modifiedHtmlString = tempElement.innerHTML;
       const { data } = await axios
         .patch(`/api/blogs`, {
           blogStatus: "Publish",
-          html: `${editor.current.getContents()}`,
+          html: modifiedHtmlString,
+          tableOfContentsId,
           title: title,
           writtenBy: session.user.email,
           blogId: params.id,
@@ -337,7 +383,8 @@ export default function Page({ params }: any) {
           sx={{
             maxWidth: "700px",
             width: "100%",
-            marginTop: "25vh",
+
+            marginTop: "10vh",
             padding: "1rem",
             borderRadius: "16px",
             backgroundColor: "white",
@@ -397,7 +444,8 @@ export default function Page({ params }: any) {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            top: "190px",
+            // top: "190px",
+            marginTop: "10vh",
             gap: 1,
             // minWidth:""
             width: "18%",

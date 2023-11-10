@@ -10,9 +10,9 @@ export default function OuterNavbar() {
     >
       <h1 className="text-3xl ">Powerblog </h1>
       <div className={`flex  flex-row  gap-3 items-center`}>
-        <Link href="all-blogs">
-          <Button variant="outlined">Blogs</Button>
-        </Link>
+       
+          <Button variant="outlined" href='https://sheetwa.com/blogs/'>Showcase</Button>
+       
         <Link href="auth/login">
           <Button variant="contained">Getting started</Button>
         </Link>

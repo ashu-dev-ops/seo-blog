@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "../componets/Navbar";
 import { redirect } from "next/navigation";
+import Footer from "../componets/footer";
 export default async function layout({
   children,
 }: {
@@ -18,7 +19,7 @@ export default async function layout({
     <div>
       <Navbar />
       {children}
-      <h1>Private footer</h1>
+      <Footer />
     </div>
   );
 }

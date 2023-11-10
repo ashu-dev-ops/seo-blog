@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap");
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -29,6 +29,7 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 body {
   box-sizing: border-box;
@@ -53,9 +54,43 @@ body {
 }
 .sun-editor-editable {
   font-size: 22px !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+  font-family: "IBM Plex Sans", sans-serif !important;
 }
 .sun-editor .se-toolbar.se-toolbar-sticky {
   margin-top: 90px;
+}
+.sun-editor-editable p {
+  font-size: 21px !important;
+  color: "#212121";
+}
+.sun-editor-editable h3 {
+  font-size: 23px !important;
+  color: "#212121";
+}
+.sun-editor-editable img {
+  border-radius: 16px;
+}
+.sun-editor-editable p span {
+  font-size: 21px !important;
+  color: "#212121";
+}
+.show-container p span {
+  font-size: 21px !important;
+  color: "#212121";
+}
+.show-container img {
+  border-radius: 10px;
+}
+.show-container h3 span {
+  font-size: 28px !important;
+  font-weight: bold;
+}
+.blog-card-image-container:hover img {
+  transform: scale(1.25) rotate(1deg);
+}
+
+.sun-editor-editable h2 {
+  scroll-margin-top: 5rem !important;
+
 }

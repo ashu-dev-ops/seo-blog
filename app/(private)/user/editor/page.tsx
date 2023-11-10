@@ -108,15 +108,37 @@ export default function Page() {
     };
   }
   const handleDraft = async () => {
+    var tableOfContentsId: any = [];
     setIsLoading(true);
-    console.log("running handle dragt");
+    var htmlString = `${editor.current.getContents()}`;
+
+    // Create a temporary DOM element to manipulate the HTML string
+    var tempElement = document.createElement("div");
+    tempElement.innerHTML = htmlString;
+
+    // Select all <h2> elements within the temporary element
+    var h2Elements = tempElement.querySelectorAll("h2");
+
+    // Loop through each <h2> element and set its id based on its content
+    h2Elements.forEach(function (h2Element) {
+      var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
+      tableOfContentsId.push({
+        headingId: content.trim(),
+        headingTitle: content,
+      });
+      h2Element.id = content.trim(); // Set the id based on the trimmed content
+    });
+
+    // Get the modified HTML string from the temporary element
+    var modifiedHtmlString = tempElement.innerHTML;
     try {
       await axios
         .post(`/api/blogs`, {
           blogStatus: "Draft",
-          html: `${editor.current.getContents()}`,
+          html: modifiedHtmlString,
           title: title,
           writtenBy: session.user.email,
+          tableOfContentsId,
           stats: {
             noOfSubHeading,
             noOfImage,
@@ -152,6 +174,9 @@ export default function Page() {
       console.log(error);
     }
   };
+  const check = (num: any) => {
+    console.log("from num", num);
+  };
   if (isLoading) {
     return (
       <Box
@@ -183,9 +208,9 @@ export default function Page() {
         <Box
           sx={{
             // postion: "fixed !important",
-            position: " fixed",
+            position: "fixed",
             maxWidth: "250px",
-            width: "16%",
+            width: "20%",
             top: "120px",
             left: "5px",
             // color: "white",
@@ -201,7 +226,7 @@ export default function Page() {
           <Stack direction="row" gap={1}>
             <Box>
               {" "}
-              {noOfWords >= 800 ? (
+              {noOfWordsInTitle <= 12 && noOfWordsInTitle >= 8 ? (
                 <DoneIcon sx={{ color: "green" }} />
               ) : (
                 <CloseIcon sx={{ color: "red" }} />
@@ -210,7 +235,7 @@ export default function Page() {
             <Box>
               <Typography variant="body2" color="GrayText">
                 Title words should be 8 - 12. <br></br> Current:{" "}
-                {`${noOfWordsInTitle}`}
+                {`${noOfWordsInTitle ? noOfWordsInTitle : 0}`}
               </Typography>
             </Box>
           </Stack>
@@ -250,7 +275,7 @@ export default function Page() {
           <Stack direction="row" gap={1}>
             <Box>
               {" "}
-              {noOfSubHeading >= 2 ? (
+              {noOfSubHeading >= 1 ? (
                 <DoneIcon sx={{ color: "green" }} />
               ) : (
                 <CloseIcon sx={{ color: "red" }} />
@@ -284,7 +309,7 @@ export default function Page() {
           sx={{
             maxWidth: "700px",
             width: "100%",
-            marginTop: "25vh",
+            marginTop: "10vh",
             padding: "1rem",
             borderRadius: "16px",
             backgroundColor: "white",
@@ -299,7 +324,15 @@ export default function Page() {
             multiline
             focused={false}
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              const stringWithoutSpaces = e.target.value;
+
+              const wordsArray = stringWithoutSpaces.trim().split(/\s+/);
+
+              console.log("array ", wordsArray.length);
+              setNoWordsInTitle(wordsArray.length);
+            }}
             placeholder="Enter your title"
             InputProps={{
               style: {
@@ -346,7 +379,7 @@ export default function Page() {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            top: "190px",
+            top: "110px",
             gap: 1,
             // minWidth:""
             width: "18%",
@@ -402,7 +435,7 @@ export default function Page() {
             <Stack justifyContent="space-between" direction="row">
               <Typography variant="body2">Read time:</Typography>
               <Typography variant="body2" color="GrayText">
-                2 min
+                {Math.ceil(noOfWords / 225)}min
               </Typography>
             </Stack>
           </Box>
