@@ -6,7 +6,7 @@ export const GET = async (request: Request) => {
   console.log("rung>>>>>>>>>>>>>>>>get single");
   const pathSegments = request.url.split("/");
   const id = pathSegments[pathSegments.length - 1];
-  console.log("running get single blog request")
+  console.log("running get single blog request");
   console.log(id);
   //   console.log(request.url)
   await connect();
@@ -14,6 +14,16 @@ export const GET = async (request: Request) => {
   //   console.log("data below api >>>>>>>>>....");
   //   // console.log(data);
   //   const jsonData = JSON.stringify(data);
-  return NextResponse.json({ message: "ok", data: data[0] }, { status: 200 });
+  return NextResponse.json(
+    { message: "ok", data: data[0] },
+    {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+    }
+  );
   //   return NextResponse.json({ message: "ok" }, { status: 200 });
 };

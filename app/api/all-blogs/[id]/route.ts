@@ -17,8 +17,8 @@ export const GET = async (request: any) => {
   const allBlogs = await Blog.find({
     writtenBy: id,
     blogStatus: "Publish",
-  // }).populate("writtenBy");
-  }).populate({ path: 'writtenBy', model: User });
+    // }).populate("writtenBy");
+  }).populate({ path: "writtenBy", model: User });
   console.log(allBlogs);
   //   console.log("we got the data");
   try {
@@ -26,7 +26,14 @@ export const GET = async (request: any) => {
     return NextResponse.json(
       { message: "ok", data: allBlogs },
       // { message: "ok", data:'test'},
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+      }
     );
     // return new NextResponse("user is registered", { status: 200 });
   } catch (err: any) {
