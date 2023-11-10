@@ -165,9 +165,9 @@ export default function SubDirectoryFooter() {
             paddingBottom: "60px",
           }}
         >
-          {footerData.map((i) => {
+          {footerData.map((i,idx) => {
             console.log(i);
-            return <FooterColumn title={i.title} links={i.links} />;
+            return <FooterColumn title={i.title} links={i.links} key={idx}/>;
           })}
         </Box>
       </Stack>

@@ -18,8 +18,8 @@ export default function FooterColumn({ title, links }) {
         {title}
       </Box>
       <Box component="ul" sx={{ paddingLeft: 0 }}>
-        {links.map((i) => {
-          return <FooterLinkBtn text={i.linkName} path={i.path}/>;
+        {links.map((i,idx) => {
+          return <FooterLinkBtn text={i.linkName} path={i.path} key={idx}/>;
         })}
       </Box>
     </Box>
