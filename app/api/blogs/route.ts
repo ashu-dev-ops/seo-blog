@@ -18,6 +18,7 @@ export const POST = async (request: any) => {
       writtenBy,
       blogStatus,
       tableOfContentsId,
+      
     } = await request.json();
     console.log("running");
     console.log(title, html, stats, writtenBy, blogStatus);
@@ -32,6 +33,7 @@ export const POST = async (request: any) => {
       writtenBy: user._id,
       blogStatus,
       tableOfContentsId,
+   
     });
     const a = await newBlog.save();
     console.log(a);
@@ -75,20 +77,18 @@ export const PATCH = async (request: any) => {
     title,
     html,
     stats,
-    email,
-    password,
-    seo,
-    writtenBy,
+ 
     blogStatus,
     blogId,
     tableOfContentsId,
+  
   } = await request.json();
   await connect();
   console.log("ids", tableOfContentsId);
   console.log("modified html", html);
   const data = await Blog.findOneAndUpdate(
     { _id: blogId },
-    { html, stats, title, blogStatus, tableOfContentsId },
+    { html, stats, title, blogStatus, tableOfContentsId, },
     { new: true }
   );
   console.log("data below api >>>>>>>>>....");

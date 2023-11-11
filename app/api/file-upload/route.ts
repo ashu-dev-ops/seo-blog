@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     urlEndpoint: "https://ik.imagekit.io/88u0e3wp7",
   });
   const file = f as File;
-  let url
+  let url;
   console.log(`File name: ${file.name}`);
   console.log(`Content-Length: ${file.size}`);
 
@@ -28,14 +28,6 @@ export async function POST(req: NextRequest) {
 
   const fileArrayBuffer = await file.arrayBuffer();
 
-  if (!existsSync(destinationDirPath)) {
-    fs.mkdir(destinationDirPath, { recursive: true });
-  }
-  await fs.writeFile(
-    path.join(destinationDirPath, file.name),
-    Buffer.from(fileArrayBuffer)
-  );
-
   const fileUrl = `${process.env.BASE_URL}/upload/${file.name}`;
   const result = await imagekit.upload({
     file: Buffer.from(fileArrayBuffer),
@@ -43,24 +35,20 @@ export async function POST(req: NextRequest) {
   });
   console.log(result);
   if (result) {
-     url = imagekit.url({
+    url = imagekit.url({
       src: result.url,
-      transformation: [
-        {
-          height: "512",
-          width: "512",
-        },
-      ],
+     
     });
     // res.status(200).json({
-   
+
     // });
-    console.log(url)
+    console.log(url);
     return NextResponse.json({
       fileName: file.name,
       size: file.size,
       lastModified: new Date(file.lastModified),
       url: url,
+      thumbnail: result.thumbnailUrl,
     });
   }
 }

@@ -22,10 +22,10 @@ const getData = async (params: any) => {
       //
     });
     const posts = await res.json();
-    console.log(
-      "we got the data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
-      posts
-    );
+    // console.log(
+    //   "we got the data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
+    //   posts
+    // );
 
     return posts;
   } catch (error) {
@@ -34,7 +34,10 @@ const getData = async (params: any) => {
 };
 export default async function page({ searchParams }: any) {
   console.log("search params >>>>>>>>>>", searchParams);
-  const data = await getData(searchParams.userId);
+  let data = await getData(searchParams.userId);
+  const featured = data.data.slice(-1);
+  console.log("featured>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", featured);
+  data.data.pop();
   // console.log(""data.data);
   return (
     <Box
@@ -73,8 +76,11 @@ export default async function page({ searchParams }: any) {
             marginTop: "40px",
             marginX: "auto",
             cursor: "pointer",
+            textDecoration: "none",
           }}
           direction="row"
+          component={Link}
+          href={`/blogs/${featured[0]._id}`}
         >
           <Box
             sx={{
@@ -107,7 +113,7 @@ export default async function page({ searchParams }: any) {
             <Box
               sx={{ fontWeight: 600, fontSize: "1.8rem", lineHeight: "3rem" }}
             >
-              ​All about gifting with Mandaala’s Celebration module!
+              {featured[0].title}
             </Box>
             <Box
               sx={{

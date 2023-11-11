@@ -29,14 +29,15 @@ export default function Page({ params }: any) {
   const router = useRouter();
   const [noOfHeading, setNoOfHeading] = useState("");
   const [noOfSubHeading, setNoSubOfHeading] = useState("");
-  const [noOfWords, setNoOfWords] = useState("");
+  const [noOfWords, setNoOfWords] = useState(0);
   const [noOfWordsInTitle, setNoWordsInTitle] = useState("");
-  const [noOfImage, setNoImages] = useState("");
+  const [noOfImage, setNoImages] = useState(0);
   const [noOfLinks, setNoLinks] = useState("");
   const [title, setTitle] = useState("");
   const [editorHtml, setEditorHtml] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [blogStatus, setBlogStatus] = useState("");
+  const [thumbnail, setThumbnaul] = useState("");
   const editor = useRef();
   const fetchData = async () => {
     // console.log();
@@ -49,10 +50,10 @@ export default function Page({ params }: any) {
     setEditorHtml(data.data.data.html);
     setTitle(data.data.data.title ? data.data.data.title : "");
     setNoImages(
-      data.data.data.stats.noOfImage ? data.data.data.stats.noOfImage : ""
+      data.data.data.stats.noOfImage ? data.data.data.stats.noOfImage : 0
     );
     setNoOfWords(
-      data.data.data.stats.noOfWords ? data.data.data.stats.noOfWords : ""
+      data.data.data.stats.noOfWords ? data.data.data.stats.noOfWords : 0
     );
     setNoSubOfHeading(
       data.data.data.stats.noOfSubHeading
@@ -70,7 +71,7 @@ export default function Page({ params }: any) {
   const getSunEditorInstance = (sunEditor) => {
     editor.current = sunEditor;
   };
-  function handleChange(content) {
+  function handleChange(content: any) {
     console.log("print content >>>>>>>>>>>.", editor.current.getContents());
     // console.log(content); //Get Content Inside Editor
     // console.log(editor.current.getText());
@@ -93,31 +94,7 @@ export default function Page({ params }: any) {
     setNoOfWords(words.length);
     setNoLinks(links.length);
   }
-  // async function onImageUploadBefore(
-  //   files: any,
-  //   info: any,
-  //   uploadHandler: any
-  // ) {
-  //   console.log("running>>>>>>>>>.");
-  //   console.log(files, info, typeof uploadHandler);
-  //   const formData = new FormData();
-  //   formData.append("file", files[0]);
-  //   const { data } = await axios.post(
-  //     "http://localhost:3000/api/file-upload",
-  //     formData
-  //   );
 
-  //   const res = {
-  //     result: [
-  //       {
-  //         url: data?.url,
-  //         name: "thumbnail",
-  //         size: data.size,
-  //       },
-  //     ],
-  //   };
-  //   uploadHandler(res);
-  // }
   function onImageUploadBefore() {
     return (files, _info, uploadHandler) => {
       (async () => {
@@ -134,6 +111,11 @@ export default function Page({ params }: any) {
             },
           ],
         };
+        console.log("number of image >>>>>>>>>>.", noOfImage);
+        console.log("we got thumbnail>>>>>>>>>>..,", data.thumbnail);
+        if (noOfImage === 1) {
+          setThumbnaul(data.thumbnail);
+        }
 
         uploadHandler(res);
       })();
@@ -167,22 +149,28 @@ export default function Page({ params }: any) {
 
       // Get the modified HTML string from the temporary element
       var modifiedHtmlString = tempElement.innerHTML;
+      const dataToSend = {
+        blogStatus: "Draft",
+        html: modifiedHtmlString,
+        tableOfContentsId,
+        title: title,
+        writtenBy: session.user.email,
+        blogId: params.id,
+        stats: {
+          noOfSubHeading,
+          noOfHeading,
+          noOfImage,
+          noOfWords,
+          noOfLinks,
+          readTime: Math.ceil(noOfWords / 225),
+        },
+      };
+      if (thumbnail) {
+        dataToSend.stats.thumbnail = thumbnail;
+      }
+
       const { data } = await axios
-        .patch(`/api/blogs`, {
-          blogStatus: "Draft",
-          html: modifiedHtmlString,
-          tableOfContentsId,
-          title: title,
-          writtenBy: session.user.email,
-          blogId: params.id,
-          stats: {
-            noOfSubHeading,
-            noOfHeading,
-            noOfImage,
-            noOfWords,
-            noOfLinks,
-          },
-        })
+        .patch(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/all-blogs"));
       console.log(data);
     } catch (error) {
@@ -214,21 +202,26 @@ export default function Page({ params }: any) {
 
       // Get the modified HTML string from the temporary element
       var modifiedHtmlString = tempElement.innerHTML;
+      const dataToSend = {
+        blogStatus: "Publish",
+        html: modifiedHtmlString,
+        tableOfContentsId,
+        title: title,
+        writtenBy: session.user.email,
+        blogId: params.id,
+        stats: {
+          noOfSubHeading,
+          noOfImage,
+          noOfWords,
+          noOfLinks,
+          readTime: Math.ceil(noOfWords / 225),
+        },
+      };
+      if (thumbnail) {
+        dataToSend.stats.thumbnail = thumbnail;
+      }
       const { data } = await axios
-        .patch(`/api/blogs`, {
-          blogStatus: "Publish",
-          html: modifiedHtmlString,
-          tableOfContentsId,
-          title: title,
-          writtenBy: session.user.email,
-          blogId: params.id,
-          stats: {
-            noOfSubHeading,
-            noOfImage,
-            noOfWords,
-            noOfLinks,
-          },
-        })
+        .patch(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/all-blogs"));
       console.log(data);
     } catch (error) {

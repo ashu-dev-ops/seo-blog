@@ -30,6 +30,8 @@ export default function Page() {
   const [noOfLinks, setNoLinks] = useState("");
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [thumbnail, setThumbnaul] = useState("");
+  const [description, setDescription] = useState("");
   const editor = useRef();
   // The sunEditor parameter will be set to the core suneditor instance when this function is called
   const getSunEditorInstance = (sunEditor) => {
@@ -99,6 +101,11 @@ export default function Page() {
             },
           ],
         };
+        console.log("number of image >>>>>>>>>>.", noOfImage);
+        console.log("we got thumbnail>>>>>>>>>>..,", data?.thumbnail);
+        if (noOfImage === 0) {
+          setThumbnaul(data?.thumbnail);
+        }
 
         uploadHandler(res);
       })();
@@ -107,67 +114,173 @@ export default function Page() {
       uploadHandler();
     };
   }
+  // const handleDraft = async () => {
+  //   var tableOfContentsId: any = [];
+  //   setIsLoading(true);
+  //   var htmlString = `${editor.current.getContents()}`;
+
+  //   // Create a temporary DOM element to manipulate the HTML string
+  //   var tempElement = document.createElement("div");
+  //   tempElement.innerHTML = htmlString;
+
+  //   // Select all <h2> elements within the temporary element
+  //   var h2Elements = tempElement.querySelectorAll("h2");
+
+  //   // Loop through each <h2> element and set its id based on its content
+  //   h2Elements.forEach(function (h2Element) {
+  //     var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
+  //     tableOfContentsId.push({
+  //       headingId: content.trim(),
+  //       headingTitle: content,
+  //     });
+  //     h2Element.id = content.trim(); // Set the id based on the trimmed content
+  //   });
+
+  //   // Get the modified HTML string from the temporary element
+  //   var modifiedHtmlString = tempElement.innerHTML;
+  //   try {
+  //     await axios
+  //       .post(`/api/blogs`, {
+  //         blogStatus: "Draft",
+  //         html: modifiedHtmlString,
+  //         title: title,
+  //         writtenBy: session.user.email,
+  //         tableOfContentsId,
+  //         stats: {
+  //           noOfSubHeading,
+  //           noOfImage,
+  //           noOfWords,
+  //           noOfLinks,
+  //           readTime:Math.ceil(noOfWords / 225)
+  //         },
+  //       })
+  //       .then(() => router.push("/user/all-blogs"));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const handleDraft = async () => {
-    var tableOfContentsId: any = [];
-    setIsLoading(true);
-    var htmlString = `${editor.current.getContents()}`;
-
-    // Create a temporary DOM element to manipulate the HTML string
-    var tempElement = document.createElement("div");
-    tempElement.innerHTML = htmlString;
-
-    // Select all <h2> elements within the temporary element
-    var h2Elements = tempElement.querySelectorAll("h2");
-
-    // Loop through each <h2> element and set its id based on its content
-    h2Elements.forEach(function (h2Element) {
-      var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
-      tableOfContentsId.push({
-        headingId: content.trim(),
-        headingTitle: content,
-      });
-      h2Element.id = content.trim(); // Set the id based on the trimmed content
-    });
-
-    // Get the modified HTML string from the temporary element
-    var modifiedHtmlString = tempElement.innerHTML;
     try {
-      await axios
-        .post(`/api/blogs`, {
-          blogStatus: "Draft",
-          html: modifiedHtmlString,
-          title: title,
-          writtenBy: session.user.email,
-          tableOfContentsId,
-          stats: {
-            noOfSubHeading,
-            noOfImage,
-            noOfWords,
-            noOfLinks,
-          },
-        })
+      var tableOfContentsId: any = [];
+      setIsLoading(true);
+      var htmlString = `${editor.current.getContents()}`;
+
+      // Create a temporary DOM element to manipulate the HTML string
+      var tempElement = document.createElement("div");
+      tempElement.innerHTML = htmlString;
+
+      // Select all <h2> elements within the temporary element
+      var h2Elements = tempElement.querySelectorAll("h2");
+
+      // Loop through each <h2> element and set its id based on its content
+      h2Elements.forEach(function (h2Element) {
+        var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
+        tableOfContentsId.push({
+          headingId: content.replace(/\s+/g, "-").toLocaleLowerCase(),
+          headingTitle: content,
+        });
+        h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
+      });
+
+      // Get the modified HTML string from the temporary element
+      var modifiedHtmlString = tempElement.innerHTML;
+      const dataToSend = {
+        blogStatus: "Draft",
+        html: modifiedHtmlString,
+        tableOfContentsId,
+        title: title,
+        writtenBy: session.user.email,
+
+        stats: {
+          noOfSubHeading,
+          noOfHeading,
+          noOfImage,
+          noOfWords,
+          noOfLinks,
+          readTime: Math.ceil(noOfWords / 225),
+        },
+      };
+      if (thumbnail) {
+        dataToSend.stats.thumbnail = thumbnail;
+      }
+
+      const { data } = await axios
+        .post(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/all-blogs"));
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
+  // const handlePublish = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     await axios
+  //       .post(`/api/blogs`, {
+  //         blogStatus: "Publish",
+  //         html: `${editor.current.getContents()}`,
+  //         title: title,
+  //         writtenBy: session.user.email,
+
+  //         stats: {
+  //           noOfSubHeading,
+  //           noOfImage,
+  //           noOfWords,
+  //           noOfLinks,
+  //           readTime:Math.ceil(noOfWords / 225)
+  //         },
+  //       })
+  //       .then(() => router.push("/user/all-blogs"));
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const handlePublish = async () => {
     try {
+      var tableOfContentsId: any = [];
       setIsLoading(true);
-      await axios
-        .post(`/api/blogs`, {
-          blogStatus: "Publish",
-          html: `${editor.current.getContents()}`,
-          title: title,
-          writtenBy: session.user.email,
+      var htmlString = `${editor.current.getContents()}`;
 
-          stats: {
-            noOfSubHeading,
-            noOfImage,
-            noOfWords,
-            noOfLinks,
-          },
-        })
+      // Create a temporary DOM element to manipulate the HTML string
+      var tempElement = document.createElement("div");
+      tempElement.innerHTML = htmlString;
+
+      // Select all <h2> elements within the temporary element
+      var h2Elements = tempElement.querySelectorAll("h2");
+
+      // Loop through each <h2> element and set its id based on its content
+      h2Elements.forEach(function (h2Element) {
+        var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
+        tableOfContentsId.push({
+          headingId: content.replace(/\s+/g, "-").toLocaleLowerCase(),
+          headingTitle: content,
+        });
+        h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
+      });
+
+      // Get the modified HTML string from the temporary element
+      var modifiedHtmlString = tempElement.innerHTML;
+      const dataToSend = {
+        blogStatus: "Publish",
+        html: modifiedHtmlString,
+        tableOfContentsId,
+        title: title,
+        writtenBy: session.user.email,
+
+        stats: {
+          noOfSubHeading,
+          noOfImage,
+          noOfWords,
+          noOfLinks,
+          readTime: Math.ceil(noOfWords / 225),
+        },
+      };
+      if (thumbnail) {
+        dataToSend.stats.thumbnail = thumbnail;
+      }
+      const { data } = await axios
+        .post(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/all-blogs"));
       console.log(data);
     } catch (error) {
