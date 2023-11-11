@@ -14,23 +14,11 @@ const nextConfig = {
 
 
   // dev
-  // assetPrefix: "http://localhost:3000/",
+  assetPrefix: "http://localhost:3000/",
 
-  // images: {
-  //   domains: ["http://localhost:3000/"],
-  //   path: `${"http://localhost:3000"}/_next/image`,
-  //   remotePatterns: [
-  //     {
-  //       protocol: "https",
-  //       hostname: "**",
-  //     },
-  //   ],
-  // },
-  // prod
-  assetPrefix: "https://nimble-figolla-41e82f.netlify.app/",
   images: {
-    domains: ["https://nimble-figolla-41e82f.netlify.app/"],
-    path: `${"https://nimble-figolla-41e82f.netlify.app"}/_next/image`,
+    domains: ["http://localhost:3000/"],
+    path: `${"http://localhost:3000"}/_next/image`,
     remotePatterns: [
       {
         protocol: "https",
@@ -38,6 +26,18 @@ const nextConfig = {
       },
     ],
   },
+  // prod
+  // assetPrefix: "https://nimble-figolla-41e82f.netlify.app/",
+  // images: {
+  //   domains: ["https://nimble-figolla-41e82f.netlify.app/"],
+  //   path: `${"https://nimble-figolla-41e82f.netlify.app"}/_next/image`,
+  //   remotePatterns: [
+  //     {
+  //       protocol: "https",
+  //       hostname: "**",
+  //     },
+  //   ],
+  // },
   // async rewrites() {
   //   return [
   //     // Rewrite assets to use the correct absolute path
