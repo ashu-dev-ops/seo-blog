@@ -12,14 +12,10 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // basePath: "https://nimble-figolla-41e82f.netlify.app/",
-  // basePath: "http://localhost:3000/",
-  // assetPrefix: "https://nimble-figolla-41e82f.netlify.app/",
-  assetPrefix: "http://localhost:3000/",
-  // images: {
-  //   domains: [process.env.VERCEL_URL],
-  //   path: `${process.env.VERCEL_URL}/_next/image`,
-  // },
+
+  // dev
+  // assetPrefix: "http://localhost:3000/",
+
   // images: {
   //   domains: ["http://localhost:3000/"],
   //   path: `${"http://localhost:3000"}/_next/image`,
@@ -30,6 +26,8 @@ const nextConfig = {
   //     },
   //   ],
   // },
+  // prod
+  assetPrefix: "https://nimble-figolla-41e82f.netlify.app/",
   images: {
     domains: ["https://nimble-figolla-41e82f.netlify.app/"],
     path: `${"https://nimble-figolla-41e82f.netlify.app"}/_next/image`,
