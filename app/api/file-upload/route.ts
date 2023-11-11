@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     urlEndpoint: "https://ik.imagekit.io/88u0e3wp7",
   });
   const file = f as File;
+  let url
   console.log(`File name: ${file.name}`);
   console.log(`Content-Length: ${file.size}`);
 
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest) {
   });
   console.log(result);
   if (result) {
-    const url = imagekit.url({
+     url = imagekit.url({
       src: result.url,
       transformation: [
         {
@@ -52,13 +53,14 @@ export async function POST(req: NextRequest) {
       ],
     });
     // res.status(200).json({
-    console.log(url);
+   
     // });
+    console.log(url)
     return NextResponse.json({
       fileName: file.name,
       size: file.size,
       lastModified: new Date(file.lastModified),
-      url: fileUrl,
+      url: url,
     });
   }
 }
