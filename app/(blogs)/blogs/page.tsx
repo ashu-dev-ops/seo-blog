@@ -147,9 +147,9 @@ export default async function page({ searchParams }: any) {
           columnGap="1px"
           marginY="100px"
         >
-          {data.data.map((blog: any, idx: Number) => {
+          {data.data.map((blog: any, idx: number) => {
             return (
-              <Grid key={idx} item xs={12} sm={6} md={3}>
+              <Grid key={idx.toString()} item xs={12} sm={6} md={3}>
                 <BlogCard
                   title={blog.title}
                   blogId={blog._id}

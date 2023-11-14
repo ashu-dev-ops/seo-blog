@@ -9,40 +9,34 @@ import {
 } from "@mui/material";
 import React, { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { usePathname, useSearchParams } from "next/navigation";
+
 import { useSession } from "next-auth/react";
-import ErrorComponent from "@/app/componets/ErrorComponent";
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
 });
-
 export default function Page({ params }: any) {
   console.log(params);
-  //   console.log(usePathname, useSearchParams);
+ 
   const { data: session }: any = useSession();
-  //   const { blogId } = useRouter();
-  //   const router = useRouter();
+
   const router = useRouter();
   const [noOfHeading, setNoOfHeading] = useState("");
   const [noOfSubHeading, setNoSubOfHeading] = useState("");
   const [noOfWords, setNoOfWords] = useState(0);
   const [noOfWordsInTitle, setNoWordsInTitle] = useState("");
   const [noOfImage, setNoImages] = useState(0);
-  const [noOfLinks, setNoLinks] = useState("");
+  const [noOfLinks, setNoLinks] = useState(0);
   const [title, setTitle] = useState("");
   const [editorHtml, setEditorHtml] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [blogStatus, setBlogStatus] = useState("");
   const [thumbnail, setThumbnaul] = useState("");
-  const [isError, setIsError] = useState(false);
+  
   const editor = useRef();
   const fetchData = async () => {
     // console.log();
@@ -116,8 +110,7 @@ export default function Page({ params }: any) {
             },
           ],
         };
-        console.log("number of image >>>>>>>>>>.", noOfImage);
-        console.log("we got thumbnail>>>>>>>>>>..,", data.thumbnail);
+    
         if (noOfImage === 1) {
           setThumbnaul(data.thumbnail);
         }

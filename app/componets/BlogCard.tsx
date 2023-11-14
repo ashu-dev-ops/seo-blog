@@ -4,18 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 export default function BlogCard({ title, blogId, readTime, thumbnail }) {
   return (
-    // <Box
-    //   sx={{
-    //     cursor: "pointer",
-
-    //     display: "flex",
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    //     flexDirection: "column",
-    //     overflow: "hidden",
-    //     padding: "1rem",
-    //   }}
-    // >
     <Box
       component={Link}
       href={`/blogs/${blogId}`}
