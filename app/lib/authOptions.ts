@@ -40,9 +40,9 @@ export const authOptions: any = {
         clientId:
           "1050913679320-ame7hulg0dlj7rcq7uqpn2phjed46nnj.apps.googleusercontent.com",
         clientSecret: "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",
-        //   NEXTAUTH_URL: "s",
+   
       }),
-      // ...add more providers here
+      
     ],
     callbacks: {
       async signIn({ user, account }: { user: AuthUser; account: Account }) {

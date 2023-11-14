@@ -2,7 +2,7 @@ import { Box, Typography, Stack, Card } from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-export default function BlogCard({ title, blogId }) {
+export default function BlogCard({ title, blogId, readTime, thumbnail }) {
   return (
     // <Box
     //   sx={{
@@ -43,7 +43,11 @@ export default function BlogCard({ title, blogId }) {
           }}
         >
           <Image
-            src="https://superblog.supercdn.cloud/site_cuid_ckox4iu6j002sl8lh729c49bu/images/blog-banner-01-2-1663060639684-compressed.jpg"
+            src={
+              thumbnail
+                ? thumbnail
+                : "https://ik.imagekit.io/88u0e3wp7/tr:n-ik_ml_thumbnail/test_Lan836V48.jpg"
+            }
             alt="Picture of the author"
             width={0}
             height={0}
@@ -57,14 +61,6 @@ export default function BlogCard({ title, blogId }) {
               borderRadius: "7px",
               overflow: "hidden",
             }}
-            // style={{
-            //   // width: "100%",
-            //   // height: "100%",
-            //   // borderRadius: "7px",
-            //   // overflow: "hidden",
-            //   objectFit: "cover",
-            //   // transition: "all ease-in-out .4s",
-            // }} // optional// optional
           ></Image>
         </Box>
 
@@ -87,13 +83,13 @@ export default function BlogCard({ title, blogId }) {
               width: "fit-content",
               borderRadius: "5px",
               padding: "2px 8px",
-              marginTop:'10px'
+              marginTop: "10px",
             }}
           >
             Productivity
           </Box>
           <Typography variant="body2" sx={{ mt: "10px", color: "#212121" }}>
-            by samarth , 4 min read
+            by samarth , {readTime} min read
           </Typography>
         </Box>
       </Box>

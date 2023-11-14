@@ -13,19 +13,10 @@ import BlogCard from "@/app/componets/BlogCard";
 // import { Container } from "postcss";
 const getData = async (params: any) => {
   try {
-    //i changed here
     const res = await fetch(`${process.env.BASE_URL}/api/all-blogs/${params}`, {
-      // fetch new every time
       cache: "no-store",
-      // next: {
-      //   revalidate: 10,
-      //
     });
     const posts = await res.json();
-    // console.log(
-    //   "we got the data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
-    //   posts
-    // );
 
     return posts;
   } catch (error) {
@@ -35,10 +26,30 @@ const getData = async (params: any) => {
 export default async function page({ searchParams }: any) {
   console.log("search params >>>>>>>>>>", searchParams);
   let data = await getData(searchParams.userId);
+  console.log(data);
   const featured = data.data.slice(-1);
   console.log("featured>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", featured);
   data.data.pop();
-  // console.log(""data.data);
+  if (data.data.length === 0 && featured.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          // justifyContent: "center",
+          minHeight: "100vh",
+          // backgroundColor: "#E2E8F0",
+          paddingTop: "5vh",
+        }}
+      >
+        <Typography mt="5rem" variant="h3">
+          No published blogs found
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -93,7 +104,7 @@ export default async function page({ searchParams }: any) {
             }}
           >
             <Image
-              src="https://superblog.supercdn.cloud/site_cuid_ckox4iu6j002sl8lh729c49bu/images/blog-banner-01-2-1663060639684-compressed.jpg"
+              src={featured[0].stats?.thumbnail}
               alt="Picture of the author"
               width={0}
               height={0}
@@ -139,7 +150,12 @@ export default async function page({ searchParams }: any) {
           {data.data.map((blog: any, idx: Number) => {
             return (
               <Grid key={idx} item xs={12} sm={6} md={3}>
-                <BlogCard title={blog.title} blogId={blog._id} />
+                <BlogCard
+                  title={blog.title}
+                  blogId={blog._id}
+                  readTime={blog.stats?.readTime}
+                  thumbnail={blog.stats?.thumbnail}
+                />
               </Grid>
             );
           })}

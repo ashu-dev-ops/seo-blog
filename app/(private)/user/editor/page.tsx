@@ -103,9 +103,11 @@ export default function Page() {
         };
         console.log("number of image >>>>>>>>>>.", noOfImage);
         console.log("we got thumbnail>>>>>>>>>>..,", data?.thumbnail);
-        if (noOfImage === 0) {
+        if (noOfImage.length === 0) {
+          console.log("runing change thumbnail  image >>>>>>>>>>>>..");
           setThumbnaul(data?.thumbnail);
         }
+        console.log(thumbnail);
 
         uploadHandler(res);
       })();

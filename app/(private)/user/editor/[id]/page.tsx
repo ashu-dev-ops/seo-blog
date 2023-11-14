@@ -9,6 +9,9 @@ import {
 } from "@mui/material";
 import React, { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
@@ -16,6 +19,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import ErrorComponent from "@/app/componets/ErrorComponent";
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
 });
@@ -38,6 +42,7 @@ export default function Page({ params }: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [blogStatus, setBlogStatus] = useState("");
   const [thumbnail, setThumbnaul] = useState("");
+  const [isError, setIsError] = useState(false);
   const editor = useRef();
   const fetchData = async () => {
     // console.log();
@@ -172,7 +177,7 @@ export default function Page({ params }: any) {
       const { data } = await axios
         .patch(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/all-blogs"));
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
