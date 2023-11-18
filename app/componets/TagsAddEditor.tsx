@@ -11,14 +11,14 @@ export default function TagsAddEditor() {
   const [rows, setRows] = useState([]);
   const [value, setValue] = React.useState(tags);
   const getAllTags = async () => {
-    const data = await axios.get("http://localhost:3000/api/blogs/tags");
+    const data = await axios.get(`/api/blogs/tags`);
     console.log("remove on dev checking>>>>>>>>>>>>>>", data);
     setRows(data.data.data);
   };
   const handleAdd = async (newTag) => {
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", newTag);
     await axios
-      .post("http://localhost:3000/api/blogs/tags", {
+      .post(`/api/blogs/tags`, {
         newTag: newTag,
       })
       .then((data) => {

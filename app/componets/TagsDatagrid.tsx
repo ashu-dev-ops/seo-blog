@@ -1,7 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import { Stack, IconButton, TextField, Button } from "@mui/material";
+import {
+  Stack,
+  IconButton,
+  TextField,
+  Button,
+  Box,
+  Typography,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DasboarCardStyle } from "./style-components/DashboarCard";
@@ -12,8 +19,6 @@ import axios from "axios";
 import { dateToString } from "../utils/utility";
 // import { getAllTags } from "../redux/slices/user";
 export default function TagsDatagrid() {
-  // const { tags } = useSelector((store: any) => store.user);
-  // const dispatch = useDispatch();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateeOpen] = useState(false);
@@ -21,9 +26,8 @@ export default function TagsDatagrid() {
   const [newTag, setNewTag] = useState("");
   const [editNewTag, seteditNewTag] = useState("");
   const [rows, setRows] = useState([]);
-  // const [newTag, setNewTag] = useState("");
+
   const columns: GridColDef[] = [
-    // { field: "_id", headerName: "ID", minWidth: 20, flex: 0.1 },
     { field: "name", headerName: "Tag Name", minWidth: 70, flex: 0.1 },
     {
       field: "createdAt",
@@ -92,23 +96,13 @@ export default function TagsDatagrid() {
       },
     },
   ];
-
-  // const rows = [
-  //   { id: 1, title: "Snow", createdAt: "Jon", updatedAt: 35 },
-  //   { id: 2, title: "Lannister", createdAt: "Cersei", updatedAt: 42 },
-  //   { id: 3, title: "Lannister", createdAt: "Jaime", updatedAt: 45 },
-  //   { id: 4, title: "Stark", createdAt: "Arya", updatedAt: 16 },
-  //   { id: 5, title: "Targaryen", createdAt: "Daenerys", updatedAt: null },
-  //   { id: 6, title: "Melisandre", createdAt: null, updatedAt: 150 },
-  //   { id: 7, title: "Clifford", createdAt: "Ferrara", updatedAt: 44 },
-  //   { id: 8, title: "Frances", createdAt: "Rossini", updatedAt: 36 },
-  //   { id: 9, title: "Roxie", createdAt: "Harvey", updatedAt: 65 },
-  // ];
   const handleDelete = async () => {
     console.log("data to delete ", selectedData);
 
     const data = await axios
-      .delete(`http://localhost:3000/api/blogs/tags?tagID=${selectedData._id}`)
+      .delete(
+        `/api/blogs/tags?tagID=${selectedData._id}`
+      )
       .then(() => {
         const newRows = rows.filter((i) => i._id !== selectedData._id);
         setRows(newRows);
@@ -117,12 +111,12 @@ export default function TagsDatagrid() {
   const handleUpdate = async () => {
     selectedData.name = editNewTag;
     const data = await axios
-      .patch("http://localhost:3000/api/blogs/tags", {
+      .patch(`/api/blogs/tags`, {
         newTag: selectedData,
       })
       .then((data) => {
         console.log("check data");
-        rows.forEach((i) => {
+        rows.forEach((i: any) => {
           if (i._id === selectedData._id) {
             i = selectedData;
           }
@@ -132,7 +126,7 @@ export default function TagsDatagrid() {
   };
   const handleAdd = async () => {
     await axios
-      .post("http://localhost:3000/api/blogs/tags", {
+      .post(`/api/blogs/tags`, {
         newTag: newTag,
       })
       .then((data) => {
@@ -147,7 +141,7 @@ export default function TagsDatagrid() {
   };
   const handleDeleteMultiple = async () => {};
   const getAllTags = async () => {
-    const data = await axios.get("http://localhost:3000/api/blogs/tags");
+    const data = await axios.get(`${process.env.BASE_URL}/api/blogs/tags`);
     console.log("remove on dev checking>>>>>>>>>>>>>>", data);
     setRows(data.data.data);
   };
@@ -155,6 +149,25 @@ export default function TagsDatagrid() {
     getAllTags();
     // dispatch(getAllTags());
   }, []);
+  if (rows.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          // justifyContent: "center",
+          minHeight: "100vh",
+          backgroundColor: "#E2E8F0",
+          paddingTop: "20vh",
+        }}
+      >
+        <Typography variant="h2" textAlign="center" mb={3}>
+          No Tags Found
+        </Typography>
+      </Box>
+    );
+  }
   return (
     <>
       <div style={{ height: 400, width: "700px" }}>
@@ -195,6 +208,7 @@ export default function TagsDatagrid() {
             sx={{
               "&, [class^=MuiDataGrid]": { border: "none" },
               minHeight: "400px",
+              overflow: "hidden",
             }}
           />
         </DasboarCardStyle>
@@ -246,14 +260,6 @@ export default function TagsDatagrid() {
       >
         <h4>Are you sure? You can't undo this action afterwards.</h4>
       </TagsCurdModel>
-      {/* <TagsCurdModel
-        open={isDeleteOpen}
-        title="Delete a Tag"
-        action={handleDelete}
-        setOpen={setIsDeleteOpen}
-      >
-        <h1>Delete muliple</h1>
-      </TagsCurdModel> */}
     </>
   );
 }

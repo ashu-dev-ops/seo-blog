@@ -39,9 +39,7 @@ const nextConfig = {
   //   ],
   // },
 
-
   // prod heroku
-
 
   assetPrefix: "https://powerblog-39d6a2c7be5e.herokuapp.com/",
   images: {
@@ -54,7 +52,6 @@ const nextConfig = {
       },
     ],
   },
-
 };
 
 module.exports = nextConfig;

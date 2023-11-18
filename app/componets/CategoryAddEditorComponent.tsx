@@ -13,13 +13,13 @@ export default function CategoryAddEditor() {
   );
   // const [selectedData, setSelectedData] = useState({});
   const getAllTags = async () => {
-    const data = await axios.get("http://localhost:3000/api/blogs/category");
+    const data = await axios.get(`${process.env.BASE_URL}/api/blogs/category`);
     console.log("remove on dev checking>>>>>>>>>>>>>>", data);
     setRows(data.data.data);
   };
   const handleAdd = async (selectedData) => {
     await axios
-      .post("http://localhost:3000/api/blogs/category", {
+      .post(`/api/blogs/category`, {
         newTag: selectedData,
       })
       .then((data) => {

@@ -93,22 +93,22 @@ export default function CategoryDatagrid() {
     console.log("data to delete ", selectedData);
     const data = await axios
       .delete(
-        `http://localhost:3000/api/blogs/category?tagID=${selectedData._id}`
+        `/api/blogs/category?tagID=${selectedData._id}`
       )
       .then(() => {
-        const newRows = rows.filter((i) => i._id !== selectedData._id);
+        const newRows = rows.filter((i:any) => i._id !== selectedData._id);
         setRows(newRows);
       });
   };
   const handleUpdate = async () => {
     selectedData.name = editNewTag;
     const data = await axios
-      .patch("http://localhost:3000/api/blogs/category", {
+      .patch(`/api/blogs/category`, {
         newTag: selectedData,
       })
       .then((data) => {
         console.log("check data");
-        rows.forEach((i) => {
+        rows.forEach((i:any) => {
           if (i._id === selectedData._id) {
             i = selectedData;
           }
@@ -119,7 +119,7 @@ export default function CategoryDatagrid() {
   };
   const handleAdd = async () => {
     await axios
-      .post("http://localhost:3000/api/blogs/category", {
+      .post(`/api/blogs/category`, {
         newTag: newTag,
       })
       .then((data) => {
@@ -134,7 +134,7 @@ export default function CategoryDatagrid() {
   };
   const handleDeleteMultiple = async () => {};
   const getAllTags = async () => {
-    const data = await axios.get("http://localhost:3000/api/blogs/category");
+    const data = await axios.get(`/api/blogs/category`);
     console.log("remove on dev checking>>>>>>>>>>>>>>", data);
     setRows(data.data.data);
     setIsloading(false);
@@ -169,23 +169,23 @@ export default function CategoryDatagrid() {
             </Button>
           </Stack>
           <div style={{ flexGrow: 1, width: "100%", overflow: "hidden" }}>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              getRowId={(row) => row._id}
-              loading={isLoading}
-              initialState={{
-                pagination: {
-                  paginationModel: { page: 0, pageSize: 5 },
-                },
-              }}
-              pageSizeOptions={[5, 10]}
-              checkboxSelection
-              sx={{
-                "&, [class^=MuiDataGrid]": { border: "none" },
-                minHeight: "400px",
-              }}
-            />
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            getRowId={(row) => row._id}
+            loading={isLoading}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            checkboxSelection
+            sx={{
+              "&, [class^=MuiDataGrid]": { border: "none" },
+              minHeight: "400px",
+            }}
+          />
           </div>
         </DasboarCardStyle>
       </div>
