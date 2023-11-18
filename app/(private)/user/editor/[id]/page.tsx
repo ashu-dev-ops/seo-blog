@@ -8,6 +8,8 @@ import {
   CircularProgress,
 } from "@mui/material";
 import React, { useRef, useState, useEffect } from "react";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import SaveIcon from "@mui/icons-material/Save";
 import dynamic from "next/dynamic";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import DoneIcon from "@mui/icons-material/Done";
@@ -16,12 +18,29 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { useSession } from "next-auth/react";
+import CategoryAddEditor from "@/app/componets/CategoryAddEditorComponent";
+import TagsAddEditor from "@/app/componets/TagsAddEditor";
+import AdvanceSettingsSection from "@/app/componets/AdvanceSettingsSection";
+import { useUserContext } from "@/app/store/editorContext";
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
 });
 export default function Page({ params }: any) {
+  const {
+    handleCononical,
+    handleSlug,
+    handleMetaTags,
+    handleTags,
+    handleCategory,
+    metaTitle,
+    metaDescription,
+    canonical,
+    slug,
+    category,
+    tags,
+  } = useUserContext();
   console.log(params);
- 
+
   const { data: session }: any = useSession();
 
   const router = useRouter();
@@ -36,7 +55,7 @@ export default function Page({ params }: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [blogStatus, setBlogStatus] = useState("");
   const [thumbnail, setThumbnaul] = useState("");
-  
+
   const editor = useRef();
   const fetchData = async () => {
     // console.log();
@@ -54,6 +73,14 @@ export default function Page({ params }: any) {
     setNoOfWords(
       data.data.data.stats.noOfWords ? data.data.data.stats.noOfWords : 0
     );
+    handleSlug(data.data.data?.seo?.slug || "");
+    handleCononical(data.data.data?.seo?.canonical || "");
+    handleCategory(data.data.data?.seo?.category || []);
+    handleTags(data.data.data?.seo?.tags || []);
+    handleMetaTags({
+      metaDescription: data.data.data?.seo?.metaDescription || "",
+      metaTitle: data.data.data?.seo?.metaTitle || "",
+    });
     setNoSubOfHeading(
       data.data.data.stats.noOfSubHeading
         ? data.data.data.stats.noOfSubHeading
@@ -110,7 +137,7 @@ export default function Page({ params }: any) {
             },
           ],
         };
-    
+
         if (noOfImage === 1) {
           setThumbnaul(data.thumbnail);
         }
@@ -162,6 +189,14 @@ export default function Page({ params }: any) {
           noOfLinks,
           readTime: Math.ceil(noOfWords / 225),
         },
+        seo: {
+          metaTitle,
+          metaDescription,
+          canonical,
+          slug,
+          category,
+          tags,
+        },
       };
       if (thumbnail) {
         dataToSend.stats.thumbnail = thumbnail;
@@ -169,7 +204,7 @@ export default function Page({ params }: any) {
 
       const { data } = await axios
         .patch(`/api/blogs`, dataToSend)
-        .then(() => router.push("/user/all-blogs"));
+        .then(() => router.push("/user/dashboard"));
       // console.log(data);
     } catch (error) {
       console.log(error);
@@ -214,13 +249,21 @@ export default function Page({ params }: any) {
           noOfLinks,
           readTime: Math.ceil(noOfWords / 225),
         },
+        seo: {
+          metaTitle,
+          metaDescription,
+          canonical,
+          slug,
+          category,
+          tags,
+        },
       };
       if (thumbnail) {
         dataToSend.stats.thumbnail = thumbnail;
       }
       const { data } = await axios
         .patch(`/api/blogs`, dataToSend)
-        .then(() => router.push("/user/all-blogs"));
+        .then(() => router.push("/user/dashboard"));
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -259,7 +302,7 @@ export default function Page({ params }: any) {
             // postion: "fixed !important",
             position: " fixed",
             maxWidth: "250px",
-            width: "16%",
+            width: "20%",
             top: "120px",
             left: "5px",
             // color: "white",
@@ -275,7 +318,7 @@ export default function Page({ params }: any) {
           <Stack direction="row" gap={1}>
             <Box>
               {" "}
-              {noOfWords >= 800 ? (
+              {noOfWordsInTitle <= 12 && noOfWordsInTitle >= 8 ? (
                 <DoneIcon sx={{ color: "green" }} />
               ) : (
                 <CloseIcon sx={{ color: "red" }} />
@@ -283,8 +326,8 @@ export default function Page({ params }: any) {
             </Box>
             <Box>
               <Typography variant="body2" color="GrayText">
-                Title words should be 8 - 12. <br></br> Current:{" "}
-                {`${noOfWordsInTitle}`}
+                Title words should be 7 - 12. <br></br> Current:{" "}
+                {`${noOfWordsInTitle ? noOfWordsInTitle : 0}`}
               </Typography>
             </Box>
           </Stack>
@@ -292,15 +335,15 @@ export default function Page({ params }: any) {
           <Stack direction="row" gap={1}>
             <Box>
               {" "}
-              {noOfWords >= 800 ? (
+              {noOfWords >= 500 ? (
                 <DoneIcon sx={{ color: "green" }} />
               ) : (
                 <CloseIcon sx={{ color: "red" }} />
               )}
             </Box>
             <Box>
-              <Typography variant="body2" color="GrayText">
-                Content words should be &gt; 800. <br></br> Current:
+              <Typography variant="body2" color="GrayText" lineHeight="19px">
+                Content words should be &gt; 500. <br></br> Current:
                 {`${noOfWords ? noOfWords : 0}`}
               </Typography>
             </Box>
@@ -316,7 +359,7 @@ export default function Page({ params }: any) {
             </Box>
             <Box>
               <Typography variant="body2" color="GrayText">
-                Images should be at least 2. <br></br> Current:{" "}
+                Images should be at least 1 <br></br> Current:{" "}
                 {`${noOfImage ? noOfImage : 0}`}
               </Typography>
             </Box>
@@ -324,7 +367,7 @@ export default function Page({ params }: any) {
           <Stack direction="row" gap={1}>
             <Box>
               {" "}
-              {noOfSubHeading >= 2 ? (
+              {noOfHeading >= 2 ? (
                 <DoneIcon sx={{ color: "green" }} />
               ) : (
                 <CloseIcon sx={{ color: "red" }} />
@@ -332,7 +375,7 @@ export default function Page({ params }: any) {
             </Box>
             <Box>
               <Typography variant="body2" color="GrayText">
-                Headings should be at least 2.
+                Headings(h2) should be at least 2.
                 <br></br> Current: {`${noOfHeading ? noOfHeading : 0}`}
               </Typography>
             </Box>
@@ -348,7 +391,7 @@ export default function Page({ params }: any) {
             </Box>
             <Box>
               <Typography variant="body2" color="GrayText">
-                Subheadings should be at least 1. <br></br> Current:{" "}
+                Subheadings(h3) should be at least 1. <br></br> Current:{" "}
                 {`${noOfSubHeading ? noOfSubHeading : 0}`}
               </Typography>
             </Box>
@@ -415,7 +458,29 @@ export default function Page({ params }: any) {
             height="100%"
             defaultValue={editorHtml}
             setOptions={{
-              formats: ["h1", "h2", "p", "blockquote"],
+              formats: [
+                {
+                  tag: "h2", // Tag name
+                  name: "Heading(h2)", // default: tag name
+                  command: "replace", // default: "replace"
+                  class: "", // Class names must always begin with "se__format(replace, range, free)_"
+                },
+                {
+                  tag: "h3", // Tag name
+                  name: "Sub heading(h3)", // default: tag name
+                  command: "replace", // default: "replace"
+                  class: "", // Class names must always begin with "se__format(replace, range, free)_"
+                },
+                {
+                  tag: "p", // Tag name
+                  name: "Paragraph(p)", // default: tag name
+                  command: "replace", // default: "replace"
+                  class: "", // Class names must always begin with "se__format(replace, range, free)_"
+                },
+
+                "blockquote",
+                "pre",
+              ],
               // mediaAutoSelect: false,
               buttonList: [
                 // ["font", "fontSize", "formatBlock"],
@@ -435,22 +500,27 @@ export default function Page({ params }: any) {
             padding: "1rem",
             display: "flex",
             flexDirection: "column",
-            // top: "190px",
-            marginTop: "10vh",
+            top: "110px",
             gap: 1,
             // minWidth:""
-            width: "18%",
+            width: "20%",
           }}
         >
           <Stack direction="row" gap={1}>
-            <Button variant="outlined" fullWidth={true} onClick={handleDraft}>
+            <Button
+              variant="outlined"
+              fullWidth={true}
+              onClick={handleDraft}
+              startIcon={<SaveIcon />}
+            >
               {" "}
-              Draft
+              Save
             </Button>
             <Button
               variant="contained"
               fullWidth={true}
               onClick={handlePublish}
+              startIcon={<PublishedWithChangesIcon />}
             >
               Publish
             </Button>
@@ -502,6 +572,22 @@ export default function Page({ params }: any) {
               </Typography>
             </Stack>
           </Box>
+          <Box
+            sx={{
+              borderRadius: "10px",
+              padding: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              backgroundColor: "white",
+              gap: 1,
+            }}
+          >
+            <Typography>Category</Typography>
+            <CategoryAddEditor />
+            <Typography>Tags</Typography>
+            <TagsAddEditor />
+          </Box>
+          <AdvanceSettingsSection />
         </Box>
       </Box>
     </>

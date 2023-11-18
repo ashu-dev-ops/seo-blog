@@ -2,7 +2,13 @@ import { Box, Typography, Stack, Card } from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-export default function BlogCard({ title, blogId, readTime, thumbnail }) {
+import { BlogCardProps } from "../_types/blogCard";
+const BlogCard: React.FC<BlogCardProps> = ({
+  title,
+  blogId,
+  readTime,
+  thumbnail,
+}) => {
   return (
     <Box
       component={Link}
@@ -84,4 +90,5 @@ export default function BlogCard({ title, blogId, readTime, thumbnail }) {
     </Box>
     // </Box>
   );
-}
+};
+export default BlogCard;

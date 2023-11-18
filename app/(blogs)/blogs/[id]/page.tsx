@@ -8,6 +8,34 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import LeadGenCard from "@/app/componets/LeadGenCard";
 import FloatingBar from "@/app/componets/FloatingBar";
 import BlogCta from "@/app/componets/BlogCta";
+import type { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const data = await fetch(`${process.env.BASE_URL}/api/blogs/${params.id}`, {
+    cache: "no-store",
+  });
+  // console.log("my value>>>>>>>", data.data);
+  const data2 = await data.json();
+  console.log("my value>>>>>>>>", data2.data);
+  return {
+    title: data2?.data?.seo?.metaTitle || "",
+    description: data2?.data?.seo?.metaDescription || "",
+    openGraph: {
+      images: [
+        "https://ik.imagekit.io/ww4pq6w6n/pngwing.com%20(1).png?updatedAt=1699944466966",
+      ],
+    },
+  
+  };
+}
 export default async function ReadSingleBlog({ params }: any) {
   const data = await fetch(`${process.env.BASE_URL}/api/blogs/${params.id}`, {
     cache: "no-store",

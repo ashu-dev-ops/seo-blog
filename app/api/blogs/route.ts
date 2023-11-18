@@ -18,10 +18,9 @@ export const POST = async (request: any) => {
       writtenBy,
       blogStatus,
       tableOfContentsId,
-      
     } = await request.json();
     console.log("running");
-    console.log(title, html, stats, writtenBy, blogStatus);
+    console.log(title, html, stats, writtenBy, blogStatus,seo);
     await connect();
 
     const user = await User.findOne({ email: writtenBy });
@@ -33,7 +32,7 @@ export const POST = async (request: any) => {
       writtenBy: user._id,
       blogStatus,
       tableOfContentsId,
-   
+      seo
     });
     const a = await newBlog.save();
     console.log(a);
@@ -58,13 +57,10 @@ export const GET = async (req: any) => {
     await connect();
     // const session = await getServerSession();
     const session = await getServerSession();
-    console.log("session on api route", session);
+
     const user = await User.findOne({ email: session?.user?.email });
-    // console.log("user session", session);
-    // console.log("user >>>>>>>>", user);
+
     const data = await Blog.find({ writtenBy: user._id }).populate("writtenBy");
-    // const data = await Blog.find({}).populate("writtenBy");
-    console.log("data below api >>>>>>>>>....", data.length);
 
     return NextResponse.json({ message: "ok", data }, { status: 200 });
   } catch (error) {
@@ -73,22 +69,15 @@ export const GET = async (req: any) => {
   }
 };
 export const PATCH = async (request: any) => {
-  const {
-    title,
-    html,
-    stats,
- 
-    blogStatus,
-    blogId,
-    tableOfContentsId,
-  
-  } = await request.json();
+  const { title, html, stats, blogStatus, blogId, tableOfContentsId, seo } =
+    await request.json();
   await connect();
+
   console.log("ids", tableOfContentsId);
   console.log("modified html", html);
   const data = await Blog.findOneAndUpdate(
     { _id: blogId },
-    { html, stats, title, blogStatus, tableOfContentsId, },
+    { html, stats, title, blogStatus, tableOfContentsId,seo },
     { new: true }
   );
   console.log("data below api >>>>>>>>>....");

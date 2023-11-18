@@ -11,6 +11,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  reactStrictMode: false,
 
   // dev
   // assetPrefix: "http://localhost:3000/",
@@ -26,21 +27,10 @@ const nextConfig = {
   //   ],
   // },
   // prod
-  assetPrefix: "https://nimble-figolla-41e82f.netlify.app/",
-  images: {
-    domains: ["https://nimble-figolla-41e82f.netlify.app/"],
-    path: `${"https://nimble-figolla-41e82f.netlify.app"}/_next/image`,
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-    ],
-  },
-  // assetPrefix: "https://powerblog-39d6a2c7be5e.herokuapp.com/",
+  // assetPrefix: "https://nimble-figolla-41e82f.netlify.app/",
   // images: {
-  //   domains: ["https://powerblog-39d6a2c7be5e.herokuapp.com/"],
-  //   path: `${"https://powerblog-39d6a2c7be5e.herokuapp.com"}/_next/image`,
+  //   domains: ["https://nimble-figolla-41e82f.netlify.app/"],
+  //   path: `${"https://nimble-figolla-41e82f.netlify.app"}/_next/image`,
   //   remotePatterns: [
   //     {
   //       protocol: "https",
@@ -48,6 +38,22 @@ const nextConfig = {
   //     },
   //   ],
   // },
+
+
+  // prod heroku
+
+
+  assetPrefix: "https://powerblog-39d6a2c7be5e.herokuapp.com/",
+  images: {
+    domains: ["https://powerblog-39d6a2c7be5e.herokuapp.com/"],
+    path: `${"https://powerblog-39d6a2c7be5e.herokuapp.com"}/_next/image`,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
   // async rewrites() {
   //   return [
   //     // Rewrite assets to use the correct absolute path

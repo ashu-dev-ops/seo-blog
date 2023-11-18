@@ -35,6 +35,8 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .se-btn-tray {
@@ -100,3 +102,15 @@ body {
 /* .floating-link {
   color: "gray";
 } */
+a {
+  text-decoration: none;
+  color: black;
+}
+.active-link-dashboard {
+  background-color: aquamarine;
+  padding: 1rem;
+  color:white
+}
+.link-dashboard {
+  padding: 1rem;
+}

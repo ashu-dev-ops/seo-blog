@@ -1,6 +1,6 @@
 import React from "react";
 import { headers } from "next/headers";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Button } from "@mui/material";
 import Link from "next/link";
 
 const getData = async () => {
@@ -71,22 +71,50 @@ export default async function page() {
         alignItems: "center",
         // justifyContent: "center",
         minHeight: "100vh",
-        backgroundColor: "#E2E8F0",
-        paddingTop: "20vh",
+
+        paddingTop: "0vh",
       }}
     >
-      <Typography variant="h2" textAlign="center" mb={3}>
-        All Blogs
-      </Typography>
-
       <Stack direction="column" gap={3}>
+        <Box
+          sx={{
+            minWidth: "700px",
+            maxWidth: "700px",
+            display: "flex",
+            justifyContent: "space-between",
+            backgroundColor: "white",
+            borderRadius: "12px",
+            padding: "1rem",
+          }}
+        >
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            width="100%"
+          >
+            <Typography variant="h4" fontWeight={900} color="GrayTexts">
+              Posts
+            </Typography>
+            <Stack direction="row" gap={1}>
+              <Link href="/user/editor">
+                <Button variant="contained">Write New Post</Button>
+              </Link>
+              <Link href="/blogs?userId=65432951a61c6ebefd62f20f">
+                <Button variant="outlined">View Blog</Button>
+              </Link>
+            </Stack>
+          </Stack>
+        </Box>
+
         {data.data.map((blog: any, idx: Number) => {
           return (
             <Box
-              key={idx}
+              key={idx.toString()}
               component={Link}
               sx={{
                 minWidth: "600px",
+                maxWidth: "700px",
                 display: "flex",
                 justifyContent: "space-between",
                 backgroundColor: "white",
@@ -102,12 +130,10 @@ export default async function page() {
             >
               <Stack>
                 <Typography variant="h5" color="GrayTexts">
-                  {" "}
                   {blog.title}
                 </Typography>
 
-                <Typography variant="body" color="gray">
-                  {" "}
+                <Typography variant="body2" color="GrayTexts">
                   By {blog.writtenBy.email}
                 </Typography>
               </Stack>
@@ -116,13 +142,16 @@ export default async function page() {
                 sx={{
                   backgroundColor:
                     blog.blogStatus === "Draft" ? "#BEE3F8" : "#C6F6D5",
-                  borderRadius: "10px",
+                  borderRadius: "4px",
                   color: "GrayText",
-                  padding: "0.3rem",
+                  padding: "0.3rem 1rem",
                   height: "25px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {blog.blogStatus}
+                <Typography variant="subtitle1">{blog.blogStatus}</Typography>
               </Box>
             </Box>
           );

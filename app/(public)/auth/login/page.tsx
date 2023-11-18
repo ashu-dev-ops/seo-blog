@@ -17,7 +17,7 @@ const Login = () => {
     // console.log(sessionStatus)
     console.log("on login>>>>>>>>>>");
     if (sessionStatus === "authenticated") {
-      router.replace("/user/editor");
+      router.replace("/user/dashboard");
     }
     setIsloading(false);
   }, [sessionStatus, router]);

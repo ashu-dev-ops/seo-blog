@@ -150,7 +150,7 @@ export default function Navbar() {
                 open={open}
                 onClose={handleClose}
               >
-                <Link href="/user/all-blogs">
+                <Link href="/user/dashboard">
                   <MenuItem
                     onClick={handleClose}
                     disableRipple

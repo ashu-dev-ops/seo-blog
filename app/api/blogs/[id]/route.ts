@@ -14,6 +14,7 @@ export const GET = async (request: Request) => {
   //   console.log("data below api >>>>>>>>>....");
   //   // console.log(data);
   //   const jsonData = JSON.stringify(data);
+  console.log("what i am getting from db>>>>>>>>>", data);
   return NextResponse.json(
     { message: "ok", data: data[0] },
     {
