@@ -9,7 +9,6 @@ import {
   InputAdornment,
 } from "@mui/material";
 import TagsCurdModel from "./TagsCurdModel";
-import axios from "axios";
 import { useUserContext } from "../store/editorContext";
 export default function AdvanceSettingsSection() {
   const {
@@ -20,27 +19,36 @@ export default function AdvanceSettingsSection() {
     canonical,
     metaDescription,
     metaTitle,
+    slugT
   } = useUserContext();
   const [showAdvance, setShowAdvance] = useState(false);
   const [isAddMetaDescriptionOpen, setIsAddMetaDescriptionOpen] =
     useState(false);
   const [isAddCustomSlug, setIsAddCustomSlug] = useState(false);
   const [isAddCononical, setIsAddCoconical] = useState(false);
-  const [metaTitleT, setMetaTitle] = useState(metaTitle);
-  const [metaDescriptionT, setMetaDesc] = useState(metaDescription);
-  const [cononical, setCononical] = useState(canonical);
-  const [slugT, setSlug] = useState(slug);
-  const [finalSlug, setFinalSlug] = useState(slugT);
-  function processSlug(inputText: any) {
-    // Remove special characters and spaces
-    const processedText = inputText
-      .replace(/[^\w\s]/gi, "")
-      .replace(/\s+/g, " ");
+  const [metaTitleT, setMetaTitle] = useState<string>(metaTitle || " ");
 
-    // Convert to lowercase and replace spaces with hyphens
-    const finalText = processedText.toLowerCase().replace(/\s+/g, "-");
-    setFinalSlug(finalText);
-  }
+  const [metaDescriptionT, setMetaDesc] = useState<string>(
+    metaDescription || " "
+  );
+  const [cononical, setCononical] = useState(canonical);
+
+  // const [slugT, setSlug] = useState(slug);
+  // const [finalSlug, setFinalSlug] = useState(slug);
+  // function processSlug(inputText: any) {
+  //   // Remove special characters and spaces
+  //   const processedText = inputText
+  //     // .replace(/[^\w\s-]/gi, "")
+  //     // .replace(/[^\w\s-]/gi, "")
+  //     .replace(/[^\w\s\-]/gi, "")
+  //     .replace(/\s+/g, " ");
+
+  //   // Convert to lowercase and replace spaces with hyphens
+  //   const finalText = processedText.toLowerCase().replace(/\s+/g, "-");
+  //   setFinalSlug(finalText);
+  // }
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>", slug);
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>T", slugT);
   const handleMetaTagsT = async () => {
     handleMetaTags({
       metaTitleT,
@@ -137,22 +145,22 @@ export default function AdvanceSettingsSection() {
           label="Enter your slug"
           id="outlined-start-adornment"
           fullWidth
-          value={slugT}
+          value={slug}
           onChange={(e) => {
-            setSlug(e.target.value);
-            processSlug(e.target.value);
+            handleSlug(e.target.value);
+           
           }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                wwww.sheetwa.com/blogs/
+                wwww.example.com/blogs/
               </InputAdornment>
             ),
           }}
         />
         <Stack direction="row" gap={2} mt={1} mr={1}>
           <Typography fontWeight="bold"> url</Typography>
-          <Typography> wwww.sheetwa.com/blogs/{finalSlug}</Typography>
+          <Typography> wwww.example.com/blogs/{slugT}</Typography>
         </Stack>
       </TagsCurdModel>
       <TagsCurdModel

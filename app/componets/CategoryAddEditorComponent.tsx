@@ -5,7 +5,7 @@ import axios from "axios";
 import { useUserContext } from "../store/editorContext";
 const filter = createFilterOptions<any>();
 export default function CategoryAddEditor() {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState<any[]>([]);
 
   const { handleCategory, category } = useUserContext();
   const [value, setValue] = React.useState(
@@ -13,11 +13,11 @@ export default function CategoryAddEditor() {
   );
   // const [selectedData, setSelectedData] = useState({});
   const getAllTags = async () => {
-    const data = await axios.get(`${process.env.BASE_URL}/api/blogs/category`);
+    const data = await axios.get(`/api/blogs/category`);
     console.log("remove on dev checking>>>>>>>>>>>>>>", data);
     setRows(data.data.data);
   };
-  const handleAdd = async (selectedData) => {
+  const handleAdd = async (selectedData: any) => {
     await axios
       .post(`/api/blogs/category`, {
         newTag: selectedData,

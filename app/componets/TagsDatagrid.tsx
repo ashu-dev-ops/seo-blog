@@ -100,9 +100,7 @@ export default function TagsDatagrid() {
     console.log("data to delete ", selectedData);
 
     const data = await axios
-      .delete(
-        `/api/blogs/tags?tagID=${selectedData._id}`
-      )
+      .delete(`/api/blogs/tags?tagID=${selectedData._id}`)
       .then(() => {
         const newRows = rows.filter((i) => i._id !== selectedData._id);
         setRows(newRows);
@@ -141,7 +139,7 @@ export default function TagsDatagrid() {
   };
   const handleDeleteMultiple = async () => {};
   const getAllTags = async () => {
-    const data = await axios.get(`${process.env.BASE_URL}/api/blogs/tags`);
+    const data = await axios.get(`/api/blogs/tags`);
     console.log("remove on dev checking>>>>>>>>>>>>>>", data);
     setRows(data.data.data);
   };
@@ -149,25 +147,25 @@ export default function TagsDatagrid() {
     getAllTags();
     // dispatch(getAllTags());
   }, []);
-  if (rows.length === 0) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          // justifyContent: "center",
-          minHeight: "100vh",
-          backgroundColor: "#E2E8F0",
-          paddingTop: "20vh",
-        }}
-      >
-        <Typography variant="h2" textAlign="center" mb={3}>
-          No Tags Found
-        </Typography>
-      </Box>
-    );
-  }
+  // if (rows.length === 0) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         display: "flex",
+  //         flexDirection: "column",
+  //         alignItems: "center",
+  //         // justifyContent: "center",
+  //         minHeight: "100vh",
+  //         backgroundColor: "#E2E8F0",
+  //         paddingTop: "20vh",
+  //       }}
+  //     >
+  //       <Typography variant="h2" textAlign="center" mb={3}>
+  //         No Tags Found
+  //       </Typography>
+  //     </Box>
+  //   );
+  // }
   return (
     <>
       <div style={{ height: 400, width: "700px" }}>
@@ -194,23 +192,42 @@ export default function TagsDatagrid() {
               Delete
             </Button>
           </Stack>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            getRowId={(row) => row._id}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
-            checkboxSelection
-            sx={{
-              "&, [class^=MuiDataGrid]": { border: "none" },
-              minHeight: "400px",
-              overflow: "hidden",
-            }}
-          />
+          {rows.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+
+                justifyContent: "center",
+                minHeight: "400px",
+                // backgroundColor: "#E2E8F0",
+                // paddingTop: "20vh",
+              }}
+            >
+              <Typography variant="h2" textAlign="center" mb={3}>
+                No Tags Found
+              </Typography>
+            </Box>
+          ) : (
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              getRowId={(row) => row._id}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 5 },
+                },
+              }}
+              pageSizeOptions={[5, 10]}
+              checkboxSelection
+              sx={{
+                "&, [class^=MuiDataGrid]": { border: "none" },
+                minHeight: "400px",
+                overflow: "hidden",
+              }}
+            />
+          )}
         </DasboarCardStyle>
       </div>
       {/* ADD */}
@@ -223,7 +240,7 @@ export default function TagsDatagrid() {
       >
         <TextField
           id="outlined-basic"
-          label="Outlined"
+          label="Category Name"
           variant="outlined"
           fullWidth
           size="small"
@@ -241,7 +258,7 @@ export default function TagsDatagrid() {
       >
         <TextField
           id="outlined-basic"
-          label="Outlined"
+          label="Category Name"
           variant="outlined"
           fullWidth
           size="small"

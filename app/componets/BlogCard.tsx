@@ -8,11 +8,12 @@ const BlogCard: React.FC<BlogCardProps> = ({
   blogId,
   readTime,
   thumbnail,
+  slug
 }) => {
   return (
     <Box
       component={Link}
-      href={`/blogs/${blogId}`}
+      href={`/blogs/${slug}-${blogId}`}
       sx={{ textDecoration: "none" }}
     >
       <Box

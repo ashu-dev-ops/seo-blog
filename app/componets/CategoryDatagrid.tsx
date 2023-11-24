@@ -198,7 +198,7 @@ export default function CategoryDatagrid() {
       >
         <TextField
           id="outlined-basic"
-          label="Outlined"
+          label="Enter tag name"
           variant="outlined"
           fullWidth
           size="small"
@@ -216,7 +216,7 @@ export default function CategoryDatagrid() {
       >
         <TextField
           id="outlined-basic"
-          label="Outlined"
+          label="Enter tag name"
           variant="outlined"
           fullWidth
           size="small"

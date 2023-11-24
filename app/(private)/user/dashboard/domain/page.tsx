@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Stack, Typography, Button, TextField } from "@mui/material";
+import DomainInputField from "@/app/componets/DomainInputField";
 export default function Domain() {
   return (
     <Box
@@ -48,22 +49,7 @@ export default function Domain() {
             padding: "1rem",
           }}
         >
-          <Stack gap={1} width="100%">
-            <TextField
-              id="outlined-basic"
-              label="Enter your domain"
-              placeholder="https://power-blog.com"
-              variant="outlined"
-              size="small"
-              fullWidth
-              type="text"
-              focused
-            />
-            <Stack direction="row" gap={1}></Stack>
-            <Button sx={{ width: "fit-content" }} variant="contained">
-              Add Domain
-            </Button>
-          </Stack>
+         <DomainInputField/>
         </Box>
       </Stack>
     </Box>

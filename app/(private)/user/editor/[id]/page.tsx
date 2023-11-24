@@ -22,6 +22,10 @@ import CategoryAddEditor from "@/app/componets/CategoryAddEditorComponent";
 import TagsAddEditor from "@/app/componets/TagsAddEditor";
 import AdvanceSettingsSection from "@/app/componets/AdvanceSettingsSection";
 import { useUserContext } from "@/app/store/editorContext";
+import BlogsStatus from "@/app/componets/BlogsStatus";
+import BlogsRightStatsBar from "@/app/componets/BlogsRightStatsBar";
+import Editor from "@/app/componets/Editor";
+import { handleEditorChange } from "@/app/utils/utility";
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
 });
@@ -44,10 +48,10 @@ export default function Page({ params }: any) {
   const { data: session }: any = useSession();
 
   const router = useRouter();
-  const [noOfHeading, setNoOfHeading] = useState("");
-  const [noOfSubHeading, setNoSubOfHeading] = useState("");
+  const [noOfHeading, setNoOfHeading] = useState(0);
+  const [noOfSubHeading, setNoSubOfHeading] = useState(0);
   const [noOfWords, setNoOfWords] = useState(0);
-  const [noOfWordsInTitle, setNoWordsInTitle] = useState("");
+  const [noOfWordsInTitle, setNoWordsInTitle] = useState(0);
   const [noOfImage, setNoImages] = useState(0);
   const [noOfLinks, setNoLinks] = useState(0);
   const [title, setTitle] = useState("");
@@ -98,29 +102,16 @@ export default function Page({ params }: any) {
     editor.current = sunEditor;
   };
   function handleChange(content: any) {
-    console.log("print content >>>>>>>>>>>.", editor.current.getContents());
-    // console.log(content); //Get Content Inside Editor
-    // console.log(editor.current.getText());
-
-    const words = editor.current.getText().split(" ");
-    console.log(`Content words should be > 800. Current: 2 ${words.length}`);
-
-    // Create a temporary div element to parse the HTML string
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = content;
-
-    // Use querySelectorAll to select all <h2> elements
-    const h2Elements = tempDiv.querySelectorAll("h2");
-    const h1Elements = tempDiv.querySelectorAll("h1");
-    const links = tempDiv.querySelectorAll("a");
-
-    setNoSubOfHeading(h2Elements.length);
-    setNoOfHeading(h1Elements.length);
-    setNoImages(editor.current.getFilesInfo("image").length);
-    setNoOfWords(words.length);
-    setNoLinks(links.length);
+    handleEditorChange(
+      content,
+      editor,
+      setNoSubOfHeading,
+      setNoOfHeading,
+      setNoImages,
+      setNoOfWords,
+      setNoLinks
+    );
   }
-
   function onImageUploadBefore() {
     return (files, _info, uploadHandler) => {
       (async () => {
@@ -297,122 +288,14 @@ export default function Page({ params }: any) {
           backgroundColor: "#E2E8F0",
         }}
       >
-        <Box
-          sx={{
-            // postion: "fixed !important",
-            position: " fixed",
-            maxWidth: "250px",
-            width: "20%",
-            top: "120px",
-            left: "5px",
-            // color: "white",
-            borderRadius: "16px",
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            backgroundColor: "white",
-            gap: 1,
-          }}
-        >
-          <Typography fontWeight="bolder">SEO Best Practises</Typography>
-          <Stack direction="row" gap={1}>
-            <Box>
-              {" "}
-              {noOfWordsInTitle <= 12 && noOfWordsInTitle >= 8 ? (
-                <DoneIcon sx={{ color: "green" }} />
-              ) : (
-                <CloseIcon sx={{ color: "red" }} />
-              )}
-            </Box>
-            <Box>
-              <Typography variant="body2" color="GrayText">
-                Title words should be 7 - 12. <br></br> Current:{" "}
-                {`${noOfWordsInTitle ? noOfWordsInTitle : 0}`}
-              </Typography>
-            </Box>
-          </Stack>
-          {/*  */}
-          <Stack direction="row" gap={1}>
-            <Box>
-              {" "}
-              {noOfWords >= 500 ? (
-                <DoneIcon sx={{ color: "green" }} />
-              ) : (
-                <CloseIcon sx={{ color: "red" }} />
-              )}
-            </Box>
-            <Box>
-              <Typography variant="body2" color="GrayText" lineHeight="19px">
-                Content words should be &gt; 500. <br></br> Current:
-                {`${noOfWords ? noOfWords : 0}`}
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" gap={1}>
-            <Box>
-              {" "}
-              {noOfImage >= 2 ? (
-                <DoneIcon sx={{ color: "green" }} />
-              ) : (
-                <CloseIcon sx={{ color: "red" }} />
-              )}
-            </Box>
-            <Box>
-              <Typography variant="body2" color="GrayText">
-                Images should be at least 1 <br></br> Current:{" "}
-                {`${noOfImage ? noOfImage : 0}`}
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" gap={1}>
-            <Box>
-              {" "}
-              {noOfHeading >= 2 ? (
-                <DoneIcon sx={{ color: "green" }} />
-              ) : (
-                <CloseIcon sx={{ color: "red" }} />
-              )}
-            </Box>
-            <Box>
-              <Typography variant="body2" color="GrayText">
-                Headings(h2) should be at least 2.
-                <br></br> Current: {`${noOfHeading ? noOfHeading : 0}`}
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" gap={1}>
-            <Box>
-              {" "}
-              {noOfSubHeading >= 1 ? (
-                <DoneIcon sx={{ color: "green" }} />
-              ) : (
-                <CloseIcon sx={{ color: "red" }} />
-              )}
-            </Box>
-            <Box>
-              <Typography variant="body2" color="GrayText">
-                Subheadings(h3) should be at least 1. <br></br> Current:{" "}
-                {`${noOfSubHeading ? noOfSubHeading : 0}`}
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" gap={1}>
-            <Box>
-              {" "}
-              {noOfLinks >= 2 ? (
-                <DoneIcon sx={{ color: "green" }} />
-              ) : (
-                <CloseIcon sx={{ color: "red" }} />
-              )}
-            </Box>
-            <Box>
-              <Typography variant="body2" color="GrayText">
-                Internal links should be atleast 1.<br></br> Current:{" "}
-                {`${noOfLinks ? noOfLinks : 0}`}
-              </Typography>
-            </Box>
-          </Stack>
-        </Box>
+        <BlogsStatus
+          noOfWordsInTitle={noOfWordsInTitle}
+          noOfWords={noOfWords}
+          noOfImage={noOfImage}
+          noOfHeading={noOfHeading}
+          noOfLinks={noOfLinks}
+          noOfSubHeading={noOfSubHeading}
+        />
         <Box
           sx={{
             maxWidth: "700px",
@@ -450,145 +333,20 @@ export default function Page({ params }: any) {
               },
             }}
           ></TextField>
-          <SunEditor
-            getSunEditorInstance={getSunEditorInstance}
-            onChange={handleChange}
-            onImageUploadBefore={onImageUploadBefore()}
-            minHeight="400px"
-            height="100%"
-            defaultValue={editorHtml}
-            setOptions={{
-              formats: [
-                {
-                  tag: "h2", // Tag name
-                  name: "Heading(h2)", // default: tag name
-                  command: "replace", // default: "replace"
-                  class: "", // Class names must always begin with "se__format(replace, range, free)_"
-                },
-                {
-                  tag: "h3", // Tag name
-                  name: "Sub heading(h3)", // default: tag name
-                  command: "replace", // default: "replace"
-                  class: "", // Class names must always begin with "se__format(replace, range, free)_"
-                },
-                {
-                  tag: "p", // Tag name
-                  name: "Paragraph(p)", // default: tag name
-                  command: "replace", // default: "replace"
-                  class: "", // Class names must always begin with "se__format(replace, range, free)_"
-                },
 
-                "blockquote",
-                "pre",
-              ],
-              // mediaAutoSelect: false,
-              buttonList: [
-                // ["font", "fontSize", "formatBlock"],
-                ["formatBlock", "bold", "underline", "list"],
-                ["link", "image", "video" /** ,'math' */], // You must add the 'katex' library at options to use the 'math' plugin.
-                // ["paragraphStyle", "blockquote"],
-                ["align", "codeView"],
-                ["undo", "redo", "removeFormat"],
-              ],
-            }}
+          <Editor
+            getSunEditorInstance={getSunEditorInstance}
+            handleChange={handleChange}
+            onImageUploadBefore={onImageUploadBefore}
+            defaultValue={editorHtml}
           />
         </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            right: "3px",
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            top: "110px",
-            gap: 1,
-            // minWidth:""
-            width: "20%",
-          }}
-        >
-          <Stack direction="row" gap={1}>
-            <Button
-              variant="outlined"
-              fullWidth={true}
-              onClick={handleDraft}
-              startIcon={<SaveIcon />}
-            >
-              {" "}
-              Save
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth={true}
-              onClick={handlePublish}
-              startIcon={<PublishedWithChangesIcon />}
-            >
-              Publish
-            </Button>
-          </Stack>
-          <Box
-            sx={{
-              borderRadius: "10px",
-              padding: "1rem",
-              display: "flex",
-              flexDirection: "column",
-              backgroundColor: "white",
-              gap: 1,
-            }}
-          >
-            <Stack
-              justifyContent="space-between"
-              direction="row"
-              alignItems="center"
-            >
-              <Typography variant="body2">Status:</Typography>
-              {blogStatus === "Draft" ? (
-                <Box
-                  padding="0.5rem"
-                  sx={{
-                    backgroundColor: "#BEE3F8",
-                    borderRadius: "10px",
-                    color: "GrayText",
-                  }}
-                >
-                  Draft
-                </Box>
-              ) : (
-                <Box
-                  padding="0.5rem"
-                  sx={{
-                    backgroundColor: "rgb(198,246,213)",
-                    borderRadius: "10px",
-                    color: "GrayText",
-                  }}
-                >
-                  Publish
-                </Box>
-              )}
-            </Stack>
-            <Stack justifyContent="space-between" direction="row">
-              <Typography variant="body2">Read time:</Typography>
-              <Typography variant="body2" color="GrayText">
-                {`${Math.ceil(noOfWords / 200)} minute(s)`}
-              </Typography>
-            </Stack>
-          </Box>
-          <Box
-            sx={{
-              borderRadius: "10px",
-              padding: "1rem",
-              display: "flex",
-              flexDirection: "column",
-              backgroundColor: "white",
-              gap: 1,
-            }}
-          >
-            <Typography>Category</Typography>
-            <CategoryAddEditor />
-            <Typography>Tags</Typography>
-            <TagsAddEditor />
-          </Box>
-          <AdvanceSettingsSection />
-        </Box>
+        <BlogsRightStatsBar
+          noOfWords={noOfWords}
+          handleDraft={handleDraft}
+          handlePublish={handlePublish}
+          blogStatus={blogStatus}
+        />
       </Box>
     </>
   );

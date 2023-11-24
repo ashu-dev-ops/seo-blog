@@ -13,7 +13,7 @@ type UserAction =
   | { type: "SET_CONONICAL"; payload: string }
   | { type: "SET_SLUG"; payload: string }
   | { type: "SET_CATEGORY"; payload: string }
-  | { type: "SET_TAGS"; payload:any };
+  | { type: "SET_TAGS"; payload: any };
 const userReducer = (state: UserState, action: UserAction) => {
   if (action.type === "SET_META_TAGS") {
     return {
@@ -27,7 +27,15 @@ const userReducer = (state: UserState, action: UserAction) => {
     return { ...state, canonical: action.payload };
   }
   if (action.type === "SET_SLUG") {
-    return { ...state, slug: action.payload };
+    const processedText = action.payload
+      // .replace(/[^\w\s-]/gi, "")
+      // .replace(/[^\w\s-]/gi, "")
+      .replace(/[^\w\s\-]/gi, "")
+      .replace(/\s+/g, " ");
+
+    // Convert to lowercase and replace spaces with hyphens
+    const finalText = processedText.toLowerCase().replace(/\s+/g, "-");
+    return { ...state, slug: action.payload, slugT: finalText };
   }
   if (action.type === "SET_TAGS") {
     return { ...state, tags: action.payload };

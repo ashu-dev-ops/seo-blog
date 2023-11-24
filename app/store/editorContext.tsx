@@ -8,8 +8,16 @@ interface UserState {
   canonical?: string;
   slug?: string;
   logIn?: boolean;
-  tags?: [];
-  category?: [];
+  tags?: any[];
+  category?: any[];
+  handleCononical: (value: string) => void;
+  handleSlug: (value: string) => void;
+  handleTags: (value: string) => void;
+  handleCategory: (value: string) => void;
+  handleMetaTags: (value: {
+    metaTitle: string;
+    metaDescription: string;
+  }) => void;
 }
 
 const initialState = {
@@ -19,6 +27,8 @@ const initialState = {
   slug: "",
   tags: [],
   category: [],
+  slugT:'',
+  
 };
 const UserContext = createContext<UserState>(initialState);
 export const UserContextProvider = ({
@@ -41,6 +51,7 @@ export const UserContextProvider = ({
     });
   };
   const handleSlug = (value: string) => {
+    console.log(value);
     dispatch({
       type: "SET_SLUG",
       payload: value,

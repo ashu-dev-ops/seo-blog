@@ -18,6 +18,7 @@ const TagSchema = new Schema(
       default: Date.now,
     },
     username: String,
+  
   }
   // { _id: false }
 );
@@ -64,6 +65,7 @@ const UserSchema = new Schema(
       type: [CategorySchema],
       default: [],
     },
+    domain: String,
   },
   { timestamps: true }
 );
