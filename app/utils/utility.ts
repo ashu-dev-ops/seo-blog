@@ -77,7 +77,7 @@ type HandelSaveFunction = (
   category: any,
   tags: any
 ) => void;
-e const handelDataToSave: HandelSaveFunction = (
+const handelDataToSave: HandelSaveFunction = (
   type,
   setIsLoading,
   editor,

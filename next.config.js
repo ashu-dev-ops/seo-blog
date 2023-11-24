@@ -41,17 +41,17 @@ const nextConfig = {
 
   // prod heroku
 
-  // assetPrefix: "https://powerblog-39d6a2c7be5e.herokuapp.com/",
-  // images: {
-  //   domains: ["https://powerblog-39d6a2c7be5e.herokuapp.com/"],
-  //   path: `${"https://powerblog-39d6a2c7be5e.herokuapp.com"}/_next/image`,
-  //   remotePatterns: [
-  //     {
-  //       protocol: "https",
-  //       hostname: "**",
-  //     },
-  //   ],
-  // },
+  assetPrefix: "https://powerblog-39d6a2c7be5e.herokuapp.com/",
+  images: {
+    domains: ["https://powerblog-39d6a2c7be5e.herokuapp.com/"],
+    path: `${"https://powerblog-39d6a2c7be5e.herokuapp.com"}/_next/image`,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;
