@@ -10,7 +10,7 @@ import { Box, Stack, Typography, Container, Grid } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import BlogCard from "@/app/componets/BlogCard";
-import { useBlogsVisitorStore } from "@/app/store/zustand/store";
+// import { useBlogsVisitorStore } from "@/app/store/zustand/store";
 // import { Container } from "postcss";
 const getData = async (params: any) => {
   try {
@@ -27,8 +27,8 @@ const getData = async (params: any) => {
 export default async function page({ searchParams }: any) {
   console.log("search params >>>>>>>>>>", searchParams);
   let data = await getData(searchParams.userId);
-  const setBlogOwnerId = useBlogsVisitorStore((state:any) => state.setBlogOwnerId);
-  setBlogOwnerId(data)
+  // const setBlogOwnerId = useBlogsVisitorStore((state:any) => state.setBlogOwnerId);
+  // setBlogOwnerId(data)
   console.log(data);
   const featured = data.data.slice(-1);
   console.log("featured>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", featured);
