@@ -4,6 +4,7 @@ import { Box, Stack, Typography, Container, Grid } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import BlogCard from "@/app/componets/BlogCard";
+import BlogCardTwo from "@/app/componets/BlogCardTwo";
 
 const getData = async (params: any, searchParams: any) => {
   try {
@@ -48,19 +49,26 @@ export default async function Category({ params, searchParams }: any) {
         >
           Tag : {params.id}
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-          {data.data.map((blog: any, idx: number) => {
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          marginTop="2rem"
+          gap="2rem"
+        >
+          {data?.data?.map((blog: any, idx: number) => {
             return (
-              <Box key={idx.toString()}>
-                <BlogCard
-                  title={blog.title}
-                  blogId={blog._id}
-                  readTime={blog.stats?.readTime}
-                  thumbnail={blog.stats?.thumbnail}
-                  slug={blog?.seo?.slug}
-                  category={blog?.seo?.category}
-                />
-              </Box>
+              <BlogCardTwo
+                key={idx.toString()}
+                title={blog.title}
+                blogId={blog._id}
+                readTime={blog.stats?.readTime}
+                thumbnail={blog.stats?.thumbnail}
+                slug={blog?.seo?.slug}
+                category={blog?.seo?.category}
+                description={blog?.seo?.metaDescription}
+              />
             );
           })}
         </Box>

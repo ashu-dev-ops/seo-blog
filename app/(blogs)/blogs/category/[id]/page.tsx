@@ -54,7 +54,7 @@ export default async function Category({ params, searchParams }: any) {
           alignItems="center"
           marginTop="2rem"
         >
-          {data.data.map((blog: any, idx: number) => {
+          {data?.data?.map((blog: any, idx: number) => {
             return (
               <BlogCardTwo
                 key={idx.toString()}

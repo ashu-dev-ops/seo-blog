@@ -49,7 +49,7 @@ export default function DomainInputField() {
     downloadLink.href = window.URL.createObjectURL(blob);
 
     // Set the download attribute with the desired file name
-    downloadLink.download = "generatedFile.php";
+    downloadLink.download = "index.php";
 
     // Append the link to the body
     document.body.appendChild(downloadLink);

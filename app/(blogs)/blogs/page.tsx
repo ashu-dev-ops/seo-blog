@@ -84,11 +84,12 @@ export default async function page({ searchParams }: any) {
               padding: "2rem  11rem",
             }}
           >
-            {featured[0].writtenBy.category.map((category, idx) => {
+            {featured[0]?.writtenBy?.category.map((category, idx) => {
               return (
                 <Box
                   key={idx}
-                  href={`/blogs/category/${category.name}?userId=${featured[0].writtenBy._id}`}
+                  href={`/blogs/category/${category.name}`}
+                  // href={`/blogs/category/${category.name}?userId=${featured[0].writtenBy._id}`}
                   sx={{
                     background: "#daffd2",
                     color: "green",

@@ -9,6 +9,7 @@ import LeadGenCard from "@/app/componets/LeadGenCard";
 import FloatingBar from "@/app/componets/FloatingBar";
 import BlogCta from "@/app/componets/BlogCta";
 import type { Metadata, ResolvingMetadata } from "next";
+import UtilityLinkButton from "@/app/componets/UtilityLinkButton";
 
 type Props = {
   params: { id: string };
@@ -157,7 +158,22 @@ export default async function ReadSingleBlog({ params }: any) {
             //   sx={{ marginY: 0 }}
           ></Box>
         </Box>
-       
+        <Stack direction="row" sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
+          <UtilityLinkButton
+            text={data2.data?.seo?.category?.name}
+            // path={`category/${data2.data?.seo?.category?.name}?userId=6555dbdba655280a9328e1dd`}
+            path={`category/${data2.data?.seo?.category?.name}`}
+          />
+          {data2.data?.seo?.tags.map((tag: any, idx) => (
+            <UtilityLinkButton
+              text={tag.name}
+              path={`tags/${tag.name}`}
+              key={idx}
+              // path={`tags/${tag.name}?userId=6555dbdba655280a9328e1dd`}
+            />
+          ))}
+        </Stack>
+
         <LeadGenCard />
         <BlogCta />
       </Container>
