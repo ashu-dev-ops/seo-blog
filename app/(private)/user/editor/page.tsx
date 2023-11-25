@@ -261,7 +261,9 @@ export default function Page() {
       console.log(error);
     }
   };
-
+  useEffect(() => {
+    resetEditorContext();
+  }, []);
   if (isLoading) {
     return (
       <Box
@@ -278,18 +280,7 @@ export default function Page() {
     );
   }
 
-  useEffect(() => {
-    resetEditorContext();
-    console.log(
-      "check if values are reset",
-      metaTitle,
-      metaDescription,
-      canonical,
-      slug,
-      category,
-      tags
-    );
-  }, []);
+ 
   return (
     <>
       <Box
