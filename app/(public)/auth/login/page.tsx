@@ -3,13 +3,15 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Button, Box, Card, CircularProgress } from "@mui/material";
+import { Button, Box, Card, CircularProgress, TextField } from "@mui/material";
 
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [isEmail, setIsEmail] = useState(false);
   const [isLoading, setIsloading] = useState(true);
+  const [username, setUsername] = useState("");
+  const [password, setPassWord] = useState("");
   //   const session = useSession();
   const { data: session, status: sessionStatus } = useSession();
 
@@ -29,8 +31,8 @@ const Login = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const email = e.target[0].value;
-    const password = e.target[1].value;
+    const email = username;
+    const password = password;
 
     if (!isValidEmail(email)) {
       setError("Email is invalid");
@@ -96,7 +98,7 @@ const Login = () => {
           <h1 className="text-4xl  text-center font-semibold mb-8 ">Login</h1>
           {isEmail ? (
             <form onSubmit={handleSubmit}>
-              <input
+              {/* <input
                 type="text"
                 className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
                 placeholder="Email"
@@ -107,14 +109,74 @@ const Login = () => {
                 className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
                 placeholder="Password"
                 required
-              />
-              <button
+              /> */}
+              <Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    my: 1,
+                    backgroundColor: "#f6f7f8",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <TextField
+                    label="Email"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    fullWidth
+                    variant="filled"
+                    InputProps={{
+                      style: {
+                        backgroundColor: "transparent",
+                      },
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: {
+                        color: "#919EAB",
+                      },
+                    }}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    width: "100%",
+                    my: 1,
+                    backgroundColor: "#f6f7f8",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <TextField
+                    label="Password"
+                    value={password}
+                    onChange={(e) => setPassWord(e.target.value)}
+                    fullWidth
+                    type="password"
+                    variant="filled"
+                    InputProps={{
+                      style: {
+                        backgroundColor: "transparent",
+                      },
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: {
+                        color: "#919EAB",
+                        marginBottom: "15px",
+                      },
+                    }}
+                  />
+                </Box>
+              </Box>
+              <Button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+                variant="contained"
+                fullWidth
+                // className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
               >
-                {" "}
-                Sign In
-              </button>
+                Login
+              </Button>
               <p className="text-red-600 text-[16px] mb-4">{error && error}</p>
             </form>
           ) : (

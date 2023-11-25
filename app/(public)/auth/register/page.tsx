@@ -3,14 +3,16 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-
+import { Box, TextField, Button } from "@mui/material";
 const Register = () => {
   const [error, setError] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassWord] = useState("");
   const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
-    console.log("running register>>>>>>")
+    console.log("running register>>>>>>");
     if (sessionStatus === "authenticated") {
       router.replace("/user/editor");
     }
@@ -22,8 +24,8 @@ const Register = () => {
   };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const email = e.target[0].value;
-    const password = e.target[1].value;
+    const email = username;
+    const password = password;
 
     if (!isValidEmail(email)) {
       setError("Email is invalid");
@@ -67,11 +69,9 @@ const Register = () => {
     // sessionStatus !== "authenticated" && (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="max-w-sm rounded overflow-hidden shadow-lg p-8 rounded shadow-md w-96">
-        <h1 className="text-4xl text-center font-semibold mb-8 ">
-          Register
-        </h1>
+        <h1 className="text-4xl text-center font-semibold mb-8 ">Register</h1>
         <form onSubmit={handleSubmit}>
-          <input
+          {/* <input
             type="text"
             className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
             placeholder="Email"
@@ -82,14 +82,75 @@ const Register = () => {
             className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
             placeholder="Password"
             required
-          />
-          <button
+          /> */}
+          <Box>
+            <Box
+              sx={{
+                width: "100%",
+                my: 1,
+                backgroundColor: "#f6f7f8",
+                borderRadius: "10px",
+              }}
+            >
+              <TextField
+                label="Email"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                fullWidth
+                variant="filled"
+                InputProps={{
+                  style: {
+                    backgroundColor: "transparent",
+                  },
+                  disableUnderline: true,
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: "#919EAB",
+                  },
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: "100%",
+                my: 1,
+                backgroundColor: "#f6f7f8",
+                borderRadius: "10px",
+              }}
+            >
+              <TextField
+                label="Password"
+                value={password}
+                onChange={(e) => setPassWord(e.target.value)}
+                fullWidth
+                type="password"
+                variant="filled"
+                InputProps={{
+                  style: {
+                    backgroundColor: "transparent",
+                  },
+                  disableUnderline: true,
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: "#919EAB",
+                    marginBottom: "15px",
+                  },
+                }}
+              />
+            </Box>
+          </Box>
+          <Button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+            variant="contained"
+            fullWidth
+            // className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
           >
             {" "}
             Register
-          </button>
+          </Button>
           <p className="text-red-600 text-[16px] mb-4">{error && error}</p>
         </form>
         <div className="text-center text-gray-500 mt-4">- OR -</div>
