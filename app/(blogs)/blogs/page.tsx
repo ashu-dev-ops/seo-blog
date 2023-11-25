@@ -1,17 +1,10 @@
-// import React from "react";
-
-// export default function page({ searchParams }: any) {
-//   console.log(searchParams);
-//   return <div>params page {searchParams.userId}</div>;
-// }
 import React from "react";
-// import { getServerSession } from "next-auth";
+
 import { Box, Stack, Typography, Container, Grid } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import BlogCard from "@/app/componets/BlogCard";
-// import { useBlogsVisitorStore } from "@/app/store/zustand/store";
-// import { Container } from "postcss";
+
 const getData = async (params: any) => {
   try {
     const res = await fetch(`${process.env.BASE_URL}/api/all-blogs/${params}`, {
@@ -82,6 +75,37 @@ export default async function page({ searchParams }: any) {
           Guides and tutorials to transform your business with WhatsApp
           messaging, marketing, automations, and more.
         </Typography>
+        <Box>
+          <Stack
+            direction="row"
+            sx={{
+              width: "100%",
+              justifyContent: "space-between",
+              padding: "2rem  11rem",
+            }}
+          >
+            {featured[0].writtenBy.category.map((category, idx) => {
+              return (
+                <Box
+                  key={idx}
+                  href={`/blogs/category/${category.name}?userId=${featured[0].writtenBy._id}`}
+                  sx={{
+                    background: "#daffd2",
+                    color: "green",
+                    width: "fit-content",
+                    borderRadius: "5px",
+                    padding: "2px 8px",
+                    marginTop: "10px",
+                    cursor: "pointer",
+                  }}
+                  component={Link}
+                >
+                  {category?.name}
+                </Box>
+              );
+            })}
+          </Stack>
+        </Box>
         <Stack
           className="blog-card-image-container"
           sx={{
@@ -141,6 +165,22 @@ export default async function page({ searchParams }: any) {
               gifting with Mandaala’s Celebration module! gifting with
               Mandaala’s Celebration module!...
             </Box>
+            <Box
+              component="p"
+              sx={{
+                background: "#daffd2",
+                color: "green",
+                width: "fit-content",
+                borderRadius: "5px",
+                padding: "2px 8px",
+                marginTop: "10px",
+              }}
+            >
+              {featured[0].seo?.category?.name}
+            </Box>
+            <Typography variant="body2" sx={{ mt: "10px", color: "#212121" }}>
+              by samarth , {featured[0].stats?.readTime} min read
+            </Typography>
           </Box>
         </Stack>
         <Grid
@@ -158,7 +198,7 @@ export default async function page({ searchParams }: any) {
                   blogId={blog._id}
                   readTime={blog.stats?.readTime}
                   thumbnail={blog.stats?.thumbnail}
-                  slug={blogs?.seo?.slug}
+                  slug={blog?.seo?.slug}
                 />
               </Grid>
             );

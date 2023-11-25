@@ -36,8 +36,7 @@ export const handleEditorChange: HandleChangeFunction = async (
   setNoLinks
 ) => {
   console.log("print content >>>>>>>>>>>.", editor.current.getContents());
-  // console.log(content); //Get Content Inside Editor
-  // console.log(editor.current.getText());
+ 
 
   const words = editor.current.getText().split(" ");
   console.log(`Content words should be > 800. Current: 2 ${words.length}`);

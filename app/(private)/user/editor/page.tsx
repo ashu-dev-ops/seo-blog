@@ -1,6 +1,6 @@
 "use client";
 import { Box, TextField, CircularProgress } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import dynamic from "next/dynamic";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
@@ -35,6 +35,7 @@ export default function Page() {
     category,
     tags,
     handleSlug,
+    resetEditorContext,
   } = useUserContext();
   const editor = useRef();
   // The sunEditor parameter will be set to the core suneditor instance when this function is called
@@ -87,7 +88,7 @@ export default function Page() {
     console.log(metaTitle, metaDescription, canonical, slug, tags, category);
     try {
       var tableOfContentsId: any = [];
-      setIsLoading(true);
+      // setIsLoading(true);
       var htmlString = `${editor.current.getContents()}`;
 
       // Create a temporary DOM element to manipulate the HTML string
@@ -106,7 +107,28 @@ export default function Page() {
         });
         h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
       });
+      var firstImage = tempElement.querySelector("img");
+      var firstParagraph = tempElement.querySelector(
+        "p:not(:empty):not(:has(br))"
+      );
+      var srcAttribute;
+      var paragraphText;
+      // Check if an image was found
+      if (firstImage) {
+        // Extract the src attribute
+        srcAttribute = firstImage.getAttribute("src");
+      }
+      // Check if a non-empty paragraph was found
+      if (firstParagraph) {
+        // Extract the text content of the paragraph
+        console.log(firstParagraph?.textContent);
+        paragraphText = firstParagraph?.textContent
+          .split(/\s+/)
+          .slice(0, 20)
+          .join(" ");
 
+        console.log("First Non-Empty Paragraph:", paragraphText);
+      }
       // Get the modified HTML string from the temporary element
       var modifiedHtmlString = tempElement.innerHTML;
       const dataToSend = {
@@ -123,25 +145,29 @@ export default function Page() {
           noOfWords,
           noOfLinks,
           readTime: Math.ceil(noOfWords / 225),
+          thumbnail: srcAttribute
+            ? srcAttribute
+            : "https://ik.imagekit.io/ww4pq6w6n/videos/sheetwa_logo_rounded_dp_x6R5RbTUE.png?updatedAt=1696096625826&tr=w-1200%2Ch-675%2Cfo-auto",
         },
         seo: {
-          metaTitle,
-          metaDescription,
+          metaTitle: metaTitle ? metaTitle : title,
+          metaDescription: metaDescription ? metaDescription : paragraphText,
           canonical,
-          slug,
+          slug: slug
+            ? slug
+            : title.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
           category,
           tags,
         },
       };
       console.log("data-that-im-am sending>>>>>>>>>>>>>>>>>>", dataToSend);
-      if (thumbnail) {
-        dataToSend.stats.thumbnail = thumbnail;
-      }
+      // if (thumbnail) {
+      //   dataToSend.stats.thumbnail = thumbnail;
+      // }
 
-      const { data } = await axios
+      await axios
         .post(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/dashboard"));
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -150,7 +176,8 @@ export default function Page() {
   const handlePublish = async () => {
     try {
       var tableOfContentsId: any = [];
-      setIsLoading(true);
+      // setIsLoading(true);
+      console.log("LOADING TRUE HTML STARTED EXTRACTION");
       var htmlString = `${editor.current.getContents()}`;
 
       // Create a temporary DOM element to manipulate the HTML string
@@ -169,9 +196,31 @@ export default function Page() {
         });
         h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
       });
-
+      var firstImage = tempElement.querySelector("img");
+      var firstParagraph = tempElement.querySelector(
+        "p:not(:empty):not(:has(br))"
+      );
+      var srcAttribute;
+      var paragraphText;
+      var defaultSlug;
+      // Check if an image was found
+      if (firstImage) {
+        // Extract the src attribute
+        srcAttribute = firstImage.getAttribute("src");
+      }
+      // Check if a non-empty paragraph was found
+      if (firstParagraph) {
+        // Extract the text content of the paragraph
+        paragraphText = firstParagraph?.textContent
+          .split(/\s+/)
+          .slice(0, 20)
+          .join(" ");
+        console.log("First Non-Empty Paragraph:", paragraphText);
+      }
       // Get the modified HTML string from the temporary element
+      console.log("LOADING TRUE HTML NEAR END");
       var modifiedHtmlString = tempElement.innerHTML;
+      console.log("LOADING TRUE HTML  END AND DATA TO SEND IN ");
       const dataToSend = {
         blogStatus: "Publish",
         html: modifiedHtmlString,
@@ -181,16 +230,22 @@ export default function Page() {
 
         stats: {
           noOfSubHeading,
+          noOfHeading,
           noOfImage,
           noOfWords,
           noOfLinks,
           readTime: Math.ceil(noOfWords / 225),
+          thumbnail: srcAttribute
+            ? srcAttribute
+            : "https://ik.imagekit.io/ww4pq6w6n/videos/sheetwa_logo_rounded_dp_x6R5RbTUE.png?updatedAt=1696096625826&tr=w-1200%2Ch-675%2Cfo-auto",
         },
         seo: {
-          metaTitle,
-          metaDescription,
+          metaTitle: metaTitle ? metaTitle : title,
+          metaDescription: metaDescription ? metaDescription : paragraphText,
           canonical,
-          slug,
+          slug: slug
+            ? slug
+            : title.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
           category,
           tags,
         },
@@ -198,10 +253,10 @@ export default function Page() {
       if (thumbnail) {
         dataToSend.stats.thumbnail = thumbnail;
       }
-      const { data } = await axios
+      console.log("data we are sending for publish", dataToSend);
+      await axios
         .post(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/dashboard"));
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -223,6 +278,18 @@ export default function Page() {
     );
   }
 
+  useEffect(() => {
+    resetEditorContext();
+    console.log(
+      "check if values are reset",
+      metaTitle,
+      metaDescription,
+      canonical,
+      slug,
+      category,
+      tags
+    );
+  }, []);
   return (
     <>
       <Box

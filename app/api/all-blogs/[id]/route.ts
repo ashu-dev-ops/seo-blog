@@ -17,9 +17,10 @@ export const GET = async (request: any) => {
   const allBlogs = await Blog.find({
     writtenBy: id,
     blogStatus: "Publish",
-    // }).populate("writtenBy");
+    
   }).populate({ path: "writtenBy", model: User });
   console.log(allBlogs);
+  // const user =await User.find()
   //   console.log("we got the data");
   try {
     // await newUser.save();

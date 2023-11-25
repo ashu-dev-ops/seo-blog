@@ -35,6 +35,10 @@ export default function TagsAddEditor() {
   useEffect(() => {
     getAllTags();
   }, []);
+  useEffect(() => {
+    setValue(tags);
+  }, [tags]);
+
   return (
     <Autocomplete
       multiple

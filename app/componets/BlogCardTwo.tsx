@@ -3,29 +3,33 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BlogCardProps } from "../_types/blogCard";
-const BlogCard: React.FC<BlogCardProps> = ({
+
+const BlogCardTwo: React.FC<BlogCardProps> = ({
   title,
   blogId,
   readTime,
   thumbnail,
   slug,
   category,
+  description,
 }) => {
   return (
     <Box
       component={Link}
       href={`/blogs/${slug}-${blogId}`}
-      sx={{ textDecoration: "none" }}
+      sx={{ textDecoration: "none", minWidth: "700px" }}
     >
       <Box
         sx={{
           display: "flex",
-          // alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
+          alignItems: "center",
+          // justifyContent: "center",
+          flexDirection: "row",
           width: "100%",
-          // padding: "0.2rem",
+          maxWidth: "700px",
+
           borderRadius: "17px",
+          gap: 3,
         }}
       >
         <Box
@@ -36,6 +40,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
             borderRadius: "7px",
             overflow: "hidden",
             marginTop: "5px",
+            maxWidth: "300px",
           }}
         >
           <Image
@@ -60,16 +65,25 @@ const BlogCard: React.FC<BlogCardProps> = ({
           ></Image>
         </Box>
 
-        <Box mt="10px">
+        <Box sx={{ height: "170px", width: "100%" }}>
           <Box
             component="p"
             sx={{
-              fontSize: "1.2rem",
+              fontSize: "1.4rem",
               fontWeight: 700,
               color: "#212121",
             }}
           >
             {title}
+          </Box>
+          <Box
+            component="p"
+            sx={{
+              color: "#212121",
+              mt: "10px",
+            }}
+          >
+            {description}...
           </Box>
           <Box
             component="p"
@@ -90,7 +104,6 @@ const BlogCard: React.FC<BlogCardProps> = ({
         </Box>
       </Box>
     </Box>
-    // </Box>
   );
 };
-export default BlogCard;
+export default BlogCardTwo;

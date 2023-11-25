@@ -3,31 +3,36 @@ import connect from "../../lib/mongodb";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import User from "@/app/models/User";
+import mongoose from "mongoose";
 export const GET = async (request: any) => {
-  console.log("route working now 1");
-  console.log("rung>>>>>>>>>>>>>>>>get all sub directory");
-  console.log(request.url);
-  const pathSegments = request.url.split("/");
-  const id = pathSegments[pathSegments.length - 1];
-  console.log("running get single blog request");
-  console.log(id);
-
   await connect();
-  const writtenBy = request.nextUrl.searchParams.get("userID");
+  const writtenBy = request.nextUrl.searchParams.get("userId");
   const category = request.nextUrl.searchParams.get("category");
   const tags = request.nextUrl.searchParams.get("tags");
+
   console.log("value>>>>>>>>>>>>>>>>>>>.", writtenBy, category, tags);
   let allBlogs: any[] = [];
   if (writtenBy && (category || tags)) {
-    // await User.find({ _id: id });
-  
-    allBlogs = await Blog.find({
-      writtenBy: writtenBy,
-      blogStatus: "Publish",
-      
-      // }).populate("writtenBy");
-    }).populate({ path: "writtenBy", model: User });
-    console.log(allBlogs);
+    if (category) {
+      console.log("finding category");
+      const blogs = await await Blog.find({
+        writtenBy: writtenBy,
+      });
+      console.log("all blogs of user", blogs);
+      allBlogs = await Blog.find({
+        writtenBy: writtenBy,
+        "seo.category.name": category,
+      });
+      console.log("from category", allBlogs);
+    }
+    if (tags) {
+      console.log("finding tags");
+      allBlogs = await Blog.find({
+        "writtenBy": writtenBy,
+        "seo.tags.name": tags,
+      });
+      console.log("from tags", allBlogs);
+    }
   }
 
   //   console.log("we got the data");

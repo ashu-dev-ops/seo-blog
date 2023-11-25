@@ -1,41 +1,75 @@
-import BlogCard from "@/app/componets/BlogCard";
-import { useBlogsVisitorStore } from "@/app/store/zustand/store";
-import { Grid } from "@mui/material";
 import React from "react";
-const getData = async (params: any, searchParams: any) => {
-  // try {
-  //   const res = await fetch(
-  //     `${process.env.BASE_URL}/api/all-blogs?category=${params.id}&&userId=${searchParams.userId}`,
-  //     {
-  //       cache: "no-store",
-  //     }
-  //   );
-  //   const posts = await res.json();
 
-  //   return posts;
-  // } catch (error) {
-  //   console.log(error);
-  // }
+import { Box, Stack, Typography, Container, Grid } from "@mui/material";
+
+import BlogCardTwo from "@/app/componets/BlogCardTwo";
+
+const getData = async (params: any, searchParams: any) => {
+  try {
+    const res = await fetch(
+      `${process.env.BASE_URL}/api/all-blogs?category=${params.id}&&userId=${searchParams.userId}`,
+      {
+        cache: "no-store",
+      }
+    );
+    const posts = await res.json();
+
+    return posts;
+  } catch (error) {
+    console.log(error);
+  }
 };
 export default async function Category({ params, searchParams }: any) {
   // const BlogOwnerId = useBlogsVisitorStore((state: any) => state.blogOwnerId);
-  // let data = await getData(params, searchParams);
+  let data = await getData(params, searchParams);
+  console.log(data);
   console.log(params, searchParams);
   return (
-    <div>
-      {/* {data.data.map((blog: any, idx: number) => {
-        return (
-          <Grid key={idx.toString()} item xs={12} sm={6} md={3}>
-            <BlogCard
-              title={blog.title}
-              blogId={blog._id}
-              readTime={blog.stats?.readTime}
-              thumbnail={blog.stats?.thumbnail}
-              slug={blog?.seo?.slug}
-            />
-          </Grid>
-        );
-      })} */}
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        // justifyContent: "center",
+        minHeight: "100vh",
+        // backgroundColor: "#E2E8F0",
+        paddingTop: "5vh",
+      }}
+    >
+      <Container
+        sx={{ margin: "auto", marginTop: 10, maxWidth: { md: "90%" } }}
+      >
+        <Box
+          component="h1"
+          fontSize="2.4rem"
+          textAlign="center"
+          textTransform="capitalize"
+        >
+          {params.id}
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          marginTop="2rem"
+        >
+          {data.data.map((blog: any, idx: number) => {
+            return (
+              <BlogCardTwo
+                key={idx.toString()}
+                title={blog.title}
+                blogId={blog._id}
+                readTime={blog.stats?.readTime}
+                thumbnail={blog.stats?.thumbnail}
+                slug={blog?.seo?.slug}
+                category={blog?.seo?.category}
+                description={blog?.seo?.metaDescription}
+              />
+            );
+          })}
+        </Box>
+      </Container>
+    </Box>
   );
 }

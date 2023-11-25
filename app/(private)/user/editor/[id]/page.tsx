@@ -142,6 +142,7 @@ export default function Page({ params }: any) {
   }
   const handleDraft = async () => {
     try {
+      console.log("html extraction started");
       var tableOfContentsId: any = [];
       setIsLoading(true);
       var htmlString = `${editor.current.getContents()}`;
@@ -162,8 +163,30 @@ export default function Page({ params }: any) {
         });
         h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
       });
-
+      console.log("html extraction end and working on data to send");
       // Get the modified HTML string from the temporary element
+      var firstImage = tempElement.querySelector("img");
+      var firstParagraph =tempElement.querySelector("p:not(:empty):not(:has(br))");
+      var srcAttribute;
+      var paragraphText;
+      // Check if an image was found
+      if (firstImage) {
+        // Extract the src attribute
+        srcAttribute = firstImage.getAttribute("src");
+      }
+      // Check if a non-empty paragraph was found
+      if (firstParagraph) {
+        // Extract the text content of the paragraph
+        // paragraphText = firstParagraph.textContent;
+        console.log(firstParagraph?.textContent);
+        paragraphText = firstParagraph?.textContent
+          .split(/\s+/)
+          .slice(0, 20)
+          .join(" ");
+
+        console.log("First Non-Empty Paragraph:", paragraphText);
+        // console.log("First Non-Empty Paragraph:", paragraphText);
+      }
       var modifiedHtmlString = tempElement.innerHTML;
       const dataToSend = {
         blogStatus: "Draft",
@@ -179,21 +202,23 @@ export default function Page({ params }: any) {
           noOfWords,
           noOfLinks,
           readTime: Math.ceil(noOfWords / 225),
+          thumbnail: srcAttribute
+            ? srcAttribute
+            : "https://ik.imagekit.io/ww4pq6w6n/videos/sheetwa_logo_rounded_dp_x6R5RbTUE.png?updatedAt=1696096625826&tr=w-1200%2Ch-675%2Cfo-auto",
         },
         seo: {
-          metaTitle,
-          metaDescription,
+          metaTitle: metaTitle ? metaTitle : title,
+          metaDescription: metaDescription ? metaDescription : paragraphText,
           canonical,
-          slug,
+          slug: slug
+            ? slug
+            : title.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
           category,
           tags,
         },
       };
-      if (thumbnail) {
-        dataToSend.stats.thumbnail = thumbnail;
-      }
-
-      const { data } = await axios
+      console.log("ready data to send", dataToSend);
+      await axios
         .patch(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/dashboard"));
       // console.log(data);
@@ -223,7 +248,29 @@ export default function Page({ params }: any) {
         });
         h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
       });
-
+      var firstImage = tempElement.querySelector("img");
+      var firstParagraph = tempElement.querySelector("p:not(:empty):not(:has(br))");
+      console.log(
+        "checking>>>>>>>>>>>>if i am getting first para",
+        firstParagraph
+      );
+      var srcAttribute;
+      var paragraphText;
+      // Check if an image was found
+      if (firstImage) {
+        // Extract the src attribute
+        srcAttribute = firstImage.getAttribute("src");
+      }
+      // Check if a non-empty paragraph was found
+      if (firstParagraph) {
+        // Extract the text content of the paragraph
+        // paragraphText = firstParagraph.textContent;
+        paragraphText = firstParagraph?.textContent
+        .split(/\s+/)
+        .slice(0, 20)
+        .join(" ");
+        console.log("First Non-Empty Paragraph:", paragraphText);
+      }
       // Get the modified HTML string from the temporary element
       var modifiedHtmlString = tempElement.innerHTML;
       const dataToSend = {
@@ -235,16 +282,22 @@ export default function Page({ params }: any) {
         blogId: params.id,
         stats: {
           noOfSubHeading,
+          noOfHeading,
           noOfImage,
           noOfWords,
           noOfLinks,
           readTime: Math.ceil(noOfWords / 225),
+          thumbnail: srcAttribute
+            ? srcAttribute
+            : "https://ik.imagekit.io/ww4pq6w6n/videos/sheetwa_logo_rounded_dp_x6R5RbTUE.png?updatedAt=1696096625826&tr=w-1200%2Ch-675%2Cfo-auto",
         },
         seo: {
-          metaTitle,
-          metaDescription,
+          metaTitle: metaTitle ? metaTitle : title,
+          metaDescription: metaDescription ? metaDescription : paragraphText,
           canonical,
-          slug,
+          slug: slug
+          ? slug
+          : title.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
           category,
           tags,
         },
@@ -252,10 +305,9 @@ export default function Page({ params }: any) {
       if (thumbnail) {
         dataToSend.stats.thumbnail = thumbnail;
       }
-      const { data } = await axios
+      await axios
         .patch(`/api/blogs`, dataToSend)
         .then(() => router.push("/user/dashboard"));
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

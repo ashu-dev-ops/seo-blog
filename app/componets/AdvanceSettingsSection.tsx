@@ -33,20 +33,6 @@ export default function AdvanceSettingsSection() {
   );
   const [cononical, setCononical] = useState(canonical);
 
-  // const [slugT, setSlug] = useState(slug);
-  // const [finalSlug, setFinalSlug] = useState(slug);
-  // function processSlug(inputText: any) {
-  //   // Remove special characters and spaces
-  //   const processedText = inputText
-  //     // .replace(/[^\w\s-]/gi, "")
-  //     // .replace(/[^\w\s-]/gi, "")
-  //     .replace(/[^\w\s\-]/gi, "")
-  //     .replace(/\s+/g, " ");
-
-  //   // Convert to lowercase and replace spaces with hyphens
-  //   const finalText = processedText.toLowerCase().replace(/\s+/g, "-");
-  //   setFinalSlug(finalText);
-  // }
   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>", slug);
   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>T", slugT);
   const handleMetaTagsT = async () => {

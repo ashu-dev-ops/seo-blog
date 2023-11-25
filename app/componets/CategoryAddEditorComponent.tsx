@@ -8,7 +8,8 @@ export default function CategoryAddEditor() {
   const [rows, setRows] = useState<any[]>([]);
 
   const { handleCategory, category } = useUserContext();
-  const [value, setValue] = React.useState(
+  console.log("category from>>>>>>>>editor add", category);
+  const [value, setValue] = React.useState<any>(
     category?.length === 0 ? null : category
   );
   // const [selectedData, setSelectedData] = useState({});
@@ -33,6 +34,9 @@ export default function CategoryAddEditor() {
         // setRows(newRows);
       });
   };
+  useEffect(() => {
+    setValue(category);
+  }, [category]);
   useEffect(() => {
     getAllTags();
   }, []);

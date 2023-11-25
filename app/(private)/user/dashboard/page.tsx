@@ -25,6 +25,7 @@ const getData = async () => {
 export const dynamic = "force-dynamic";
 export default async function page() {
   const data = await getData();
+  console.log("check here data", data);
   if (!data) {
     return (
       <Box
@@ -100,14 +101,13 @@ export default async function page() {
               <Link href="/user/editor">
                 <Button variant="contained">Write New Post</Button>
               </Link>
-              <Link href="/blogs?userId=65432951a61c6ebefd62f20f">
+              <Link href={`/blogs?userId=${data.data[0].writtenBy._id}`}>
                 <Button variant="outlined">View Blog</Button>
               </Link>
             </Stack>
           </Stack>
         </Box>
-
-        {data.data.map((blog: any, idx: Number) => {
+{data.data.map((blog: any, idx: Number) => {
           return (
             <Box
               key={idx.toString()}

@@ -19,25 +19,35 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const data = await fetch(`${process.env.BASE_URL}/api/blogs/${params.id}`, {
+  const lastPart = params.id.substring(params.id.lastIndexOf("-") + 1);
+
+  console.log("id we are sending>>>>>>>>>>>>>>>>>>>>..", lastPart);
+  const data = await fetch(`${process.env.BASE_URL}/api/blogs/${lastPart}`, {
     cache: "no-store",
   });
   // console.log("my value>>>>>>>", data.data);
   const data2 = await data.json();
   console.log("my value>>>>>>>>", data2.data);
+  const keywords = data2?.data?.seo?.tags.map((i) => i.name) || [];
   return {
     title: data2?.data?.seo?.metaTitle || "",
     description: data2?.data?.seo?.metaDescription || "",
     openGraph: {
       images: [
-        "https://ik.imagekit.io/ww4pq6w6n/pngwing.com%20(1).png?updatedAt=1699944466966",
+        `${
+          data2?.data?.stats?.thumbnail ||
+          "https://ik.imagekit.io/ww4pq6w6n/videos/sheetwa_logo_rounded_dp_x6R5RbTUE.png?updatedAt=1696096625826&tr=w-1200%2Ch-675%2Cfo-auto"
+        }`,
       ],
     },
-  
+    keywords: keywords.join(", "),
   };
 }
 export default async function ReadSingleBlog({ params }: any) {
-  const data = await fetch(`${process.env.BASE_URL}/api/blogs/${params.id}`, {
+  const lastPart = params.id.substring(params.id.lastIndexOf("-") + 1);
+
+  console.log("id we are sending>>>>>>>>>>>>>>>>>>>>..", lastPart);
+  const data = await fetch(`${process.env.BASE_URL}/api/blogs/${lastPart}`, {
     cache: "no-store",
   });
   const data2 = await data.json();
@@ -77,6 +87,20 @@ export default async function ReadSingleBlog({ params }: any) {
                 by Samarth
               </Box>{" "}
               - 3 min read
+              <Box
+                component="sapn"
+                sx={{
+                  background: "#daffd2",
+                  color: "green",
+                  width: "fit-content",
+                  borderRadius: "5px",
+                  padding: "2px 8px",
+                  marginTop: "10px",
+                  marginLeft: "5px",
+                }}
+              >
+                {data2.data.seo?.category?.name}
+              </Box>
             </Typography>{" "}
             <Stack
               sx={{

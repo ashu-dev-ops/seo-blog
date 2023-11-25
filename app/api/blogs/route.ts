@@ -20,7 +20,7 @@ export const POST = async (request: any) => {
       tableOfContentsId,
     } = await request.json();
     console.log("running");
-    console.log(title, html, stats, writtenBy, blogStatus,seo);
+    console.log(title, html, stats, writtenBy, blogStatus, seo);
     await connect();
 
     const user = await User.findOne({ email: writtenBy });
@@ -32,7 +32,7 @@ export const POST = async (request: any) => {
       writtenBy: user._id,
       blogStatus,
       tableOfContentsId,
-      seo
+      seo,
     });
     const a = await newBlog.save();
     console.log(a);
@@ -71,13 +71,12 @@ export const GET = async (req: any) => {
 export const PATCH = async (request: any) => {
   const { title, html, stats, blogStatus, blogId, tableOfContentsId, seo } =
     await request.json();
+  // console.log("we are getting on api seo", seo);
   await connect();
-
-  console.log("ids", tableOfContentsId);
-  console.log("modified html", html);
+  console.log("we are getting on api seo", seo);
   const data = await Blog.findOneAndUpdate(
     { _id: blogId },
-    { html, stats, title, blogStatus, tableOfContentsId,seo },
+    { html, stats, title, blogStatus, tableOfContentsId, seo },
     { new: true }
   );
   console.log("data below api >>>>>>>>>....");

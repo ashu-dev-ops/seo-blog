@@ -14,18 +14,18 @@ const nextConfig = {
   reactStrictMode: false,
 
   // dev
-  assetPrefix: "http://localhost:3000/",
+  // assetPrefix: "http://localhost:3000/",
 
-  images: {
-    domains: ["http://localhost:3000/"],
-    path: `${"http://localhost:3000"}/_next/image`,
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-    ],
-  },
+  // images: {
+  //   domains: ["http://localhost:3000/"],
+  //   path: `${"http://localhost:3000"}/_next/image`,
+  //   remotePatterns: [
+  //     {
+  //       protocol: "https",
+  //       hostname: "**",
+  //     },
+  //   ],
+  // },
   // testing prod
   // assetPrefix: "https://nimble-figolla-41e82f.netlify.app/",
   // images: {

@@ -14,6 +14,7 @@ export default function DomainInputField() {
   const [domain, setDomain] = useState("");
   const [isDomainExist, setIsDomainExist] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [editDomain, setEditDomain] = useState(false);
   const handleAddDomain = async () => {
     console.log("runing>>>>>>>>>>>>>>>>>>>>>>>>>...");
     axios
@@ -23,12 +24,17 @@ export default function DomainInputField() {
       .then((data) => {
         console.log(data.data.data.domain);
         setIsDomainExist(true);
+        // setEditDomain();
       });
   };
   const handleUpdateDomain = async () => {
-    axios.patch("/api/user", {
-      domain,
-    });
+    axios
+      .patch("/api/user", {
+        domain,
+      })
+      .then(() => {
+        setEditDomain(false);
+      });
   };
   const GengerateFile = async () => {
     setIsGenerating(true);
@@ -63,6 +69,18 @@ export default function DomainInputField() {
       setIsDomainExist(true);
     }
   };
+  const [isDomainValid, setIsDomainValid] = useState(true);
+
+  const handleDomainChange = (value: any) => {
+    // Define a regex for a simple domain validation
+    const domainRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
+
+    // Check if the entered domain matches the regex
+    const isValid = domainRegex.test(value);
+
+    setDomain(value);
+    setIsDomainValid(isValid);
+  };
   useEffect(() => {
     getUserDomain();
   }, []);
@@ -78,8 +96,10 @@ export default function DomainInputField() {
         type="text"
         focused
         value={domain}
-        onChange={(e) => setDomain(e.target.value)}
-        disabled={isDomainExist}
+        onChange={(e) => handleDomainChange(e.target.value)}
+        disabled={isDomainExist && !editDomain}
+        error={!isDomainValid && editDomain}
+        helperText={isDomainValid || editDomain ? "" : "Invalid domain format"}
       />
       <Stack direction="row" gap={1}>
         {isDomainExist && (
@@ -88,7 +108,7 @@ export default function DomainInputField() {
             variant="contained"
             onClick={() => GengerateFile()}
             disabled={isGenerating}
-            startIcon={isGenerating && <CircularProgress size={20}/>}
+            startIcon={isGenerating && <CircularProgress size={20} />}
           >
             Generate File
           </Button>
@@ -97,9 +117,11 @@ export default function DomainInputField() {
           <Button
             sx={{ width: "fit-content" }}
             variant="contained"
-            onClick={handleUpdateDomain}
+            onClick={
+              editDomain ? handleUpdateDomain : () => setEditDomain(true)
+            }
           >
-            Update Domain
+            {editDomain ? "Update Domain" : "Edit Domain"}
           </Button>
         ) : (
           <Button

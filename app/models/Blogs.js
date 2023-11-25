@@ -12,7 +12,15 @@ const BlogSchema = new Schema(
     html: String,
     stats: Object,
     title: String,
-    seo: Object,
+    seo: {
+      metaTitle: String,
+      metaDescription: String,
+      cononical: String,
+      slug: String,
+      category: mongoose.Schema.Types.Mixed,
+      tags: [],
+    },
+    // seo: mongoose.Schema.Types.Mixed,
     tableOfContentsId: [
       {
         headingTitle: String,

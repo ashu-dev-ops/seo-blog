@@ -54,7 +54,8 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $output = curl_exec($ch);
 curl_close($ch);
 echo $output;
-      \n?>`;
+      \n?>
+      `;
 
       // Set the appropriate headers for a file download
       const headers = {
