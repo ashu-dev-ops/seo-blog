@@ -88,7 +88,7 @@ export default async function page({ searchParams }: any) {
               return (
                 <Box
                   key={idx}
-                  href={`/blogs/category/${category.name}`}
+                  href={`/blogs/category/${category.slug}`}
                   // href={`/blogs/category/${category.name}?userId=${featured[0].writtenBy._id}`}
                   sx={{
                     background: "#daffd2",
@@ -119,7 +119,7 @@ export default async function page({ searchParams }: any) {
           }}
           direction="row"
           component={Link}
-          href={`/blogs/${featured[0]._id}`}
+          href={`/blogs/${featured[0].seo.slug}-${featured[0]._id}`}
         >
           <Box
             sx={{

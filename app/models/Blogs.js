@@ -17,7 +17,7 @@ const BlogSchema = new Schema(
       metaDescription: String,
       cononical: String,
       slug: String,
-      category: mongoose.Schema.Types.Mixed,
+      category:mongoose.Schema.Types.Mixed,
       tags: [],
     },
     // seo: mongoose.Schema.Types.Mixed,

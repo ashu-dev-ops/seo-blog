@@ -107,7 +107,13 @@ export default function TagsDatagrid() {
       });
   };
   const handleUpdate = async () => {
+    console.log(editNewTag);
+    console.log(selectedData);
     selectedData.name = editNewTag;
+    selectedData.slug = editNewTag
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .replace(/\s+/g, "-");
     const data = await axios
       .patch(`/api/blogs/tags`, {
         newTag: selectedData,
@@ -126,6 +132,10 @@ export default function TagsDatagrid() {
     await axios
       .post(`/api/blogs/tags`, {
         newTag: newTag,
+        slug: editNewTag
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .replace(/\s+/g, "-"),
       })
       .then((data) => {
         console.log(data.data);

@@ -17,9 +17,10 @@ const TagSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-    username: String,
-  },
-  { _id: false }
+
+    slug: String,
+  }
+  // { _id: false }
 );
 const CategorySchema = new Schema(
   {
@@ -36,8 +37,9 @@ const CategorySchema = new Schema(
       type: Date,
       default: Date.now,
     },
-  },
-  { _id: false }
+    slug: String,
+  }
+  // { _id: false }
 );
 
 CategorySchema.pre("save", function (next) {
@@ -65,7 +67,6 @@ const UserSchema = new Schema(
       default: [],
     },
     domain: String,
-   
   },
   { timestamps: true }
 );

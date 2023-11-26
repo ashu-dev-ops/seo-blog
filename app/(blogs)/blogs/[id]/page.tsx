@@ -162,12 +162,12 @@ export default async function ReadSingleBlog({ params }: any) {
           <UtilityLinkButton
             text={data2.data?.seo?.category?.name}
             // path={`category/${data2.data?.seo?.category?.name}?userId=6555dbdba655280a9328e1dd`}
-            path={`category/${data2.data?.seo?.category?.name}`}
+            path={`category/${data2.data?.seo?.category?.slug}`}
           />
           {data2.data?.seo?.tags.map((tag: any, idx) => (
             <UtilityLinkButton
               text={tag.name}
-              path={`tags/${tag.name}`}
+              path={`tags/${tag.slug}`}
               key={idx}
               // path={`tags/${tag.name}?userId=6555dbdba655280a9328e1dd`}
             />

@@ -40,9 +40,11 @@ export default function CategoryAddEditor() {
   useEffect(() => {
     getAllTags();
   }, []);
+  console.log("seeing value", value);
+  console.log("seeing category", value);
   return (
     <Autocomplete
-      value={value}
+      value={value?.length === 0 ? null : value}
       onChange={async (event, newValue) => {
         if (typeof newValue === "string") {
           console.log("running one");

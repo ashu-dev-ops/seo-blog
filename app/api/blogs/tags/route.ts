@@ -22,7 +22,7 @@ export const GET = async (request: any) => {
 export const POST = async (request: any) => {
   console.log("running>>>>>>>>>>>>..");
   try {
-    const { newTag } = await request.json();
+    const { newTag, slug } = await request.json();
     console.log("NEW TAG", newTag);
 
     await connect();
@@ -33,7 +33,7 @@ export const POST = async (request: any) => {
       //   const user = await User.findOne({ email: session?.user?.email });
       const data = await User.findOneAndUpdate(
         { email: session?.user?.email },
-        { $push: { tags: { name: newTag } } },
+        { $push: { tags: { name: newTag, slug: slug } } },
         { new: true }
       );
       console.log("is this null", data);
@@ -62,12 +62,31 @@ export const PATCH = async (request: any) => {
         {
           $set: {
             "tags.$.name": newTag.name,
+            "tags.$.slug": newTag.slug,
             // Update other properties if needed
           },
         },
         { new: true }
       );
       console.log("is this data", data);
+      const userId = await User.findOne({ email: session?.user?.email });
+      const blogs = await Blog.find({
+        writtenBy: userId._id,
+        "seo.tags._id": newTag._id,
+      });
+      console.log("working >>>>>> bogs that have this tag", blogs);
+      if (blogs.length > 0) {
+        await Blog.updateMany(
+          { writtenBy: userId._id, "seo.tags._id": newTag._id },
+          {
+            $set: {
+              "seo.tags.$.name": newTag.name,
+              "seo.tags.$.slug": newTag.slug,
+              // Update other properties if needed
+            },
+          }
+        );
+      }
       const newData = data.tags[data.tags.length - 1];
       return NextResponse.json({ message: "ok", data: newData });
     }
@@ -104,6 +123,18 @@ export const DELETE = async (request: any) => {
         },
         { new: true } // To return the updated document
       );
+      const userId = await User.findOne({ email: session?.user?.email });
+      const blogs = await Blog.find({
+        writtenBy: userId._id,
+        "seo.tags._id": tagId,
+      });
+      console.log("working >>>>>> bogs that have this tag", blogs);
+      if (blogs.length > 0) {
+        await Blog.updateMany(
+          { writtenBy: userId._id, "seo.tags._id": tagId },
+          { $pull: { "seo.tags": { _id: tagId } } }
+        );
+      }
       console.log("is this data", data);
       return NextResponse.json({ message: "ok", data });
     }

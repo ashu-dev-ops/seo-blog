@@ -23,7 +23,7 @@ export const GET = async (request: any) => {
 export const POST = async (request: any) => {
   console.log("running>>>>>>>>>>>>..");
   try {
-    const { newTag } = await request.json();
+    const { newTag, slug } = await request.json();
     console.log("NEW TAG", newTag);
 
     await connect();
@@ -34,7 +34,7 @@ export const POST = async (request: any) => {
       //   const user = await User.findOne({ email: session?.user?.email });
       const data = await User.findOneAndUpdate(
         { email: session?.user?.email },
-        { $push: { category: { name: newTag } } },
+        { $push: { category: { name: newTag, slug: slug } } },
         { new: true }
       );
       console.log("is this null", data);
@@ -50,7 +50,7 @@ export const PATCH = async (request: any) => {
   console.log("running>>>>>>>>>>>>..");
   try {
     const { newTag } = await request.json();
-    console.log("NEW TAG", newTag);
+    console.log("update TAG", newTag);
 
     await connect();
     const session = await getServerSession();
@@ -63,11 +63,32 @@ export const PATCH = async (request: any) => {
         {
           $set: {
             "category.$.name": newTag.name,
+            "category.$.slug": newTag.slug,
             // Update other properties if needed
           },
         },
         { new: true }
       );
+      
+      const userId = await User.findOne({ email: session?.user?.email });
+      const blogs = await Blog.find({
+        writtenBy: userId._id,
+        "seo.category._id": newTag._id,
+      });
+      console.log("blogs of that category", blogs);
+      if (blogs.length > 0) {
+        console.log("running exsit of that category", newTag.name);
+        await Blog.updateMany(
+          { writtenBy: userId._id, "seo.category._id": newTag._id },
+          {
+            $set: {
+              "seo.category.name": newTag.name,
+              "seo.category.slug": newTag.slug,
+            },
+          }
+        );
+      }
+
       console.log("is this data during update", data);
       const newData = data.category[data.category.length - 1];
       return NextResponse.json({ message: "ok", data: newData });
@@ -105,6 +126,18 @@ export const DELETE = async (request: any) => {
         },
         { new: true } // To return the updated document
       );
+      const userId = await User.findOne({ email: session?.user?.email });
+      const blogs = await Blog.find({
+        writtenBy: userId._id,
+        "seo.category._id": tagId,
+      });
+      if (blogs.length > 0) {
+        await Blog.updateMany(
+          { writtenBy: userId._id, "seo.category._id": tagId },
+          { $unset: { 'seo.category': "" } }
+        );
+      }
+
       console.log("is this data", data);
       return NextResponse.json({ message: "ok", data });
     }

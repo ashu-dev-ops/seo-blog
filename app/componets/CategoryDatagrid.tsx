@@ -92,23 +92,25 @@ export default function CategoryDatagrid() {
   const handleDelete = async () => {
     console.log("data to delete ", selectedData);
     const data = await axios
-      .delete(
-        `/api/blogs/category?tagID=${selectedData._id}`
-      )
+      .delete(`/api/blogs/category?tagID=${selectedData._id}`)
       .then(() => {
-        const newRows = rows.filter((i:any) => i._id !== selectedData._id);
+        const newRows = rows.filter((i: any) => i._id !== selectedData._id);
         setRows(newRows);
       });
   };
   const handleUpdate = async () => {
     selectedData.name = editNewTag;
+    selectedData.slug = editNewTag
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .replace(/\s+/g, "-");
     const data = await axios
       .patch(`/api/blogs/category`, {
         newTag: selectedData,
       })
       .then((data) => {
         console.log("check data");
-        rows.forEach((i:any) => {
+        rows.forEach((i: any) => {
           if (i._id === selectedData._id) {
             i = selectedData;
           }
@@ -121,6 +123,7 @@ export default function CategoryDatagrid() {
     await axios
       .post(`/api/blogs/category`, {
         newTag: newTag,
+        slug: newTag.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
       })
       .then((data) => {
         console.log(data.data);
@@ -169,23 +172,23 @@ export default function CategoryDatagrid() {
             </Button>
           </Stack>
           <div style={{ flexGrow: 1, width: "100%", overflow: "hidden" }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            getRowId={(row) => row._id}
-            loading={isLoading}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
-            checkboxSelection
-            sx={{
-              "&, [class^=MuiDataGrid]": { border: "none" },
-              minHeight: "400px",
-            }}
-          />
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              getRowId={(row) => row._id}
+              loading={isLoading}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 5 },
+                },
+              }}
+              pageSizeOptions={[5, 10]}
+              checkboxSelection
+              sx={{
+                "&, [class^=MuiDataGrid]": { border: "none" },
+                minHeight: "400px",
+              }}
+            />
           </div>
         </DasboarCardStyle>
       </div>
@@ -216,7 +219,7 @@ export default function CategoryDatagrid() {
       >
         <TextField
           id="outlined-basic"
-          label="Enter tag name"
+          label="Enter Category name"
           variant="outlined"
           fullWidth
           size="small"

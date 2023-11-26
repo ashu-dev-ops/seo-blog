@@ -21,7 +21,7 @@ export const GET = async (request: any) => {
       console.log("all blogs of user", blogs);
       allBlogs = await Blog.find({
         writtenBy: writtenBy,
-        "seo.category.name": category,
+        "seo.category.slug": category,
       });
       console.log("from category", allBlogs);
     }
@@ -29,7 +29,7 @@ export const GET = async (request: any) => {
       console.log("finding tags");
       allBlogs = await Blog.find({
         "writtenBy": writtenBy,
-        "seo.tags.name": tags,
+        "seo.tags.slug": tags,
       });
       console.log("from tags", allBlogs);
     }
