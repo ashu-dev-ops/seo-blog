@@ -45,7 +45,7 @@ export default async function Category({ params, searchParams }: any) {
           textAlign="center"
           textTransform="capitalize"
         >
-          {params.id}
+          {params.id.replace(/-/g, ' ')}
         </Box>
         <Box
           display="flex"

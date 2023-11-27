@@ -6,7 +6,7 @@ const TagSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
     },
     createdAt: {
@@ -26,7 +26,7 @@ const CategorySchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
     },
     createdAt: {
@@ -60,11 +60,11 @@ const UserSchema = new Schema(
     siteDetails: Object,
     tags: {
       type: [TagSchema],
-      default: [],
+     
     },
     category: {
       type: [CategorySchema],
-      default: [],
+   
     },
     domain: String,
   },

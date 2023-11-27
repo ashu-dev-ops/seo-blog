@@ -65,7 +65,7 @@ const BlogCardTwo: React.FC<BlogCardProps> = ({
           ></Image>
         </Box>
 
-        <Box sx={{ height: "170px", width: "100%" }}>
+        <Box sx={{ height: "100%", width: "100%", paddingY: "5px" }}>
           <Box
             component="p"
             sx={{

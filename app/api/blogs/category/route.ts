@@ -34,7 +34,16 @@ export const POST = async (request: any) => {
       //   const user = await User.findOne({ email: session?.user?.email });
       const data = await User.findOneAndUpdate(
         { email: session?.user?.email },
-        { $push: { category: { name: newTag, slug: slug } } },
+        {
+          $push: {
+            category: {
+              name: newTag,
+              slug:
+                slug ||
+                newTag.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
+            },
+          },
+        },
         { new: true }
       );
       console.log("is this null", data);
@@ -69,7 +78,7 @@ export const PATCH = async (request: any) => {
         },
         { new: true }
       );
-      
+
       const userId = await User.findOne({ email: session?.user?.email });
       const blogs = await Blog.find({
         writtenBy: userId._id,
@@ -134,7 +143,7 @@ export const DELETE = async (request: any) => {
       if (blogs.length > 0) {
         await Blog.updateMany(
           { writtenBy: userId._id, "seo.category._id": tagId },
-          { $unset: { 'seo.category': "" } }
+          { $unset: { "seo.category": "" } }
         );
       }
 

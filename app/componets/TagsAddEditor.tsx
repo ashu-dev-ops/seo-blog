@@ -1,62 +1,67 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Chip from "@mui/material/Chip";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
+
 import axios from "axios";
 import { useUserContext } from "../store/editorContext";
 const filter = createFilterOptions();
 export default function TagsAddEditor() {
-  const { handleTags, tags } = useUserContext();
-  const [rows, setRows] = useState([]);
-  const [value, setValue] = React.useState(tags);
-  const getAllTags = async () => {
-    const data = await axios.get(`/api/blogs/tags`);
-    console.log("remove on dev checking>>>>>>>>>>>>>>", data);
-    setRows(data.data.data);
-  };
-  const handleAdd = async (newTag) => {
+  const { handleTags, tags, allTags, setAllTags } = useUserContext();
+
+  console.log("currently selected tags", tags);
+  const handleAdd = async (newTag: any) => {
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>", newTag);
     await axios
       .post(`/api/blogs/tags`, {
         newTag: newTag,
       })
       .then((data) => {
-        console.log(data.data);
-
-        // const newRows = rows.push(data.data);
-        const newRows = [...rows, data.data.data];
-        console.log("new rows", newRows);
-        console.log("latest", data.data);
-        setRows(newRows);
-        // setRows(newRows);
+        setAllTags(data.data.data);
+        handleTags(data.data.data);
       });
   };
-  useEffect(() => {
-    getAllTags();
-  }, []);
-  useEffect(() => {
-    setValue(tags);
-  }, [tags]);
-
+  console.log("all tags", allTags);
+  console.log("selected tags", tags);
   return (
     <Autocomplete
       multiple
       id="creatable-tags"
-      options={rows}
+      options={allTags || []}
       getOptionLabel={(option) => option.name}
-      value={value}
+      value={tags}
       onChange={async (event, newValue) => {
-        setValue(newValue);
-        console.log("checking new valie one", newValue);
-        handleTags(newValue);
-        if (newValue.length === 1) {
-          if (newValue[0].inputValue) {
-            await handleAdd(newValue[0].inputValue);
+        console.log(event, newValue);
+        if (newValue.length > 1) {
+          const lastValue = newValue[newValue.length - 1];
+          console.log("last value", lastValue);
+          const nameCount = allTags?.filter(
+            (item) => item.name === lastValue.name
+          ).length;
+          console.log("is it already exist");
+          if (nameCount === 0) {
+            console.log("running>>>>>.add tag");
+            await handleAdd(lastValue.name);
+          } else {
+            handleTags(newValue);
+            //check if it is remove then remove from tags
           }
+          // else {
+          //   console.log("running remove>>>>>>>>.");
+
+          //   const allTagsRemove = allTags?.filter(
+          //     (item) => item.name !== lastValue.name
+          //   );
+          //   console.log(allTags, allTagsRemove);
+          //   handleTags(allTagsRemove);
+          // }
+        } else {
+          handleTags(newValue);
+          //check if it is remove then remove from tags
         }
       }}
       filterOptions={(options, params) => {
+        // cant do async work
         const filtered = filter(options, params);
 
         const { inputValue } = params;
@@ -69,11 +74,6 @@ export default function TagsAddEditor() {
             inputValue,
             name: `${inputValue}`,
           });
-          console.log(
-            "running>>>>>>>>>>>>>>>>>>>>>>input value two",
-            inputValue
-          );
-          // await handleAdd(`${inputValue}`);
         }
 
         return filtered.slice(0, 3);
@@ -93,14 +93,17 @@ export default function TagsAddEditor() {
         />
       )}
       renderTags={(value, getTagProps) =>
-        value.map((option, index) => (
-          <Chip
-            key={index} // Ensure that the key is passed directly to the JSX element
-            variant="outlined"
-            label={option.name}
-            {...getTagProps({ index })}
-          />
-        ))
+        value.map((option, index) => {
+          console.log({ ...option });
+          return (
+            <Chip
+              key={index} // Ensure that the key is passed directly to the JSX element
+              variant="outlined"
+              label={option.name}
+              {...getTagProps({ index })}
+            />
+          );
+        })
       }
     />
   );

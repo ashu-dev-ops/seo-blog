@@ -31,6 +31,7 @@ export default function CategoryAddEditor() {
         console.log("new rows", newRows);
         console.log("latest", data.data);
         setRows(newRows);
+        handleCategory(data.data.data);
         // setRows(newRows);
       });
   };
@@ -40,8 +41,7 @@ export default function CategoryAddEditor() {
   useEffect(() => {
     getAllTags();
   }, []);
-  console.log("seeing value", value);
-  console.log("seeing category", value);
+
   return (
     <Autocomplete
       value={value?.length === 0 ? null : value}

@@ -8,6 +8,7 @@ const Register = () => {
   const [error, setError] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassWord] = useState("");
+  const [confirmpassword, setConfirmPassWord] = useState("");
   const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
 
@@ -18,17 +19,20 @@ const Register = () => {
     }
   }, [sessionStatus, router]);
 
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return emailRegex.test(email);
-  };
+  // const isValidEmail = (email: string) => {
+  //   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  //   return emailRegex.test(email);
+  // };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const email = username;
-    const password = password;
 
-    if (!isValidEmail(email)) {
-      setError("Email is invalid");
+    // if (!isValidEmail(email)) {
+    //   setError("Email is invalid");
+    //   return;
+    // }
+    if (confirmpassword !== password) {
+      setError("Passwords doesn't match");
       return;
     }
 
@@ -124,6 +128,35 @@ const Register = () => {
                 label="Password"
                 value={password}
                 onChange={(e) => setPassWord(e.target.value)}
+                fullWidth
+                type="password"
+                variant="filled"
+                InputProps={{
+                  style: {
+                    backgroundColor: "transparent",
+                  },
+                  disableUnderline: true,
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: "#919EAB",
+                    marginBottom: "15px",
+                  },
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: "100%",
+                my: 1,
+                backgroundColor: "#f6f7f8",
+                borderRadius: "10px",
+              }}
+            >
+              <TextField
+                label="Confirm Password"
+                value={confirmpassword}
+                onChange={(e) => setConfirmPassWord(e.target.value)}
                 fullWidth
                 type="password"
                 variant="filled"

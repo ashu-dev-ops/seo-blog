@@ -44,17 +44,17 @@ export const GET = async (request: NextRequest) => {
     if (query === "true") {
       // Create your PHP file here
       const phpCode = `
-<?php\n// 
+<?php
 $blogType = $_GET['blog'] ?? null;
 $ch = curl_init();
-$targetUrl = $blogType ? "${existingUser.domain}/blogs/" . $blogType :  "${existingUser.domain}/blogs";
+$targetUrl = $blogType ? "https://powerblog-39d6a2c7be5e.herokuapp.com/blogs/" . $blogType :  "https://powerblog-39d6a2c7be5e.herokuapp.com/blogs";
 $targetUrl .= "?userId=${existingUser._id}";
 curl_setopt($ch, CURLOPT_URL, $targetUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $output = curl_exec($ch);
 curl_close($ch);
 echo $output;
-      \n?>
+?>
       `;
 
       // Set the appropriate headers for a file download

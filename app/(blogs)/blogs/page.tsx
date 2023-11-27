@@ -49,9 +49,6 @@ export default async function page({ searchParams }: any) {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
         // justifyContent: "center",
         minHeight: "100vh",
         // backgroundColor: "#E2E8F0",
@@ -59,7 +56,14 @@ export default async function page({ searchParams }: any) {
       }}
     >
       <Container
-        sx={{ margin: "auto", marginTop: 10, maxWidth: { md: "90%" } }}
+        sx={{
+          margin: "auto",
+          marginTop: 10,
+          maxWidth: { md: "90%" },
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
         <Box component="h1" fontSize="2.4rem" textAlign="center">
           Sheetwa Elevate Your WhatsApp Marketing Game
@@ -83,13 +87,16 @@ export default async function page({ searchParams }: any) {
               justifyContent: "space-between",
               padding: "2rem  11rem",
             }}
+            gap={2}
           >
             {featured[0]?.writtenBy?.category.map((category, idx) => {
               return (
                 <Box
                   key={idx}
+                  // on prod
                   href={`/blogs/category/${category.slug}`}
-                  // href={`/blogs/category/${category.name}?userId=${featured[0].writtenBy._id}`}
+                  // on dev
+                  // href={`/blogs/category/${category.slug}?userId=${featured[0].writtenBy._id}`}
                   sx={{
                     background: "#daffd2",
                     color: "green",
@@ -200,6 +207,7 @@ export default async function page({ searchParams }: any) {
                   readTime={blog.stats?.readTime}
                   thumbnail={blog.stats?.thumbnail}
                   slug={blog?.seo?.slug}
+                  category={blog?.seo?.category}
                 />
               </Grid>
             );

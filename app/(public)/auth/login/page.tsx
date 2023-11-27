@@ -32,7 +32,7 @@ const Login = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const email = username;
-    const password = password;
+ 
 
     if (!isValidEmail(email)) {
       setError("Email is invalid");

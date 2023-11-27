@@ -11,9 +11,10 @@ interface UserState {
   logIn?: boolean;
   tags?: any[];
   category?: any[];
+  allTags?: readonly any[];
   handleCononical: (value: string) => void;
   handleSlug: (value: string) => void;
-  handleTags: (value: string) => void;
+  handleTags: (value: any) => void;
   handleCategory: (value: string) => void;
   handleMetaTags: (value: {
     metaTitle: string;
@@ -29,6 +30,7 @@ const initialState = {
   tags: [],
   category: [],
   slugT: "",
+  allTags: [],
 };
 const UserContext = createContext<UserState>(initialState);
 export const UserContextProvider = ({
@@ -78,7 +80,17 @@ export const UserContextProvider = ({
   const fetchBlog = async () => {
     const data = await axios.get("");
   };
-  useEffect(() => {}, []);
+  const setAllTags = (value: any) => {
+    dispatch({ type: "SET_ALL_TAGS", payload: value });
+  };
+  const getAllTags = async () => {
+    const data = await axios.get(`/api/blogs/tags`);
+    console.log("remove on dev checking>>>>>>>>>>>>>>", data.data.data);
+    dispatch({ type: "SET_ALL_TAGS", payload: data.data.data });
+  };
+  useEffect(() => {
+    getAllTags();
+  }, []);
   return (
     <UserContext.Provider
       value={{
@@ -89,6 +101,7 @@ export const UserContextProvider = ({
         handleTags,
         handleCategory,
         resetEditorContext,
+        setAllTags
       }}
     >
       {children}
