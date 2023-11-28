@@ -57,6 +57,7 @@ body {
 .sun-editor-editable h3 {
   font-size: 25px !important;
   color: "#212121";
+  margin-bottom: 0px !important;
 }
 .sun-editor-editable h3 span {
   font-size: 25px !important;
@@ -65,6 +66,7 @@ body {
 .sun-editor-editable h2 {
   font-size: 28px !important;
   color: "#212121";
+  margin-bottom: 0px !important;
 }
 .sun-editor-editable h2 span {
   font-size: 28px !important;
@@ -72,6 +74,8 @@ body {
 }
 .sun-editor-editable img {
   border-radius: 16px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .sun-editor-editable p span {
   font-size: 21px !important;
