@@ -46,10 +46,15 @@ export default function FloatingBar({ tableOfContentsId }: any) {
   return (
     <Box
       sx={{
-        position: { sm: "relative", md: "fixed", xs: "relative" },
-        maxWidth: { sm: "100%", md: "300px", xs: "100%" },
-        width: { sm: "100%", md: "19%", xs: "100%" },
-        top: { sm: "0", md: "120px", xs: "0" },
+        position: {
+          sm: "relative",
+          md: "relative",
+          xs: "relative",
+          lg: "fixed",
+        },
+        maxWidth: { sm: "100%", md: "100%", xs: "100%", lg: "300px" },
+        width: { sm: "100%", md: "100%", xs: "100%", lg: "19%" },
+        top: { sm: "0", md: "0", xs: "0", lg: "120px" },
         left: "5px",
         // color: "white",
         borderRadius: "16px",

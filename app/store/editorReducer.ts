@@ -34,9 +34,9 @@ const userReducer = (state: UserState, action: UserAction) => {
     const processedText = action.payload
       .replace(/[^\w\s\-]/gi, "")
       .replace(/\s+/g, " ");
-
     // Convert to lowercase and replace spaces with hyphens
     const finalText = processedText.toLowerCase().replace(/\s+/g, "-");
+    console.log('slug i am setting',finalText)
     return { ...state, slug: finalText };
   }
   if (action.type === "SET_TAGS") {

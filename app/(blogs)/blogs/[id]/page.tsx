@@ -70,8 +70,8 @@ export default async function ReadSingleBlog({ params }: any) {
         <Box>
           <Typography
             variant="h1"
-            sx={{ position: "relative", top: "-20px" }}
-            fontSize="42px"
+            sx={{ position: "relative", top: "-20px", color: "#242424" }}
+            fontSize="38px"
             fontWeight={700}
             paddingX="20px"
           >
@@ -80,12 +80,15 @@ export default async function ReadSingleBlog({ params }: any) {
           <FloatingBar tableOfContentsId={data2.data.tableOfContentsId} />
           <Stack direction="row" justifyContent="space-between" paddingX="20px">
             <Typography color="GrayText" variant="body2">
+              <Box component="span" fontSize="17px !important">
+                by
+              </Box>{" "}
               <Box
                 component="span"
                 color="rgb(82,200,91)"
                 fontSize="17px !important"
               >
-                by Samarth
+                Samarth
               </Box>{" "}
               - 3 min read
               <Box

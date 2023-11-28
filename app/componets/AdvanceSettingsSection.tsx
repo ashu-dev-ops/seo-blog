@@ -19,7 +19,6 @@ export default function AdvanceSettingsSection() {
     canonical,
     metaDescription,
     metaTitle,
-    slugT
   } = useUserContext();
   const [showAdvance, setShowAdvance] = useState(false);
   const [isAddMetaDescriptionOpen, setIsAddMetaDescriptionOpen] =
@@ -33,8 +32,8 @@ export default function AdvanceSettingsSection() {
   );
   const [cononical, setCononical] = useState(canonical);
 
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>", slug);
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>T", slugT);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>", slug);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>T", slugT);
   const handleMetaTagsT = async () => {
     handleMetaTags({
       metaTitleT,
@@ -45,7 +44,7 @@ export default function AdvanceSettingsSection() {
     handleCononical(cononical);
   };
   const handleSlugT = async () => {
-    handleSlug(slugT);
+    handleSlug(slug);
   };
   return (
     <>
@@ -134,7 +133,6 @@ export default function AdvanceSettingsSection() {
           value={slug}
           onChange={(e) => {
             handleSlug(e.target.value);
-           
           }}
           InputProps={{
             startAdornment: (
@@ -146,7 +144,7 @@ export default function AdvanceSettingsSection() {
         />
         <Stack direction="row" gap={2} mt={1} mr={1}>
           <Typography fontWeight="bold"> url</Typography>
-          <Typography> wwww.example.com/blogs/{slugT}</Typography>
+          <Typography> wwww.example.com/blogs/{slug}</Typography>
         </Stack>
       </TagsCurdModel>
       <TagsCurdModel

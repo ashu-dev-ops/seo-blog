@@ -1,30 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap");
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+/* @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap"); */
+@import url("https://use.typekit.net/rog2rat.css");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&family=Source+Serif+4:opsz,wght@8..60,500&display=swap");
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -62,12 +42,32 @@ body {
 .sun-editor .se-toolbar.se-toolbar-sticky {
   margin-top: 90px;
 }
+/* heading */
+.sun-editor-editable h2 {
+  scroll-margin-top: 5rem !important;
+}
+/* para */
 .sun-editor-editable p {
   font-size: 21px !important;
   color: "#212121";
+  /* font-family: "Source Serif 4" !important; */
+  font-family: "source-serif-pro" !important;
 }
+/* sub heading */
 .sun-editor-editable h3 {
-  font-size: 23px !important;
+  font-size: 25px !important;
+  color: "#212121";
+}
+.sun-editor-editable h3 span {
+  font-size: 25px !important;
+  color: "#212121";
+}
+.sun-editor-editable h2 {
+  font-size: 28px !important;
+  color: "#212121";
+}
+.sun-editor-editable h2 span {
+  font-size: 28px !important;
   color: "#212121";
 }
 .sun-editor-editable img {
@@ -76,25 +76,25 @@ body {
 .sun-editor-editable p span {
   font-size: 21px !important;
   color: "#212121";
+  /* font-family: "Source Serif 4" !important; */
+  font-family: "source-serif-pro" !important;
 }
-.show-container p span {
+/* .show-container p span {
   font-size: 21px !important;
   color: "#212121";
-}
+} */
 .show-container img {
   border-radius: 10px;
 }
-.show-container h3 span {
+/* .show-container h3 span {
   font-size: 28px !important;
   font-weight: bold;
-}
+} */
 .blog-card-image-container:hover img {
   transform: scale(1.25) rotate(1deg);
 }
 
-.sun-editor-editable h2 {
-  scroll-margin-top: 5rem !important;
-}
+
 /* .active {
   color: "red !important";
   background-color: orange;
@@ -109,7 +109,7 @@ a {
 .active-link-dashboard {
   background-color: aquamarine;
   padding: 1rem;
-  color:white
+  color: white;
 }
 .link-dashboard {
   padding: 1rem;
