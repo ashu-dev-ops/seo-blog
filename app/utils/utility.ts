@@ -36,7 +36,6 @@ export const handleEditorChange: HandleChangeFunction = async (
   setNoLinks
 ) => {
   console.log("print content >>>>>>>>>>>.", editor.current.getContents());
- 
 
   const words = editor.current.getText().split(" ");
   console.log(`Content words should be > 800. Current: 2 ${words.length}`);
@@ -74,9 +73,10 @@ type HandelSaveFunction = (
   canonical: any,
   slug: any,
   category: any,
-  tags: any
+  tags: any,
+  noOfWordsInTitle: number
 ) => void;
-const handelDataToSave: HandelSaveFunction = (
+export const handelDataToSaveEditor: HandelSaveFunction = (
   type,
   setIsLoading,
   editor,
@@ -87,6 +87,7 @@ const handelDataToSave: HandelSaveFunction = (
   noOfImage,
   noOfWords,
   noOfLinks,
+  noOfWordsInTitle,
   metaTitle,
   metaDescription,
   canonical,
@@ -114,7 +115,27 @@ const handelDataToSave: HandelSaveFunction = (
     });
     h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
   });
-
+  var firstImage = tempElement.querySelector("img");
+  var firstParagraph = tempElement.querySelector("p:not(:empty):not(:has(br))");
+  var srcAttribute;
+  var paragraphText;
+  var defaultSlug;
+  // Check if an image was found
+  if (firstImage) {
+    // Extract the src attribute
+    srcAttribute = firstImage.getAttribute("src");
+  }
+  // Check if a non-empty paragraph was found
+  if (firstParagraph) {
+    // Extract the text content of the paragraph
+    paragraphText = firstParagraph?.textContent
+      .split(/\s+/)
+      .slice(0, 20)
+      .join(" ");
+    console.log("First Non-Empty Paragraph:", paragraphText);
+  }
+  // Get the modified HTML string from the temporary element
+  console.log("LOADING TRUE HTML NEAR END");
   // Get the modified HTML string from the temporary element
   var modifiedHtmlString = tempElement.innerHTML;
   const dataToSend = {
@@ -130,13 +151,19 @@ const handelDataToSave: HandelSaveFunction = (
       noOfImage,
       noOfWords,
       noOfLinks,
+      noOfWordsInTitle,
       readTime: Math.ceil(noOfWords / 225),
+      thumbnail: srcAttribute
+        ? srcAttribute
+        : "https://ik.imagekit.io/ww4pq6w6n/videos/sheetwa_logo_rounded_dp_x6R5RbTUE.png?updatedAt=1696096625826&tr=w-1200%2Ch-675%2Cfo-auto",
     },
     seo: {
-      metaTitle,
-      metaDescription,
+      metaTitle: metaTitle ? metaTitle : title,
+      metaDescription: metaDescription ? metaDescription : paragraphText,
       canonical,
-      slug,
+      slug: slug
+        ? slug
+        : title.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
       category,
       tags,
     },

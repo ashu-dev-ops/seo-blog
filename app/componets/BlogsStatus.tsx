@@ -40,7 +40,7 @@ export default function BlogsStatus({
       <Stack direction="row" gap={1}>
         <Box>
           {" "}
-          {noOfWordsInTitle <= 12 && noOfWordsInTitle >= 8 ? (
+          {noOfWordsInTitle <= 12 && noOfWordsInTitle >= 7 ? (
             <DoneIcon sx={{ color: "green" }} />
           ) : (
             <CloseIcon sx={{ color: "red" }} />

@@ -69,11 +69,17 @@ export const GET = async (req: any) => {
   }
 };
 export const PATCH = async (request: any) => {
+  console.log("running update>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..");
   const { title, html, stats, blogStatus, blogId, tableOfContentsId, seo } =
     await request.json();
   // console.log("we are getting on api seo", seo);
   await connect();
-  console.log("we are getting on api seo", seo);
+  // console.log("we are getting on api seo", seo);
+  console.log(
+    "i am getting data on server",
+
+    blogId
+  );
   const data = await Blog.findOneAndUpdate(
     { _id: blogId },
     { html, stats, title, blogStatus, tableOfContentsId, seo },

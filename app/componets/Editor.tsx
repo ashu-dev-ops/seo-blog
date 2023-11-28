@@ -9,7 +9,6 @@ interface EditorProps {
   defaultValue?: string; // defaultValue is an optional prop of type string
 }
 
-
 export default function Editor({
   getSunEditorInstance,
   handleChange,
@@ -55,7 +54,7 @@ export default function Editor({
         buttonList: [
           // ["font", "fontSize", "formatBlock"],
           ["formatBlock", "bold", "underline", "list"],
-          ["link", "image", "video" /** ,'math' */], // You must add the 'katex' library at options to use the 'math' plugin.
+          ["link", "image", "video" /** ,'math' */, "table"], // You must add the 'katex' library at options to use the 'math' plugin.
           // ["paragraphStyle", "blockquote"],
           ["align", "codeView"],
           ["undo", "redo", "removeFormat"],

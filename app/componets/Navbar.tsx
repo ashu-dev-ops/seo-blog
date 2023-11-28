@@ -84,7 +84,7 @@ export default function Navbar() {
       // style={{ width: "100%%" }}
     >
       <Link
-        href="/user/all-blogs"
+        href="/user/dashboard"
         style={{ textDecoration: "none", color: "gray" }}
       >
         <h1 className="text-3xl "> Powerblog </h1>

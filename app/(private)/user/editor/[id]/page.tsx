@@ -8,24 +8,24 @@ import {
   CircularProgress,
 } from "@mui/material";
 import React, { useRef, useState, useEffect } from "react";
-import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
-import SaveIcon from "@mui/icons-material/Save";
+
 import dynamic from "next/dynamic";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
+
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { useSession } from "next-auth/react";
-import CategoryAddEditor from "@/app/componets/CategoryAddEditorComponent";
-import TagsAddEditor from "@/app/componets/TagsAddEditor";
-import AdvanceSettingsSection from "@/app/componets/AdvanceSettingsSection";
+
 import { useUserContext } from "@/app/store/editorContext";
 import BlogsStatus from "@/app/componets/BlogsStatus";
 import BlogsRightStatsBar from "@/app/componets/BlogsRightStatsBar";
 import Editor from "@/app/componets/Editor";
-import { handleEditorChange } from "@/app/utils/utility";
+import {
+  handelDataToSaveEditor,
+  handleEditorChange,
+} from "@/app/utils/utility";
+import EditorTitleInputField from "@/app/componets/EditorTitleInputField";
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
 });
@@ -76,6 +76,11 @@ export default function Page({ params }: any) {
     );
     setNoOfWords(
       data.data.data.stats.noOfWords ? data.data.data.stats.noOfWords : 0
+    );
+    setNoWordsInTitle(
+      data.data.data.stats.noOfWordsInTitle
+        ? data.data.data.stats.noOfWordsInTitle
+        : 0
     );
     handleSlug(data.data.data?.seo?.slug || "");
     handleCononical(data.data.data?.seo?.canonical || "");
@@ -140,177 +145,32 @@ export default function Page({ params }: any) {
       uploadHandler();
     };
   }
-  const handleDraft = async () => {
-    try {
-      console.log("html extraction started");
-      var tableOfContentsId: any = [];
-      setIsLoading(true);
-      var htmlString = `${editor.current.getContents()}`;
 
-      // Create a temporary DOM element to manipulate the HTML string
-      var tempElement = document.createElement("div");
-      tempElement.innerHTML = htmlString;
-
-      // Select all <h2> elements within the temporary element
-      var h2Elements = tempElement.querySelectorAll("h2");
-
-      // Loop through each <h2> element and set its id based on its content
-      h2Elements.forEach(function (h2Element) {
-        var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
-        tableOfContentsId.push({
-          headingId: content.replace(/\s+/g, "-").toLocaleLowerCase(),
-          headingTitle: content,
-        });
-        h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
-      });
-      console.log("html extraction end and working on data to send");
-      // Get the modified HTML string from the temporary element
-      var firstImage = tempElement.querySelector("img");
-      var firstParagraph =tempElement.querySelector("p:not(:empty):not(:has(br))");
-      var srcAttribute;
-      var paragraphText;
-      // Check if an image was found
-      if (firstImage) {
-        // Extract the src attribute
-        srcAttribute = firstImage.getAttribute("src");
-      }
-      // Check if a non-empty paragraph was found
-      if (firstParagraph) {
-        // Extract the text content of the paragraph
-        // paragraphText = firstParagraph.textContent;
-        console.log(firstParagraph?.textContent);
-        paragraphText = firstParagraph?.textContent
-          .split(/\s+/)
-          .slice(0, 20)
-          .join(" ");
-
-        console.log("First Non-Empty Paragraph:", paragraphText);
-        // console.log("First Non-Empty Paragraph:", paragraphText);
-      }
-      var modifiedHtmlString = tempElement.innerHTML;
-      const dataToSend = {
-        blogStatus: "Draft",
-        html: modifiedHtmlString,
-        tableOfContentsId,
-        title: title,
-        writtenBy: session.user.email,
-        blogId: params.id,
-        stats: {
-          noOfSubHeading,
-          noOfHeading,
-          noOfImage,
-          noOfWords,
-          noOfLinks,
-          readTime: Math.ceil(noOfWords / 225),
-          thumbnail: srcAttribute
-            ? srcAttribute
-            : "https://ik.imagekit.io/ww4pq6w6n/videos/sheetwa_logo_rounded_dp_x6R5RbTUE.png?updatedAt=1696096625826&tr=w-1200%2Ch-675%2Cfo-auto",
-        },
-        seo: {
-          metaTitle: metaTitle ? metaTitle : title,
-          metaDescription: metaDescription ? metaDescription : paragraphText,
-          canonical,
-          slug: slug
-            ? slug
-            : title.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
-          category,
-          tags,
-        },
-      };
-      console.log("ready data to send", dataToSend);
-      await axios
-        .patch(`/api/blogs`, dataToSend)
-        .then(() => router.push("/user/dashboard"));
-      // console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handlePublish = async () => {
-    try {
-      var tableOfContentsId: any = [];
-      setIsLoading(true);
-      var htmlString = `${editor.current.getContents()}`;
-
-      // Create a temporary DOM element to manipulate the HTML string
-      var tempElement = document.createElement("div");
-      tempElement.innerHTML = htmlString;
-
-      // Select all <h2> elements within the temporary element
-      var h2Elements = tempElement.querySelectorAll("h2");
-
-      // Loop through each <h2> element and set its id based on its content
-      h2Elements.forEach(function (h2Element) {
-        var content = h2Element.textContent || h2Element.innerText; // Get the content of the <h2> element
-        tableOfContentsId.push({
-          headingId: content.replace(/\s+/g, "-").toLocaleLowerCase(),
-          headingTitle: content,
-        });
-        h2Element.id = content.replace(/\s+/g, "-").toLocaleLowerCase(); // Set the id based on the trimmed content
-      });
-      var firstImage = tempElement.querySelector("img");
-      var firstParagraph = tempElement.querySelector("p:not(:empty):not(:has(br))");
-      console.log(
-        "checking>>>>>>>>>>>>if i am getting first para",
-        firstParagraph
-      );
-      var srcAttribute;
-      var paragraphText;
-      // Check if an image was found
-      if (firstImage) {
-        // Extract the src attribute
-        srcAttribute = firstImage.getAttribute("src");
-      }
-      // Check if a non-empty paragraph was found
-      if (firstParagraph) {
-        // Extract the text content of the paragraph
-        // paragraphText = firstParagraph.textContent;
-        paragraphText = firstParagraph?.textContent
-        .split(/\s+/)
-        .slice(0, 20)
-        .join(" ");
-        console.log("First Non-Empty Paragraph:", paragraphText);
-      }
-      // Get the modified HTML string from the temporary element
-      var modifiedHtmlString = tempElement.innerHTML;
-      const dataToSend = {
-        blogStatus: "Publish",
-        html: modifiedHtmlString,
-        tableOfContentsId,
-        title: title,
-        writtenBy: session.user.email,
-        blogId: params.id,
-        stats: {
-          noOfSubHeading,
-          noOfHeading,
-          noOfImage,
-          noOfWords,
-          noOfLinks,
-          readTime: Math.ceil(noOfWords / 225),
-          thumbnail: srcAttribute
-            ? srcAttribute
-            : "https://ik.imagekit.io/ww4pq6w6n/videos/sheetwa_logo_rounded_dp_x6R5RbTUE.png?updatedAt=1696096625826&tr=w-1200%2Ch-675%2Cfo-auto",
-        },
-        seo: {
-          metaTitle: metaTitle ? metaTitle : title,
-          metaDescription: metaDescription ? metaDescription : paragraphText,
-          canonical,
-          slug: slug
-          ? slug
-          : title.toLowerCase().replace(/\s+/g, " ").replace(/\s+/g, "-"),
-          category,
-          tags,
-        },
-      };
-      if (thumbnail) {
-        dataToSend.stats.thumbnail = thumbnail;
-      }
-      await axios
-        .patch(`/api/blogs`, dataToSend)
-        .then(() => router.push("/user/dashboard"));
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSave = async (type: string) => {
+    const dataToSend = handelDataToSaveEditor(
+      type,
+      setIsLoading,
+      editor,
+      session,
+      title,
+      noOfSubHeading,
+      noOfHeading,
+      noOfImage,
+      noOfWords,
+      noOfLinks,
+      noOfWordsInTitle,
+      metaTitle,
+      metaDescription,
+      canonical,
+      slug,
+      category,
+      tags
+    );
+    console.log("ready data to send", dataToSend);
+    dataToSend.blogId = params.id;
+    await axios
+      .patch(`/api/blogs`, dataToSend)
+      .then(() => router.push("/user/dashboard"));
   };
   if (isLoading) {
     return (
@@ -327,7 +187,7 @@ export default function Page({ params }: any) {
       </Box>
     );
   }
-
+  console.log("words in title >>>>>>>>>>>>.", noOfWordsInTitle);
   return (
     <>
       <Box
@@ -362,30 +222,12 @@ export default function Page({ params }: any) {
             alignItems: "center",
           }}
         >
-          <TextField
-            variant="standard" // <== changed this
-            fullWidth
-            multiline
-            focused={false}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter your title"
-            InputProps={{
-              style: {
-                backgroundColor: "transparent",
-                fontSize: "2rem",
-              },
-              disableUnderline: true,
-            }}
-            InputLabelProps={{
-              style: {
-                color: "#919EAB",
-                fontSize: "2rem",
-                fontWeight: "bolder",
-              },
-            }}
-          ></TextField>
-
+          <EditorTitleInputField
+            title={title}
+            handleSlug={handleSlug}
+            setNoWordsInTitle={setNoWordsInTitle}
+            setTitle={setTitle}
+          />
           <Editor
             getSunEditorInstance={getSunEditorInstance}
             handleChange={handleChange}
@@ -395,8 +237,8 @@ export default function Page({ params }: any) {
         </Box>
         <BlogsRightStatsBar
           noOfWords={noOfWords}
-          handleDraft={handleDraft}
-          handlePublish={handlePublish}
+          handleDraft={() => handleSave("Draft")}
+          handlePublish={() => handleSave("Publish")}
           blogStatus={blogStatus}
         />
       </Box>
