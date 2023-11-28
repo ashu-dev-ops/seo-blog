@@ -46,43 +46,75 @@ body {
 .sun-editor-editable h2 {
   scroll-margin-top: 5rem !important;
 }
-/* para */
-.sun-editor-editable p {
-  font-size: 21px !important;
-  color: "#212121";
-  /* font-family: "Source Serif 4" !important; */
-  font-family: "source-serif-pro" !important;
-}
-/* sub heading */
-.sun-editor-editable h3 {
-  font-size: 25px !important;
-  color: "#212121";
-  margin-bottom: 0px !important;
-}
-.sun-editor-editable h3 span {
-  font-size: 25px !important;
-  color: "#212121";
-}
 .sun-editor-editable h2 {
-  font-size: 28px !important;
-  color: "#212121";
+  font-size: 24px !important;
+  color: #242424 !important;
   margin-bottom: 0px !important;
 }
 .sun-editor-editable h2 span {
-  font-size: 28px !important;
-  color: "#212121";
+  font-size: 24px !important;
+  color: #242424 !important;
 }
+/* para */
+.sun-editor-editable p {
+  font-size: 20px !important;
+  color: #242424 !important;
+  /* font-family: "Source Serif 4" !important; */
+  font-family: "source-serif-pro" !important;
+  margin-bottom: 2em !important;
+  font-weight: 300;
+}
+.sun-editor-editable p span {
+  font-size: 20px !important;
+  color: #242424 !important ;
+  /* font-family: "Source Serif 4" !important; */
+  font-family: "source-serif-pro" !important;
+  /* margin-top: 2.14em; */
+  font-weight: 300;
+}
+/* sub heading */
+.sun-editor-editable h3 {
+  font-size: 22px !important;
+  color: #242424 !important;
+  margin-bottom: 0px !important;
+}
+.sun-editor-editable h3 span {
+  font-size: 22px !important;
+  color: #242424 !important;
+}
+/* Responsive styles for screens smaller than 600px (adjust as needed) */
+@media (max-width: 600px) {
+  .sun-editor-editable h2 {
+    font-size: 20px !important;
+  }
+
+  .sun-editor-editable h2 span {
+    font-size: 20px !important;
+  }
+
+  .sun-editor-editable h3 {
+    font-size: 19px !important;
+  }
+
+  .sun-editor-editable h3 span {
+    font-size: 19px !important;
+  }
+
+  .sun-editor-editable p {
+    font-size: 18px !important;
+  }
+
+  .sun-editor-editable p span {
+    font-size: 18px !important;
+  }
+}
+
 .sun-editor-editable img {
   border-radius: 16px;
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.sun-editor-editable p span {
-  font-size: 21px !important;
-  color: "#212121";
-  /* font-family: "Source Serif 4" !important; */
-  font-family: "source-serif-pro" !important;
-}
+
 /* .show-container p span {
   font-size: 21px !important;
   color: "#212121";
@@ -97,7 +129,6 @@ body {
 .blog-card-image-container:hover img {
   transform: scale(1.25) rotate(1deg);
 }
-
 
 /* .active {
   color: "red !important";

@@ -24,10 +24,16 @@ export default function LeadGenCard() {
         textAlign: "center",
       }}
     >
-      <Typography variant="h2" fontWeight="bold" fontSize="2rem">
+      <Typography
+        variant="h2"
+        fontWeight="bold"
+        fontSize={{ sm: "2rem", md: "2rem", xs: "28px" }}
+      >
         Super charge your WhatsApp marketing campaign with SheetWA
       </Typography>
-      <Typography mt="5px" color='GrayText'>its free why wait </Typography>
+      <Typography mt="5px" color="GrayText">
+        its free why wait{" "}
+      </Typography>
       <Stack direction="row" justifyContent="center" gap={2} mt="30px">
         <Box
           component="input"

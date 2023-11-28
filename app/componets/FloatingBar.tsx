@@ -52,10 +52,10 @@ export default function FloatingBar({ tableOfContentsId }: any) {
           xs: "relative",
           lg: "fixed",
         },
-        maxWidth: { sm: "100%", md: "100%", xs: "100%", lg: "300px" },
-        width: { sm: "100%", md: "100%", xs: "100%", lg: "19%" },
+        maxWidth: { sm: "100%", md: "100%", xs: "98%", lg: "250px" },
+        width: { sm: "100%", md: "100%", xs: "98%", lg: "19%" },
         top: { sm: "0", md: "0", xs: "0", lg: "120px" },
-        left: "5px",
+        left: { lg: "5px", md: "5px", sm: "5px", xs: "-9px" },
         // color: "white",
         borderRadius: "16px",
         padding: "1rem",
@@ -67,7 +67,9 @@ export default function FloatingBar({ tableOfContentsId }: any) {
         margin: "1rem",
       }}
     >
-      <Typography fontSize="1.6rem">Contents</Typography>
+      <Typography fontSize="18px" fontWeight={700} mb={"8px"}>
+        Contents
+      </Typography>
       {tableOfContentsId.length > 1 &&
         tableOfContentsId.map((headerId: any, idx: any) => {
           return (
@@ -78,6 +80,7 @@ export default function FloatingBar({ tableOfContentsId }: any) {
               className={`${headerId.headingId} floating-link`}
               sx={{
                 textDecoration: "none",
+                fontSize: "14px",
                 color:
                   currentSection === headerId.headingId ? "green" : "GrayText",
               }}

@@ -59,26 +59,35 @@ export default async function ReadSingleBlog({ params }: any) {
         display: "flex",
         justifyContent: "center",
         // backgroundColor: "rgb(251,252,254)",
-        padding: "1rem",
+        padding: "0rem",
         overflow: "hidden",
       }}
     >
       <Container
         component="section"
-        sx={{ margin: "auto", marginTop: 12, maxWidth: { sm: "800px" } }}
+        sx={{
+          margin: "auto",
+          marginTop: "8.5rem",
+          maxWidth: { sm: "800px", xs: "100%" },
+        }}
       >
         <Box>
           <Typography
             variant="h1"
             sx={{ position: "relative", top: "-20px", color: "#242424" }}
-            fontSize="38px"
+            fontSize={{ md: "38px", xs: "32px" }}
             fontWeight={700}
             paddingX="20px"
           >
             {data2.data.title}
           </Typography>
           <FloatingBar tableOfContentsId={data2.data.tableOfContentsId} />
-          <Stack direction="row" justifyContent="space-between" paddingX="20px">
+          <Stack
+            direction={{ xs: "column", sm: "column", md: "row" }}
+            justifyContent="space-between"
+            paddingX="20px"
+            gap={{ xs: 1 }}
+          >
             <Typography color="GrayText" variant="body2">
               <Box component="span" fontSize="17px !important">
                 by
@@ -101,15 +110,33 @@ export default async function ReadSingleBlog({ params }: any) {
                   padding: "2px 8px",
                   marginTop: "10px",
                   marginLeft: "5px",
+                  display: { sm: "initial", md: "initial", xs: "none" },
                 }}
               >
                 {data2.data.seo?.category?.name}
               </Box>
             </Typography>{" "}
+            <Box
+              component="sapn"
+              sx={{
+                background: "#daffd2",
+                color: "green",
+                width: "fit-content",
+                borderRadius: "5px",
+                padding: "2px 8px",
+                marginTop: "-5px",
+                marginLeft: "-1px",
+                display: { sm: "none", md: "none", xs: "initial" },
+         
+              }}
+            >
+              {data2.data.seo?.category?.name}
+            </Box>
             <Stack
               sx={{
                 backgroundColor: "rgb(82,200,91)",
                 padding: "0.2rem 0.4rem",
+                width: "fit-content",
               }}
               direction="row"
               alignItems="center"
@@ -124,13 +151,21 @@ export default async function ReadSingleBlog({ params }: any) {
                   "&hover": {
                     backgroundColor: "#23A566",
                   },
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <EmailIcon sx={{ color: "white" }} />
               </Box>
               <Box
                 component="a"
-                sx={{ cursor: "pointer" }}
+                sx={{
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
                 target="_blank"
                 href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsheetwa.com%2Fblogs%265493202a868499292add7b4"
               >
@@ -138,7 +173,12 @@ export default async function ReadSingleBlog({ params }: any) {
               </Box>
               <Box
                 component="a"
-                sx={{ cursor: "pointer" }}
+                sx={{
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
                 target="_blank"
                 href={`https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsheetwa.com%2Fblogs%2${data2.data._id}`}
               >
@@ -146,7 +186,12 @@ export default async function ReadSingleBlog({ params }: any) {
               </Box>
               <Box
                 component="a"
-                sx={{ cursor: "pointer" }}
+                sx={{
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
                 target="_blank"
                 href={`https://twitter.com/intent/tweet?url=https://sheetwa.com/blogs/${data2.data._id}`}
               >

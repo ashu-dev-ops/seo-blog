@@ -25,10 +25,13 @@ export default function BlogCta() {
       elevation={4}
     >
       <Box>
-        <Typography fontSize="2rem" fontWeight={700}>
+        <Typography
+          fontSize={{ sm: "2rem", md: "2rem", xs: "28px" }}
+          fontWeight={700}
+        >
           SheetWA
         </Typography>
-        <Typography fontSize="21px">
+        <Typography fontSize={{ sm: "20px", md: "20px", xs: "17px" }}>
           Sheetwa Elevate Your WhatsApp Marketing Game Guides and tutorials to
           transform your business with WhatsApp messaging, marketing,
           automations, and more.
