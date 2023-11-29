@@ -24,7 +24,7 @@ export async function generateMetadata(
 
   console.log("id we are sending>>>>>>>>>>>>>>>>>>>>..", lastPart);
   const data = await fetch(`${process.env.BASE_URL}/api/blogs/${lastPart}`, {
-    cache: "no-store",
+    // cache: "no-store",
   });
   // console.log("my value>>>>>>>", data.data);
   const data2 = await data.json();
@@ -49,7 +49,7 @@ export default async function ReadSingleBlog({ params }: any) {
 
   console.log("id we are sending>>>>>>>>>>>>>>>>>>>>..", lastPart);
   const data = await fetch(`${process.env.BASE_URL}/api/blogs/${lastPart}`, {
-    cache: "no-store",
+    // cache: "no-store",
   });
   const data2 = await data.json();
   console.log(data2);
@@ -127,7 +127,6 @@ export default async function ReadSingleBlog({ params }: any) {
                 marginTop: "-5px",
                 marginLeft: "-1px",
                 display: { sm: "none", md: "none", xs: "initial" },
-         
               }}
             >
               {data2.data.seo?.category?.name}
@@ -146,6 +145,8 @@ export default async function ReadSingleBlog({ params }: any) {
             >
               <Box
                 component="a"
+                target="_blank"
+                href="mailto:?&amp;subject=&amp;body=https://sheetwa.com"
                 sx={{
                   cursor: "pointer",
                   "&hover": {

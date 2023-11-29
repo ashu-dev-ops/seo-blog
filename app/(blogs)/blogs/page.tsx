@@ -65,7 +65,11 @@ export default async function page({ searchParams }: any) {
           alignItems: "center",
         }}
       >
-        <Box component="h1" fontSize="2.4rem" textAlign="center">
+        <Box
+          component="h1"
+          fontSize={{ sm: "2.4rem", md: "2.4rem", xs: "32px" }}
+          textAlign="center"
+        >
           Sheetwa Elevate Your WhatsApp Marketing Game
         </Box>
         <Typography
@@ -74,7 +78,7 @@ export default async function page({ searchParams }: any) {
           color="#848484"
           fontWeight={400}
           marginX={10}
-          fontSize="1.4rem"
+          fontSize={{ sm: "1.4rem", md: "1.4rem", xs: "30px" }}
         >
           Guides and tutorials to transform your business with WhatsApp
           messaging, marketing, automations, and more.
@@ -85,7 +89,7 @@ export default async function page({ searchParams }: any) {
             sx={{
               width: "100%",
               justifyContent: "space-between",
-              padding: "2rem  11rem",
+              padding: "2rem",
             }}
             gap={2}
           >
@@ -124,7 +128,7 @@ export default async function page({ searchParams }: any) {
             cursor: "pointer",
             textDecoration: "none",
           }}
-          direction="row"
+          direction={{ xs: "column", sm: "row", md: "row" }}
           component={Link}
           href={`/blogs/${featured[0].seo.slug}-${featured[0]._id}`}
         >

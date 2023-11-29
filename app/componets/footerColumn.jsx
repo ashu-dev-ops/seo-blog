@@ -7,11 +7,11 @@ export default function FooterColumn({ title, links }) {
   return (
     <Box sx={{ width: { sm: "100%", md: "30%" }, alignSelf: "auto" }}>
       <Box
-        component="h6"
+        // component="h6"
         sx={{
           fontSize: "20px",
           margin: 0,
-          fontWeight: 400,
+          fontWeight: 600,
           textAlign: { xs: "center", sm: "left" },
         }}
       >
