@@ -156,6 +156,7 @@ export default async function ReadSingleBlog({ params }: any) {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+                aria-label="share on email"
               >
                 <EmailIcon sx={{ color: "white" }} />
               </Box>
@@ -167,6 +168,7 @@ export default async function ReadSingleBlog({ params }: any) {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+                aria-label="share on facebook"
                 target="_blank"
                 href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsheetwa.com%2Fblogs%265493202a868499292add7b4"
               >
@@ -180,6 +182,7 @@ export default async function ReadSingleBlog({ params }: any) {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+                aria-label="share on linkdin"
                 target="_blank"
                 href={`https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fsheetwa.com%2Fblogs%2${data2.data._id}`}
               >
@@ -193,6 +196,7 @@ export default async function ReadSingleBlog({ params }: any) {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+                aria-label="share on twitter"
                 target="_blank"
                 href={`https://twitter.com/intent/tweet?url=https://sheetwa.com/blogs/${data2.data._id}`}
               >

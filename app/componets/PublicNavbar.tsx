@@ -152,6 +152,7 @@ export default function PublicNavbar() {
           onClick={toggleDrawer}
           sx={{ display: { xs: "block", sm: "block", lg: "none" } }}
           disableRipple
+          aria-label="menu"
         >
           {openDrawer ? <CloseIcon /> : <Menu />}
         </IconButton>
