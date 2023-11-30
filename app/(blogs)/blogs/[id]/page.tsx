@@ -1,15 +1,27 @@
-import { Box, Card, Container, Typography, Stack, Avatar } from "@mui/material";
+import { Box, Container, Typography, Stack } from "@mui/material";
 import React from "react";
 import "suneditor/dist/css/suneditor.min.css";
+import dynamic from "next/dynamic";
 import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import LeadGenCard from "@/app/componets/LeadGenCard";
-import FloatingBar from "@/app/componets/FloatingBar";
-import BlogCta from "@/app/componets/BlogCta";
+
 import type { Metadata, ResolvingMetadata } from "next";
-import UtilityLinkButton from "@/app/componets/UtilityLinkButton";
+// const ComponentC = dynamic(() => import('../components/C'), { ssr: false })
+const UtilityLinkButton = dynamic(
+  () => import("../../../componets/UtilityLinkButton"),
+  { ssr: false }
+);
+const LeadGenCard = dynamic(() => import("../../../componets/LeadGenCard"), {
+  ssr: false,
+});
+const FloatingBar = dynamic(() => import("../../../componets/FloatingBar"), {
+  ssr: false,
+});
+const BlogCta = dynamic(() => import("../../../componets/BlogCta"), {
+  ssr: false,
+});
 
 type Props = {
   params: { id: string };
