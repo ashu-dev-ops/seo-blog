@@ -6,7 +6,9 @@ import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
-
+// dynamic(() => import("suneditor/dist/css/suneditor.min.css"), {
+//   ssr: false,
+// });
 import type { Metadata, ResolvingMetadata } from "next";
 // const ComponentC = dynamic(() => import('../components/C'), { ssr: false })
 const UtilityLinkButton = dynamic(

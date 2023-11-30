@@ -5,7 +5,7 @@ import Navbar from "./componets/Navbar";
 import Footer from "./componets/footer";
 import { getServerSession } from "next-auth";
 import AuthProvider from "./lib/SessionProvider";
-import Providers from "./redux/provider";
+
 // import { SessionProvider } from "./lib/SessionProvider";
 // import SessionProvider from "@/utils/SessionProvider";
 const inter = Inter({ subsets: ["latin"] });
@@ -25,9 +25,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <Providers> */}
-          <AuthProvider session={session}>{children}</AuthProvider>
-        {/* </Providers> */}
+       
+        {children}
+
       </body>
     </html>
   );

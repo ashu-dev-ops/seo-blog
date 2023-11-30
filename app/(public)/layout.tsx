@@ -9,11 +9,14 @@ export default async function layout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession();
   return (
     <div>
-      <OuterNavbar />
-      {children}
-      <Footer />
+      <AuthProvider session={session}>
+        <OuterNavbar />
+        {children}
+        <Footer />
+      </AuthProvider>
     </div>
   );
 }

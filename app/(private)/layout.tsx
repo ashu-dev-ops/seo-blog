@@ -17,9 +17,11 @@ export default async function layout({
   }
   return (
     <div>
-      <Navbar />
-      {children}
-      <Footer />
+      <AuthProvider session={session}>
+        <Navbar />
+        {children}
+        <Footer />
+      </AuthProvider>
     </div>
   );
 }
