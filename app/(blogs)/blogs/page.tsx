@@ -173,7 +173,7 @@ export default async function page({ searchParams }: any) {
                 paddingRight: "40px",
               }}
             >
-              {featured[0]?.seo?.metaDescription}
+              {featured[0]?.seo?.metaDescription}...
             </Box>
             <Box
               component="p"
