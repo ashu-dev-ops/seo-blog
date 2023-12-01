@@ -173,9 +173,7 @@ export default async function page({ searchParams }: any) {
                 paddingRight: "40px",
               }}
             >
-              ​All about gifting with Mandaala’s Celebration module! ​All about
-              gifting with Mandaala’s Celebration module! gifting with
-              Mandaala’s Celebration module!...
+              {featured[0]?.seo?.metaDescription}
             </Box>
             <Box
               component="p"
