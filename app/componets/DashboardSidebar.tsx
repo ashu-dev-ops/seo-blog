@@ -5,13 +5,18 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import StyleIcon from "@mui/icons-material/Style";
 import CategoryIcon from "@mui/icons-material/Category";
 import LanguageIcon from "@mui/icons-material/Language";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../lib/authOptions";
 
 type NavigationItem = {
   name: string;
   path: string;
   icon: SVGRectElement;
 };
-export default function DashboardSidebar() {
+export default async function DashboardSidebar() {
+  const session = await getServerSession(authOptions);
+  console.log("session on dashboard sidebar", session);
   const data = [
     {
       name: "Post",
@@ -28,11 +33,16 @@ export default function DashboardSidebar() {
       path: "/category",
       icon: <CategoryIcon />,
     },
-    {
-      name: "Domain",
-      path: "/domain",
-      icon: <LanguageIcon />,
-    },
+    //   {
+    //     name: "Domain",
+    //     path: "/domain",
+    //     icon: <LanguageIcon />,
+    //   },
+    //  {
+    //     name: "Account",
+    //     path: "/account",
+    //     icon: <AccountCircleIcon />,
+    //   },
   ];
   return (
     <div>
@@ -56,6 +66,20 @@ export default function DashboardSidebar() {
             />
           );
         })}
+        {session.user.role === "admin" && (
+          <>
+            <DashboardNavButton
+              path={"/domain"}
+              text={"Domain"}
+              icon={<LanguageIcon />}
+            />
+            <DashboardNavButton
+              path={"/account"}
+              text={"Account"}
+              icon={<AccountCircleIcon />}
+            />
+          </>
+        )}
       </Stack>
     </div>
   );

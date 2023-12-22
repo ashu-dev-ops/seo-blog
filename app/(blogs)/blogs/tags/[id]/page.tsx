@@ -1,22 +1,31 @@
 import React from "react";
 
-import { Box, Stack, Typography, Container, Grid } from "@mui/material";
-import Image from "next/image";
-import Link from "next/link";
-import BlogCard from "@/app/componets/BlogCard";
+import { Box, Container } from "@mui/material";
+
 import BlogCardTwo from "@/app/componets/BlogCardTwo";
 
 const getData = async (params: any, searchParams: any) => {
   try {
-    const res = await fetch(
-      `${process.env.BASE_URL}/api/all-blogs?tags=${params.id}&&userId=${searchParams.userId}`,
-      {
-        cache: "no-store",
-      }
-    );
-    const posts = await res.json();
-
-    return posts;
+    if (searchParams.userId) {
+      const res = await fetch(
+        `${process.env.BASE_URL}/api/all-blogs?tags=${params.id}&&userId=${searchParams.userId}`,
+        {
+          cache: "no-store",
+        }
+      );
+      const posts = await res.json();
+      return posts;
+    }
+    if (searchParams.teamId) {
+      const res = await fetch(
+        `${process.env.BASE_URL}/api/all-blogs?tags=${params.id}&&teamId=${searchParams.teamId}`,
+        {
+          cache: "no-store",
+        }
+      );
+      const posts = await res.json();
+      return posts;
+    }
   } catch (error) {
     console.log(error);
   }

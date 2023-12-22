@@ -16,7 +16,7 @@ const Login = () => {
   const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
-    // console.log(sessionStatus)
+    console.log(sessionStatus);
     console.log("on login>>>>>>>>>>");
     if (sessionStatus === "authenticated") {
       router.replace("/user/dashboard");
@@ -30,31 +30,29 @@ const Login = () => {
   };
 
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const email = username;
- 
+    console.log("rung>>>>>>>>>>>>>>..");
+    try {
+      e.preventDefault();
+      const email = username;
 
-    if (!isValidEmail(email)) {
-      setError("Email is invalid");
-      return;
-    }
+      if (!isValidEmail(email)) {
+        setError("Email is invalid");
+        return;
+      }
 
-    if (!password || password.length < 8) {
-      setError("Password is invalid");
-      return;
-    }
+      if (!password || password.length < 8) {
+        setError("Password is invalid");
+        return;
+      }
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
-
-    if (res?.error) {
-      setError("Invalid email or password");
-      if (res?.url) router.replace("/dashboard");
-    } else {
-      setError("");
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      console.log(">>>>>>>>>>>>>>>>>>>>>>res>>>>>", res);
+    } catch (error) {
+      console.log("error>>>>>>>>>", error);
     }
   };
 

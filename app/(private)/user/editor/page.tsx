@@ -140,8 +140,8 @@ export default function Page() {
         />
         <Box
           sx={{
-            maxWidth: "700px",
-            width: "100%",
+            maxWidth: "800px",
+            width: "50%",
             marginTop: "10vh",
             padding: "1rem",
             borderRadius: "16px",

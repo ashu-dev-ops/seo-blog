@@ -31,35 +31,51 @@ export default function TagsAddEditor() {
       getOptionLabel={(option) => option.name}
       value={tags}
       onChange={async (event, newValue) => {
-        console.log(event, newValue);
-        if (newValue.length > 1) {
-          const lastValue = newValue[newValue.length - 1];
-          console.log("last value", lastValue);
-          const nameCount = allTags?.filter(
-            (item) => item.name === lastValue.name
-          ).length;
-          console.log("is it already exist");
-          if (nameCount === 0) {
-            console.log("running>>>>>.add tag");
-            await handleAdd(lastValue.name);
-          } else {
-            handleTags(newValue);
-            //check if it is remove then remove from tags
-          }
-          // else {
-          //   console.log("running remove>>>>>>>>.");
-
-          //   const allTagsRemove = allTags?.filter(
-          //     (item) => item.name !== lastValue.name
-          //   );
-          //   console.log(allTags, allTagsRemove);
-          //   handleTags(allTagsRemove);
-          // }
+        console.log(">>>>>>>>>>>>>>>.", newValue);
+        // const nameCount = newValue?.filter((item) => item.inputValue);
+        const foundObject = newValue.find((obj) =>
+          obj.hasOwnProperty("inputValue")
+        );
+        const uniqueArray = newValue.filter((obj, index, array) => {
+          // Check if the index of the current object is the first occurrence in the array
+          return array.findIndex((item) => item?.name === obj?.name) === index;
+        });
+        if (foundObject) {
+          return await handleAdd(foundObject.inputValue);
         } else {
-          handleTags(newValue);
-          //check if it is remove then remove from tags
+          handleTags(uniqueArray);
         }
+
+        // if (typeof newValue === "string") {
+        //   await handleAdd(newValue);
+        // } else if (newValue && newValue.name) {
+        //   // Create a new value from the user input
+        //   handleTags(newValue);
+        // }
+        // console.log("values i want>>>>>>>>..", event, newValue);
+        // // if (newValue.length === 0) return;
+        // if (newValue.length >= 1) {
+        //   const lastValue = newValue[newValue.length - 1];
+        //   console.log("last value", lastValue);
+        //   const nameCount = allTags?.filter(
+        //     (item) => item.name === lastValue.name
+        //   ).length;
+        //   console.log("is it already exist");
+        //   if (nameCount === 0) {
+        //     console.log("running>>>>>.add tag");
+
+        //     await handleAdd(lastValue.name);
+        //   } else {
+        //     handleTags(newValue);
+        //   }
+        // } else {
+        //   handleTags(newValue);
+        // }
       }}
+      // onInputChange={(event, newValue) => {
+      //   console.log("new values", newValue);
+      //   handleAdd(newValue);
+      // }}
       filterOptions={(options, params) => {
         // cant do async work
         const filtered = filter(options, params);
@@ -87,8 +103,8 @@ export default function TagsAddEditor() {
         <TextField
           {...params}
           variant="outlined"
-          label="Creatable Tags"
-          placeholder="Favorites"
+          // label="Creatable Tags"
+          placeholder="Tags"
           size="small"
         />
       )}

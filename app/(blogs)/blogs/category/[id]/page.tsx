@@ -6,15 +6,26 @@ import BlogCardTwo from "@/app/componets/BlogCardTwo";
 
 const getData = async (params: any, searchParams: any) => {
   try {
-    const res = await fetch(
-      `${process.env.BASE_URL}/api/all-blogs?category=${params.id}&&userId=${searchParams.userId}`,
-      {
-        cache: "no-store",
-      }
-    );
-    const posts = await res.json();
-
-    return posts;
+    if (searchParams.userId) {
+      const res = await fetch(
+        `${process.env.BASE_URL}/api/all-blogs?category=${params.id}&&userId=${searchParams.userId}`,
+        {
+          cache: "no-store",
+        }
+      );
+      const posts = await res.json();
+      return posts;
+    }
+    if (searchParams.teamId) {
+      const res = await fetch(
+        `${process.env.BASE_URL}/api/all-blogs?category=${params.id}&&teamId=${searchParams.teamId}`,
+        {
+          cache: "no-store",
+        }
+      );
+      const posts = await res.json();
+      return posts;
+    }
   } catch (error) {
     console.log(error);
   }
@@ -45,7 +56,7 @@ export default async function Category({ params, searchParams }: any) {
           textAlign="center"
           textTransform="capitalize"
         >
-          {params.id.replace(/-/g, ' ')}
+          {params.id.replace(/-/g, " ")}
         </Box>
         <Box
           display="flex"

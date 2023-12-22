@@ -8,6 +8,8 @@ import {
   CircularProgress,
   InputAdornment,
 } from "@mui/material";
+import DoneIcon from "@mui/icons-material/Done";
+import CloseIcon from "@mui/icons-material/Close";
 import TagsCurdModel from "./TagsCurdModel";
 import { useUserContext } from "../store/editorContext";
 export default function AdvanceSettingsSection() {
@@ -48,40 +50,109 @@ export default function AdvanceSettingsSection() {
   };
   return (
     <>
-      <Button
+      {/* <Button
         variant="outlined"
         sx={{ margin: "0.5rem" }}
         onClick={() => setShowAdvance(!showAdvance)}
       >
         {showAdvance ? "Hide Settings" : "Advance Settings"}
       </Button>
-      {showAdvance ? (
-        <Box
-          sx={{
-            borderRadius: "10px",
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            backgroundColor: "white",
-            gap: 2,
-          }}
+      {showAdvance ? ( */}
+      <Box
+        sx={{
+          borderRadius: "10px",
+          // padding: "1rem",
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "white",
+          gap: "10px",
+        }}
+      >
+        {/* <Button
+          variant="contained"
+          onClick={() => setIsAddMetaDescriptionOpen(true)}
+          size="small"
         >
-          <Button
-            variant="contained"
-            onClick={() => setIsAddMetaDescriptionOpen(true)}
-          >
-            Custom Meta Tag
-          </Button>
-          <Button variant="contained" onClick={() => setIsAddCustomSlug(true)}>
-            Custom Slug
-          </Button>
-          <Button variant="contained" onClick={() => setIsAddCoconical(true)}>
-            Set Cononical Url
-          </Button>
-        </Box>
-      ) : (
+          Custom Meta Tag
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => setIsAddCustomSlug(true)}
+          size="small"
+        >
+          Custom Slug
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => setIsAddCoconical(true)}
+          size="small"
+        >
+          Set Cononical Url
+        </Button> */}
+        <Stack direction="row" gap={1} alignItems={"center"}>
+          <Box>
+            {metaDescriptionT ? (
+              <DoneIcon sx={{ color: "green" }} />
+            ) : (
+              <CloseIcon sx={{ color: "red" }} />
+            )}
+          </Box>
+          <Box>
+            <Box
+              color="GrayText"
+              sx={{ textDecoration: "underline", cursor: "pointer" }}
+              onClick={() => setIsAddMetaDescriptionOpen(true)}
+            >
+              <Typography variant="body2" color="GrayText">
+                Custom meta tag
+              </Typography>
+            </Box>
+          </Box>
+        </Stack>
+        <Stack direction="row" gap={1} alignItems={"center"}>
+          <Box>
+            {slug ? (
+              <DoneIcon sx={{ color: "green" }} />
+            ) : (
+              <CloseIcon sx={{ color: "red" }} />
+            )}
+          </Box>
+          <Box>
+            <Box
+              color="GrayText"
+              sx={{ textDecoration: "underline", cursor: "pointer" }}
+              onClick={() => setIsAddCustomSlug(true)}
+            >
+              <Typography variant="body2" color="GrayText">
+                Custom Slug
+              </Typography>
+            </Box>
+          </Box>
+        </Stack>
+        <Stack direction="row" gap={1} alignItems={"center"}>
+          <Box>
+            {cononical ? (
+              <DoneIcon sx={{ color: "green" }} />
+            ) : (
+              <CloseIcon sx={{ color: "red" }} />
+            )}
+          </Box>
+          <Box>
+            <Box
+              color="GrayText"
+              sx={{ textDecoration: "underline", cursor: "pointer" }}
+              onClick={() => setIsAddCoconical(true)}
+            >
+              <Typography variant="body2" color="GrayText">
+                Custom Canonical
+              </Typography>
+            </Box>
+          </Box>
+        </Stack>
+      </Box>
+      {/* ) : (
         ""
-      )}
+      )} */}
       <TagsCurdModel
         title="Advanced SEO Parameters"
         open={isAddMetaDescriptionOpen}
@@ -94,7 +165,7 @@ export default function AdvanceSettingsSection() {
             <Typography mb={1}>Meta Title</Typography>
             <TextField
               id="outlined-required"
-              label="Enter Meta Title"
+              // label="Enter Meta Title"
               size="small"
               fullWidth
               value={metaTitleT}
@@ -106,7 +177,7 @@ export default function AdvanceSettingsSection() {
             <Typography mb={1}>Meta Description</Typography>
             <TextField
               id="outlined-multiline-flexible"
-              label="Enter Meta Description"
+              // label="Enter Meta Description"
               multiline
               fullWidth
               size="small"
@@ -127,7 +198,7 @@ export default function AdvanceSettingsSection() {
         action={handleSlugT}
       >
         <TextField
-          label="Enter your slug"
+          // label="Enter your slug"
           id="outlined-start-adornment"
           fullWidth
           value={slug}
@@ -156,7 +227,7 @@ export default function AdvanceSettingsSection() {
         action={handleCononicalT}
       >
         <TextField
-          label="Enter your cononical url"
+          // label="Enter your cononical url"
           id="outlined-start-adornment"
           fullWidth
           value={cononical}

@@ -1,4 +1,5 @@
 import User from "../../models/User";
+import Team from "../../models/Team";
 import connect from "../../lib/mongodb";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
@@ -8,7 +9,8 @@ import { type } from "os";
 
 export const PATCH = async (request: any) => {
   try {
-    const { domain } = await request.json();
+    let body = await request.json();
+    console.log(">>>>>>>>>>>>><<<<<<<<<<<<", body);
     const session = await getServerSession();
     await connect();
 
@@ -17,12 +19,20 @@ export const PATCH = async (request: any) => {
     if (!existingUser) {
       return new NextResponse("Not authorized", { status: 500 });
     }
-
+    if (body.role === "admin") {
+      if (!existingUser.teamId) {
+        const team = await Team.create({
+          createdBy: existingUser._id,
+        });
+        body.teamId = team._id;
+      }
+    }
     const data = await User.findOneAndUpdate(
       { email: session?.user?.email },
-      { domain: domain },
+      body,
       { new: true }
     );
+    console.log("data updated successfully", data);
     return NextResponse.json({ message: "ok", data });
   } catch (err: any) {
     return new NextResponse(err, {
@@ -41,9 +51,25 @@ export const GET = async (request: NextRequest) => {
     const session = await getServerSession();
     await connect();
     const existingUser = await User.findOne({ email: session?.user?.email });
+    let phpCode;
     if (query === "true") {
       // Create your PHP file here
-      const phpCode = `
+      if (existingUser.role === "admin") {
+        phpCode = `
+        <?php
+        $blogType = $_GET['blog'] ?? null;
+        $ch = curl_init();
+        $targetUrl = $blogType ? "https://powerblog-39d6a2c7be5e.herokuapp.com/blogs/" . $blogType :  "https://powerblog-39d6a2c7be5e.herokuapp.com/blogs";
+        $targetUrl .= "?memberId=${existingUser.teamId}";
+        curl_setopt($ch, CURLOPT_URL, $targetUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        echo $output;
+        ?>
+              `;
+      } else {
+        phpCode = `
 <?php
 $blogType = $_GET['blog'] ?? null;
 $ch = curl_init();
@@ -56,6 +82,7 @@ curl_close($ch);
 echo $output;
 ?>
       `;
+      }
 
       // Set the appropriate headers for a file download
       const headers = {

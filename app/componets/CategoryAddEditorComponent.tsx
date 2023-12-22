@@ -102,7 +102,7 @@ export default function CategoryAddEditor() {
       //   sx={{ width: 100 }}
       freeSolo
       size="small"
-      renderInput={(params) => <TextField {...params} label="Enter category" />}
+      renderInput={(params) => <TextField {...params}  />}
     />
   );
 }

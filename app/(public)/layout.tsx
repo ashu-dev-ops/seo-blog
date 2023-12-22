@@ -10,6 +10,7 @@ export default async function layout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
+  console.log("session>>>>>>>>>>>>>>>>>.", session);
   return (
     <div>
       <AuthProvider session={session}>

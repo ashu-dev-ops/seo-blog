@@ -9,8 +9,9 @@ export const GET = async (request: any) => {
   const writtenBy = request.nextUrl.searchParams.get("userId");
   const category = request.nextUrl.searchParams.get("category");
   const tags = request.nextUrl.searchParams.get("tags");
+  const teamId = request.nextUrl.searchParams.get("teamId");
 
-  console.log("value>>>>>>>>>>>>>>>>>>>.", writtenBy, category, tags);
+  console.log("value>>>>>>>>>>>>>>>>>>>.", writtenBy, category, tags, teamId);
   let allBlogs: any[] = [];
   if (writtenBy && (category || tags)) {
     if (category) {
@@ -28,10 +29,32 @@ export const GET = async (request: any) => {
     if (tags) {
       console.log("finding tags");
       allBlogs = await Blog.find({
-        "writtenBy": writtenBy,
+        writtenBy: writtenBy,
         "seo.tags.slug": tags,
-      });
+      }).populate("writtenBy");
       console.log("from tags", allBlogs);
+    }
+  }
+  if (teamId && (category || tags)) {
+    if (category) {
+      console.log("finding category");
+      const blogs = await await Blog.find({
+        writtenBy: writtenBy,
+      });
+      console.log("all blogs of user", blogs);
+      allBlogs = await Blog.find({
+        teamId: teamId,
+        "seo.category.slug": category,
+      }).populate("writtenBy");
+      console.log("from category", allBlogs);
+    }
+    if (tags) {
+      console.log("finding tags");
+      allBlogs = await Blog.find({
+        teamId: teamId,
+        "seo.tags.slug": tags,
+      }).populate("writtenBy");
+      console.log("from tags", teamId);
     }
   }
 

@@ -170,11 +170,12 @@ export default function Navbar() {
                     Editor
                   </MenuItem>
                 </Link>
-
-                <MenuItem onClick={handleClose} disableRipple>
-                  <AccountCircleIcon />
-                  Account
-                </MenuItem>
+                <Link href="/user/dashboard/team_account">
+                  <MenuItem onClick={handleClose} disableRipple>
+                    <AccountCircleIcon />
+                    Account
+                  </MenuItem>
+                </Link>
                 <Divider sx={{ my: 0.5 }} />
 
                 <MenuItem

@@ -1,14 +1,17 @@
-import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+
+import React, { useState } from "react";
+import { Box, Stack, TextField, Typography } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
+import TagsCurdModel from "./TagsCurdModel";
+import AdvanceSettingsSection from "./AdvanceSettingsSection";
 interface BlogsStatusProps {
   noOfWordsInTitle: number;
   noOfWords: number;
   noOfImage: number;
   noOfHeading: number;
   noOfLinks: number;
-  noOfSubHeading:number
+  noOfSubHeading: number;
 }
 export default function BlogsStatus({
   noOfWordsInTitle,
@@ -16,16 +19,18 @@ export default function BlogsStatus({
   noOfImage,
   noOfHeading,
   noOfLinks,
-  noOfSubHeading
-}:BlogsStatusProps) {
+  noOfSubHeading,
+}: BlogsStatusProps) {
+  const [isAddMetaDescriptionOpen, setIsAddMetaDescriptionOpen] =
+    useState(false);
   return (
     <Box
       sx={{
         // postion: "fixed !important",
         position: "fixed",
-        maxWidth: "250px",
-        width: "20%",
-        top: "120px",
+        maxWidth: "310px",
+        width: "21%",
+        top: "100px",
         left: "15px",
         // color: "white",
         borderRadius: "16px",
@@ -33,7 +38,8 @@ export default function BlogsStatus({
         display: "flex",
         flexDirection: "column",
         backgroundColor: "white",
-        gap: 1,
+        // gap: 1,
+        gap: "5px",
       }}
     >
       <Typography fontWeight="bolder">SEO Best Practises</Typography>
@@ -73,7 +79,7 @@ export default function BlogsStatus({
       <Stack direction="row" gap={1}>
         <Box>
           {" "}
-          {noOfImage >= 2 ? (
+          {noOfImage >= 1 ? (
             <DoneIcon sx={{ color: "green" }} />
           ) : (
             <CloseIcon sx={{ color: "red" }} />
@@ -134,6 +140,44 @@ export default function BlogsStatus({
           </Typography>
         </Box>
       </Stack>
+     
+      <AdvanceSettingsSection />
+      <TagsCurdModel
+        title="Advanced SEO Parameters"
+        open={isAddMetaDescriptionOpen}
+        setOpen={setIsAddMetaDescriptionOpen}
+        btnTile="Save"
+        // action={handleMetaTagsT}
+      >
+        <Stack gap={2}>
+          <Box>
+            <Typography mb={1}>Meta Title</Typography>
+            <TextField
+              id="outlined-required"
+              // label="Enter Meta Title"
+              size="small"
+              fullWidth
+              // value={metaTitleT}
+              // onChange={(e) => setMetaTitle(e.target.value)}
+              //   defaultValue="Enter Meta Title"
+            ></TextField>
+          </Box>
+          <Box>
+            <Typography mb={1}>Meta Description</Typography>
+            <TextField
+              id="outlined-multiline-flexible"
+              // label="Enter Meta Description"
+              multiline
+              fullWidth
+              size="small"
+              minRows={3}
+              maxRows={4}
+              // value={metaDescriptionT}
+              // onChange={(e) => setMetaDesc(e.target.value)}
+            />
+          </Box>
+        </Stack>
+      </TagsCurdModel>
     </Box>
   );
 }

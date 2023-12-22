@@ -21,16 +21,16 @@ export default function CategoryDatagrid() {
   const [isLoading, setIsloading] = useState(true);
   const columns: GridColDef[] = [
     // { field: "_id", headerName: "ID", minWidth: 20, flex: 0.1 },
-    { field: "name", headerName: "Category", minWidth: 70, flex: 0.1 },
+    { field: "name", headerName: "Category", minWidth: 70, flex: 0.2 },
     {
-      field: "createdAt",
-      headerName: "Created At",
+      field: "by",
+      headerName: "Created By",
       minWidth: 130,
       flex: 0.2,
       valueGetter: (rowData) => {
-        const date = dateToString(`${rowData.row.createdAt}`);
-        return date;
+        return rowData?.row?.by?.name;
       },
+      
     },
     {
       field: "updatedAt",
@@ -201,7 +201,7 @@ export default function CategoryDatagrid() {
       >
         <TextField
           id="outlined-basic"
-          label="Enter tag name"
+          // label="Enter tag name"
           variant="outlined"
           fullWidth
           size="small"
@@ -219,7 +219,7 @@ export default function CategoryDatagrid() {
       >
         <TextField
           id="outlined-basic"
-          label="Enter Category name"
+          // label="Enter Category name"
           variant="outlined"
           fullWidth
           size="small"

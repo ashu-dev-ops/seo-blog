@@ -30,13 +30,14 @@ export default function TagsDatagrid() {
   const columns: GridColDef[] = [
     { field: "name", headerName: "Tag Name", minWidth: 70, flex: 0.1 },
     {
-      field: "createdAt",
-      headerName: "Created At",
+      field: "by",
+      headerName: "Created By",
       minWidth: 130,
       flex: 0.1,
       valueGetter: (rowData) => {
-        const date = dateToString(`${rowData.row.createdAt}`);
-        return date;
+        // const date = dateToString(`${rowData.row.by.name}`);
+        // return date;
+        return rowData?.row?.by?.name;
       },
     },
     {
@@ -119,7 +120,7 @@ export default function TagsDatagrid() {
         newTag: selectedData,
       })
       .then((data) => {
-        console.log("check data");
+        console.log("check data",data);
         rows.forEach((i: any) => {
           if (i._id === selectedData._id) {
             i = selectedData;
@@ -157,25 +158,7 @@ export default function TagsDatagrid() {
     getAllTags();
     // dispatch(getAllTags());
   }, []);
-  // if (rows.length === 0) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         display: "flex",
-  //         flexDirection: "column",
-  //         alignItems: "center",
-  //         // justifyContent: "center",
-  //         minHeight: "100vh",
-  //         backgroundColor: "#E2E8F0",
-  //         paddingTop: "20vh",
-  //       }}
-  //     >
-  //       <Typography variant="h2" textAlign="center" mb={3}>
-  //         No Tags Found
-  //       </Typography>
-  //     </Box>
-  //   );
-  // }
+
   return (
     <>
       <div style={{ height: 400, width: "700px" }}>
@@ -248,6 +231,7 @@ export default function TagsDatagrid() {
         setOpen={setIsAddOpen}
         btnTile="Add"
       >
+        <Stack></Stack>
         <TextField
           id="outlined-basic"
           label="Category Name"
@@ -268,7 +252,7 @@ export default function TagsDatagrid() {
       >
         <TextField
           id="outlined-basic"
-          label="Category Name"
+          // label="Category Name"
           variant="outlined"
           fullWidth
           size="small"

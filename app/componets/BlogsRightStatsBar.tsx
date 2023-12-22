@@ -122,7 +122,7 @@ export default function BlogsRightStatsBar({
         <Typography>Tags</Typography>
         <TagsAddEditor />
       </Box>
-      <AdvanceSettingsSection />
+      {/* <AdvanceSettingsSection /> */}
     </Box>
   );
 }

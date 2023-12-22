@@ -19,7 +19,8 @@ const getData = async (params: any) => {
 };
 export default async function page({ searchParams }: any) {
   console.log("search params >>>>>>>>>>", searchParams);
-  let data = await getData(searchParams.userId);
+  let data = await getData(searchParams.userId || searchParams.teamId);
+
   // const setBlogOwnerId = useBlogsVisitorStore((state:any) => state.setBlogOwnerId);
   // setBlogOwnerId(data)
   console.log(data);
@@ -189,7 +190,9 @@ export default async function page({ searchParams }: any) {
               {featured[0].seo?.category?.name}
             </Box>
             <Typography variant="body2" sx={{ mt: "10px", color: "#212121" }}>
-              by samarth , {featured[0].stats?.readTime} min read
+              {featured[0]?.writtenBy?.firstName}{" "}
+              {featured[0]?.writtenBy?.lastName} , {featured[0].stats?.readTime}{" "}
+              min read
             </Typography>
           </Box>
         </Stack>
@@ -210,6 +213,7 @@ export default async function page({ searchParams }: any) {
                   thumbnail={blog.stats?.thumbnail}
                   slug={blog?.seo?.slug}
                   category={blog?.seo?.category}
+                  by={blog?.writtenBy}
                 />
               </Grid>
             );

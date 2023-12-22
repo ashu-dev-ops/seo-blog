@@ -95,6 +95,9 @@ export default function Page({ params }: any) {
         ? data.data.data.stats.noOfSubHeading
         : ""
     );
+    setNoOfHeading(
+      data.data.data.stats.noOfHeading ? data.data.data.stats.noOfHeading : ""
+    );
     setBlogStatus(data.data.data.blogStatus);
     setNoLinks(data.data.data.stats.noOfLinks);
     setIsLoading(false);
@@ -210,8 +213,8 @@ export default function Page({ params }: any) {
         />
         <Box
           sx={{
-            maxWidth: "700px",
-            width: "100%",
+            maxWidth: "800px",
+            width: "50%",
 
             marginTop: "10vh",
             padding: "1rem",

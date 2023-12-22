@@ -10,7 +10,7 @@ export const GET = async (request: Request) => {
   console.log(id);
   //   console.log(request.url)
   await connect();
-  const data = await Blog.find({ _id: id });
+  const data = await Blog.find({ _id: id }).populate("writtenBy");
   //   console.log("data below api >>>>>>>>>....");
   //   // console.log(data);
   //   const jsonData = JSON.stringify(data);

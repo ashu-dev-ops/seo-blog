@@ -111,7 +111,7 @@ export default async function ReadSingleBlog({ params }: any) {
                 color="rgb(82,200,91)"
                 fontSize="17px !important"
               >
-                Samarth
+                {data2.data.writtenBy.firstName} {data2.data.writtenBy.lastName}
               </Box>{" "}
               - 3 min read
               <Box

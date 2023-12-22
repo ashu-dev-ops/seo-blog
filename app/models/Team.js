@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
-
-const TagSchema = new Schema(
+const TeamsTagSchema = new Schema(
   {
     name: {
       type: String,
@@ -17,6 +16,7 @@ const TagSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    by: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
 
     slug: String,
   }
@@ -38,6 +38,7 @@ const CategorySchema = new Schema(
       default: Date.now,
     },
     slug: String,
+    by: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
   }
   // { _id: false }
 );
@@ -46,36 +47,28 @@ CategorySchema.pre("save", function (next) {
   this.updatedAt = new Date();
   next();
 });
-const UserSchema = new Schema(
+const TeamSchema = new Schema(
   {
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: false,
-    },
-    siteDetails: Object,
-    tags: {
-      type: [TagSchema],
-    },
-    category: {
-      type: [CategorySchema],
-    },
-    domain: String,
-    name: String,
-    role: String,
-    firstName:String,
-    lastName:String,
-    teamId: {
+    createdBy: {
       type: mongoose.Schema.ObjectId,
-      ref: "Team",
+      ref: "User",
       required: true,
     },
+    members: [
+      {
+        memberId: {
+          type: mongoose.Schema.ObjectId,
+          ref: "User",
+          required: true,
+          id: false,
+        },
+      },
+    ],
+    tags: [TeamsTagSchema],
+    category: [CategorySchema],
   },
   { timestamps: true }
 );
-const User = mongoose?.models?.User || mongoose.model("User", UserSchema);
-export default User;
+
+const Team = mongoose?.models?.Team || mongoose.model("Team", TeamSchema);
+export default Team;

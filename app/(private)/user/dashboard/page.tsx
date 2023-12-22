@@ -25,7 +25,7 @@ const getData = async () => {
 export const dynamic = "force-dynamic";
 export default async function page() {
   const data = await getData();
-  console.log("check here data", data);
+  // console.log("check here data", data);
   if (!data) {
     return (
       <Box
@@ -43,26 +43,7 @@ export default async function page() {
       </Box>
     );
   }
-  console.log(" property on which i am looping", data.data.length);
-  if (data.data.length === 0) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          // justifyContent: "center",
-          minHeight: "100vh",
-          backgroundColor: "#E2E8F0",
-          paddingTop: "20vh",
-        }}
-      >
-        <Typography variant="h2" textAlign="center" mb={3}>
-          No Blogs Found
-        </Typography>
-      </Box>
-    );
-  }
+  console.log("All blogs lenght", data.data.length);
 
   return (
     <Box
@@ -101,61 +82,85 @@ export default async function page() {
               <Link href="/user/editor">
                 <Button variant="contained">Write New Post</Button>
               </Link>
-              <Link href={`/blogs?userId=${data.data[0].writtenBy._id}`}>
+              {/* <Link href={`/blogs?userId=${data.data[0].writtenBy._id}`}>
                 <Button variant="outlined">View Blog</Button>
-              </Link>
+              </Link> */}
             </Stack>
           </Stack>
         </Box>
-{data.data.map((blog: any, idx: Number) => {
-          return (
+        {data.data.length > 0 ? (
+          <>
+            {data.data.map((blog: any, idx: Number) => {
+              return (
+                <Box
+                  key={idx.toString()}
+                  component={Link}
+                  sx={{
+                    minWidth: "600px",
+                    maxWidth: "700px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    backgroundColor: "white",
+                    borderRadius: "12px",
+                    padding: "1rem",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    "&:hover": {
+                      backgroundColor: "rgb(238,250,241)",
+                    },
+                  }}
+                  href={`/user/editor/${blog._id}`}
+                >
+                  <Stack>
+                    <Typography variant="h5" color="GrayTexts">
+                      {blog.title}
+                    </Typography>
+
+                    <Typography variant="body2" color="GrayTexts">
+                      {/* By {blog.writtenBy.name || blog.writtenBy.email} */}
+                    </Typography>
+                  </Stack>
+
+                  <Box
+                    sx={{
+                      backgroundColor:
+                        blog.blogStatus === "Draft" ? "#BEE3F8" : "#C6F6D5",
+                      borderRadius: "4px",
+                      color: "GrayText",
+                      padding: "0.3rem 1rem",
+                      height: "25px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Typography variant="subtitle1">
+                      {blog.blogStatus}
+                    </Typography>
+                  </Box>
+                </Box>
+              );
+            })}
+          </>
+        ) : (
+          <>
             <Box
-              key={idx.toString()}
-              component={Link}
               sx={{
-                minWidth: "600px",
-                maxWidth: "700px",
                 display: "flex",
-                justifyContent: "space-between",
-                backgroundColor: "white",
-                borderRadius: "12px",
-                padding: "1rem",
-                cursor: "pointer",
-                textDecoration: "none",
-                "&:hover": {
-                  backgroundColor: "rgb(238,250,241)",
-                },
+                flexDirection: "column",
+                alignItems: "center",
+                // justifyContent: "center",
+                minHeight: "100vh",
+                backgroundColor: "#E2E8F0",
+                paddingTop: "20vh",
               }}
-              href={`/user/editor/${blog._id}`}
             >
-              <Stack>
-                <Typography variant="h5" color="GrayTexts">
-                  {blog.title}
-                </Typography>
-
-                <Typography variant="body2" color="GrayTexts">
-                  By {blog.writtenBy.email}
-                </Typography>
-              </Stack>
-
-              <Box
-                sx={{
-                  backgroundColor:
-                    blog.blogStatus === "Draft" ? "#BEE3F8" : "#C6F6D5",
-                  borderRadius: "4px",
-                  color: "GrayText",
-                  padding: "0.3rem 1rem",
-                  height: "25px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="subtitle1">{blog.blogStatus}</Typography>
-              </Box>
+              <Typography variant="h2" textAlign="center" mb={3}>
+                No Blogs Found
+              </Typography>
             </Box>
-          );
-        })}
+          </>
+        )}
       </Stack>
     </Box>
   );

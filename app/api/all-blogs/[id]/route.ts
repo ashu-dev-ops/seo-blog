@@ -3,6 +3,7 @@ import connect from "../../../lib/mongodb";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import User from "@/app/models/User";
+import Team from "@/app/models/Team";
 export const GET = async (request: any) => {
   console.log("route working now 1");
   console.log("rung>>>>>>>>>>>>>>>>get all sub directory");
@@ -14,14 +15,20 @@ export const GET = async (request: any) => {
 
   await connect();
   // await User.find({ _id: id });
-  const allBlogs = await Blog.find({
-    writtenBy: id,
-    blogStatus: "Publish",
-    
-  }).populate({ path: "writtenBy", model: User });
-  console.log(allBlogs);
-  // const user =await User.find()
-  //   console.log("we got the data");
+  const team = await Team.findOne({ _id: id });
+  let allBlogs;
+  if (team) {
+    allBlogs = await Blog.find({
+      teamId: team._id,
+      blogStatus: "Publish",
+    }).populate({ path: "writtenBy", model: User });
+  } else {
+    allBlogs = await Blog.find({
+      writtenBy: id,
+      blogStatus: "Publish",
+    }).populate({ path: "writtenBy", model: User });
+  }
+  console.log("all blogs we are sending>>>>", allBlogs);
   try {
     // await newUser.save();
     return NextResponse.json(

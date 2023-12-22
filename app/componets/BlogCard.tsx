@@ -10,6 +10,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   thumbnail,
   slug,
   category,
+  by,
 }) => {
   return (
     <Box
@@ -85,7 +86,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
             {category?.name}
           </Box>
           <Typography variant="body2" sx={{ mt: "10px", color: "#212121" }}>
-            by samarth , {readTime} min read
+            {by?.firstName} {by?.lastName} , {readTime} min read
           </Typography>
         </Box>
       </Box>

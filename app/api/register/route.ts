@@ -15,12 +15,11 @@ export const POST = async (request: any) => {
 
   const hashedPassword = await bcrypt.hash(password, 5);
   console.log("working>>>>>>>");
-  const sanitizedTags = [];
+
   const newUser = new User({
     email,
     password: hashedPassword,
-    tags: sanitizedTags, // Initialize as an empty array
-    category: [], // Initialize as an empty array
+    role: role ? role : "user",
   });
 
   try {

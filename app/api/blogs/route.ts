@@ -24,16 +24,30 @@ export const POST = async (request: any) => {
     await connect();
 
     const user = await User.findOne({ email: writtenBy });
+    let newBlog;
+    if (user.role === "team_member"||user.role === "admin") {
+      newBlog = await new Blog({
+        title,
+        html,
+        stats,
+        writtenBy: user._id,
+        blogStatus,
+        tableOfContentsId,
+        seo,
+        teamId: user.teamId,
+      });
+    } else {
+      newBlog = await new Blog({
+        title,
+        html,
+        stats,
+        writtenBy: user._id,
+        blogStatus,
+        tableOfContentsId,
+        seo,
+      });
+    }
 
-    const newBlog = await new Blog({
-      title,
-      html,
-      stats,
-      writtenBy: user._id,
-      blogStatus,
-      tableOfContentsId,
-      seo,
-    });
     const a = await newBlog.save();
     console.log(a);
     // console.log(request.json());
@@ -69,6 +83,8 @@ export const GET = async (req: any) => {
   }
 };
 export const PATCH = async (request: any) => {
+  const session = await getServerSession();
+  const user = await User.findOne({ email: session?.user?.email });
   console.log("running update>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..");
   const { title, html, stats, blogStatus, blogId, tableOfContentsId, seo } =
     await request.json();
@@ -80,12 +96,31 @@ export const PATCH = async (request: any) => {
 
     blogId
   );
-  const data = await Blog.findOneAndUpdate(
-    { _id: blogId },
-    { html, stats, title, blogStatus, tableOfContentsId, seo },
-    { new: true }
-  );
-  console.log("data below api >>>>>>>>>....");
-  console.log(data);
-  return NextResponse.json({ message: "ok", data }, { status: 200 });
+  if (user.role === "team_member"||user.role === "admin") {
+    const data = await Blog.findOneAndUpdate(
+      { _id: blogId },
+      {
+        html,
+        stats,
+        title,
+        blogStatus,
+        tableOfContentsId,
+        seo,
+        teamId: user.teamId,
+      },
+      { new: true }
+    );
+    console.log("data below api >>>>>>>>>....");
+    console.log(data);
+    return NextResponse.json({ message: "ok", data }, { status: 200 });
+  } else {
+    const data = await Blog.findOneAndUpdate(
+      { _id: blogId },
+      { html, stats, title, blogStatus, tableOfContentsId, seo },
+      { new: true }
+    );
+    console.log("data below api >>>>>>>>>....");
+    console.log(data);
+    return NextResponse.json({ message: "ok", data }, { status: 200 });
+  }
 };

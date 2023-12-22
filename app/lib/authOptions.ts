@@ -6,9 +6,15 @@ import bcrypt from "bcryptjs";
 import User from "../models/User";
 import connect from "./mongodb";
 import GoogleProvider from "next-auth/providers/google";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import clientPromise from "./mongoClientPromise";
 // import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 export const authOptions: any = {
   // Configure one or more authentication providers
+  adapter: MongoDBAdapter(clientPromise),
+  session: {
+    strategy: "jwt",
+  },
   secret: "ashutosh",
   providers: [
     CredentialsProvider({
@@ -43,40 +49,26 @@ export const authOptions: any = {
       clientSecret: "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",
     }),
   ],
-  // adapter: MongoDBAdapter(clientPromise, {
-  //   databaseName: 'AuthDb'
-  // }),
-  callbacks: {
-    async signIn({ user, account }: { user: AuthUser; account: Account }) {
-      if (account?.provider == "credentials") {
-        return true;
-      }
-      if (account?.provider == "google") {
-        await connect();
-        try {
-          const existingUser = await User.findOne({ email: user.email });
-          if (!existingUser) {
-            const newUser = new User({
-              email: user.email,
-              username: user.name,
-            });
 
-            await newUser.save();
-            return true;
-          }
-          return true;
-        } catch (err) {
-          console.log("Error saving user", err);
-          return false;
-        }
+  callbacks: {
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.user = {
+          _id: user._id,
+          email: user.email,
+          name: user.name,
+          role: user?.role ? user?.role : "role",
+        };
       }
+      return token;
     },
-    // async session({ session, user, token }: any) {
-    //   console.log("session info below");
-    //   console.log(session, user, token);
-    //   session.user.userId = user._id;
-    //   return session;
-    // },
+    session: async ({ session, token }: any) => {
+      if (token) {
+        session.user = token.user;
+      }
+      // console.log("session i am returning", session);
+
+      return session;
+    },
   },
- 
 };
