@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Stack, Typography, Button, TextField } from "@mui/material";
 import axios from "axios";
 
-export default function page() {
+export default function TeamAccount() {
   const initialState = {
     email: "",
     firstName: "",
