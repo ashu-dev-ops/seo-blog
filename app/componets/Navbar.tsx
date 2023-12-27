@@ -179,11 +179,11 @@ export default function Navbar() {
                 <Divider sx={{ my: 0.5 }} />
 
                 <MenuItem
-                  onClick={() => {
+                  onClick={async () => {
                     handleClose();
 
                     router.push("/");
-                    signOut();
+                    await signOut();
                   }}
                   disableRipple
                 >
