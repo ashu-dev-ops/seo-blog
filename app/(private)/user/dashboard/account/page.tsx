@@ -70,7 +70,7 @@ export default function AccountPage() {
               </Stack>
             </Stack>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               minWidth: "700px",
               maxWidth: "700px",
@@ -111,7 +111,7 @@ export default function AccountPage() {
                 </Button>
               </Box>
             </Stack>
-          </Box>
+          </Box> */}
       
           <TeamDataGrid />
         </Stack>
