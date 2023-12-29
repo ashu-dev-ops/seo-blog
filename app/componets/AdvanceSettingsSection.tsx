@@ -91,7 +91,7 @@ export default function AdvanceSettingsSection() {
         </Button> */}
         <Stack direction="row" gap={1} alignItems={"center"}>
           <Box>
-            {metaDescriptionT ? (
+            {metaDescription&&metaTitle ? (
               <DoneIcon sx={{ color: "green" }} />
             ) : (
               <CloseIcon sx={{ color: "red" }} />

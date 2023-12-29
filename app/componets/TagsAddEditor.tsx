@@ -104,7 +104,7 @@ export default function TagsAddEditor() {
           {...params}
           variant="outlined"
           // label="Creatable Tags"
-          placeholder="Tags"
+          // placeholder="Tags"
           size="small"
         />
       )}
