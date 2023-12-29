@@ -10,17 +10,22 @@ import { Button, IconButton, Stack, TextField } from "@mui/material";
 import TagsCurdModel from "./TagsCurdModel";
 import axios from "axios";
 export default function TeamDataGrid() {
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   // console.log("rows>>>>>>>>>>>>>>>>>>>>", rows);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
+  const [selectedData, setSelectedData] = useState({});
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [rows, setRows] = useState([]);
   console.log("rows>>>>>>>>>> from teamdatagrid", rows);
   console.log("rows>>>>>>>>>> from teamdatagrid", rows[0]);
   const columns: GridColDef[] = [
     { field: "name", headerName: "Member Name", minWidth: 70, flex: 0.1 },
-    { field: "email", headerName: "Email", minWidth: 70, flex: 0.2},
+    { field: "email", headerName: "Email", minWidth: 70, flex: 0.2 },
     {
       field: "createdAt",
       headerName: "Created At",
@@ -35,41 +40,31 @@ export default function TeamDataGrid() {
       renderCell: (params) => {
         return (
           <Stack direction="row" spacing={1} style={{ margin: "0px 8px" }}>
-            <IconButton
+            {/* <IconButton
               onClick={(event) => {
                 event.stopPropagation();
                 // handleEditClick(params.row);
-                //   setSelectedData(params.row);
-                //   console.log(params.row);
-                //   seteditNewTag(params.row.name);
-                //   setIsUpdateeOpen(true);
+                setSelectedData(params.row);
+                console.log("edit button click", params.row);
+                // seteditNewTag(params.row.name);
+                setLastName(params.row?.lastName);
+                setFirstName(params.row?.firstName);
+                setEmail(params.row?.email);
+                setPassword(params.row?.password);
+                setIsEditOpen(true);
               }}
-              sx={
-                {
-                  // border: `1px solid ${green["A700"]}`,
-                  // color: green["A700"],
-                  // backgroundColor: green[50],
-                }
-              }
             >
               <EditIcon />
+            </IconButton> */}
+            <IconButton
+              onClick={(event) => {
+                event.stopPropagation();
+                setSelectedData(params.row);
+                setIsDeleteOpen(true);
+              }}
+            >
+              <DeleteIcon />
             </IconButton>
-            {/* <IconButton
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setSelectedData(params.row);
-                  setIsDeleteOpen(true);
-                }}
-                sx={
-                  {
-                    // border: `1px solid ${green["A700"]}`,
-                    // color: green["A700"],
-                    // backgroundColor: green[50],
-                  }
-                }
-              >
-                <DeleteIcon />
-              </IconButton> */}
           </Stack>
         );
       },
@@ -86,12 +81,39 @@ export default function TeamDataGrid() {
       .post(`/api/team/`, {
         email: email,
         password: password,
-        name: name,
+        name: `${firstName} ${lastName}`,
+        firstName: firstName,
+        lastName: lastName,
         role: "team_member",
       })
       .then((data: any) => {
-        
+        console.log("data i get >>>>>>>>>>", data);
+        // const newRows = [...rows, data.data.data];
+        // console.log("new rows", newRows);
+        // console.log("latest", data.data);
+        // setRows(newRows);
       });
+  };
+  const handleUpdate = async () => {
+    axios
+      .patch("/api/user", {
+        firstName,
+        lastName,
+        email,
+      })
+      .then((data) => {
+        rows.forEach((i: any) => {
+          if (i._id === selectedData._id) {
+            i = selectedData;
+          }
+        });
+      });
+  };
+  const handleDelete = async () => {
+    axios.delete(`/api/user?userId=${selectedData._id}`).then((data) => {
+      const newRows = rows.filter((i: any) => i._id !== selectedData._id);
+      setRows(newRows);
+    });
   };
   useEffect(() => {
     getRows();
@@ -143,7 +165,6 @@ export default function TeamDataGrid() {
             }}
           />
         )}
-      
       </DasboarCardStyle>
       <TagsCurdModel
         open={isAddOpen}
@@ -155,6 +176,24 @@ export default function TeamDataGrid() {
         <Stack gap={2}>
           <TextField
             id="outlined-basic"
+            label="First Name"
+            variant="outlined"
+            fullWidth
+            size="small"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            fullWidth
+            size="small"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
             label="Email"
             variant="outlined"
             fullWidth
@@ -171,27 +210,36 @@ export default function TeamDataGrid() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <TextField
-            id="outlined-basic"
-            label="Name"
-            variant="outlined"
-            fullWidth
-            size="small"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
         </Stack>
       </TagsCurdModel>
       <TagsCurdModel
-        open={isAddOpen}
+        open={isEditOpen}
         title="Edit a team user"
-        action={handleAdd}
-        setOpen={setIsAddOpen}
+        action={handleUpdate}
+        setOpen={setIsEditOpen}
         btnTile="Add"
       >
         <Stack gap={2}>
           <TextField
             id="outlined-basic"
+            label="First Name"
+            variant="outlined"
+            fullWidth
+            size="small"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            fullWidth
+            size="small"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <TextField
+            id="outlined-basic"
             label="Email"
             variant="outlined"
             fullWidth
@@ -199,16 +247,8 @@ export default function TeamDataGrid() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <TextField
-            id="outlined-basic"
-            label="Password"
-            variant="outlined"
-            fullWidth
-            size="small"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <TextField
+
+          {/* <TextField
             id="outlined-basic"
             label="Name"
             variant="outlined"
@@ -216,8 +256,18 @@ export default function TeamDataGrid() {
             size="small"
             value={name}
             onChange={(e) => setName(e.target.value)}
-          />
+          /> */}
         </Stack>
+      </TagsCurdModel>
+      <TagsCurdModel
+        open={isDeleteOpen}
+        title="Delete a Team user"
+        action={handleDelete}
+        setOpen={setIsDeleteOpen}
+        btnTile="Confirm"
+        btnColor="error"
+      >
+        <h4>Are you sure? You can't undo this action afterwards.</h4>
       </TagsCurdModel>
     </>
   );

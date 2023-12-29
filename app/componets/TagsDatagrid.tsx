@@ -37,7 +37,7 @@ export default function TagsDatagrid() {
       valueGetter: (rowData) => {
         // const date = dateToString(`${rowData.row.by.name}`);
         // return date;
-        return rowData?.row?.by?.name;
+        return rowData?.row?.by?.firstName;
       },
     },
     {
@@ -234,7 +234,7 @@ export default function TagsDatagrid() {
         <Stack></Stack>
         <TextField
           id="outlined-basic"
-          label="Category Name"
+        
           variant="outlined"
           fullWidth
           size="small"

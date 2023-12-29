@@ -72,7 +72,7 @@ const UserSchema = new Schema(
     teamId: {
       type: mongoose.Schema.ObjectId,
       ref: "Team",
-      required: true,
+   
     },
   },
   { timestamps: true }

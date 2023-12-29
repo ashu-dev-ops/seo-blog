@@ -27,6 +27,7 @@ export const PATCH = async (request: any) => {
         body.teamId = team._id;
       }
     }
+    // if(req.body.role)
     const data = await User.findOneAndUpdate(
       { email: session?.user?.email },
       body,
@@ -40,6 +41,45 @@ export const PATCH = async (request: any) => {
     });
   }
 };
+export const DELETE = async (request: any) => {
+  try {
+    // let body = await request.json();
+    const userId = request.nextUrl.searchParams.get("userId");
+    // const deleteAdmin = request.nextUrl.searchParams.get("deleteAdmin");
+    // console.log(">>>>>>>>>>>>><<<<<<<<<<<<", body);
+    console.log("user id>>>>>>>running >>>>>>delete", userId);
+    const session = await getServerSession();
+    await connect();
+
+    const existingUser = await User.findOne({ email: session?.user?.email });
+
+    if (!existingUser) {
+      return new NextResponse("Not authorized", { status: 500 });
+    }
+    if (existingUser.role === "team_member" || existingUser.role === "admin") {
+      console.log("is a team member >>>>>>>.", userId);
+      const a = await Team.findOneAndUpdate(
+        {
+          _id: existingUser.teamId,
+        },
+        {
+          $pull: {
+            members: { memberId: userId },
+          },
+        },
+        { new: true } // To return the updated document
+      );
+      console.log(a);
+    }
+    // await User.findByIdAndDelete(userId);
+    return NextResponse.json({ message: "ok" });
+  } catch (err: any) {
+    return new NextResponse(err, {
+      status: 500,
+    });
+  }
+};
+
 export const GET = async (request: NextRequest) => {
   try {
     // const { searchParams } = new URL(request.url);

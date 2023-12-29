@@ -28,9 +28,8 @@ export default function CategoryDatagrid() {
       minWidth: 130,
       flex: 0.2,
       valueGetter: (rowData) => {
-        return rowData?.row?.by?.name;
+        return rowData?.row?.by?.firstName;
       },
-      
     },
     {
       field: "updatedAt",
@@ -58,13 +57,6 @@ export default function CategoryDatagrid() {
                 seteditNewTag(params.row.name);
                 setIsUpdateeOpen(true);
               }}
-              sx={
-                {
-                  // border: `1px solid ${green["A700"]}`,
-                  // color: green["A700"],
-                  // backgroundColor: green[50],
-                }
-              }
             >
               <EditIcon />
             </IconButton>
@@ -74,13 +66,6 @@ export default function CategoryDatagrid() {
                 setSelectedData(params.row);
                 setIsDeleteOpen(true);
               }}
-              sx={
-                {
-                  // border: `1px solid ${green["A700"]}`,
-                  // color: green["A700"],
-                  // backgroundColor: green[50],
-                }
-              }
             >
               <DeleteIcon />
             </IconButton>

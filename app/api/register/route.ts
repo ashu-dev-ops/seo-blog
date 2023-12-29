@@ -19,7 +19,7 @@ export const POST = async (request: any) => {
   const newUser = new User({
     email,
     password: hashedPassword,
-    role: role ? role : "user",
+    role: "user",
   });
 
   try {

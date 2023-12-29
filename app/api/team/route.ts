@@ -6,7 +6,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import Team from "@/app/models/Team";
 export const POST = async (req: any, res: any) => {
-  const { email, password, role, name } = await req.json();
+  // const { email, password, role, name } = await req.json();
+  const body = await req.json();
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>.", body);
 
   await connect();
   const session = await getServerSession();
@@ -14,16 +16,18 @@ export const POST = async (req: any, res: any) => {
     return new NextResponse("Not authorize", { status: 400 });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 5);
+  const hashedPassword = await bcrypt.hash(body.password, 5);
   console.log("working>>>>>>>", session?.user?.email);
   const admin = await User.findOne({ email: session?.user?.email });
   console.log(admin);
   const newUser = new User({
-    email,
+    email: body.email,
     password: hashedPassword,
-    role: role ? role : "user",
-    name: name,
+    role: body.role ? body.role : "user",
+    name: body.name,
     teamId: admin.teamId,
+    firstName: body.firstName,
+    lastName: body.lastName,
   });
   await newUser.save();
   console.log("new user id >>>>>>>>>>>", newUser._id);
@@ -55,7 +59,7 @@ export const GET = async (request: any) => {
     let data = [];
     for (const member of team.members) {
       const user = await User.findOne({ _id: member.memberId }).select(
-        "name email createdAt "
+        "name email createdAt firstName lastName role"
       );
       data.push(user);
     }
