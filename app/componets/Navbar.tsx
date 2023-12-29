@@ -181,9 +181,10 @@ export default function Navbar() {
                 <MenuItem
                   onClick={async () => {
                     handleClose();
+                    await signOut();
 
                     router.push("/");
-                    await signOut();
+                   
                   }}
                   disableRipple
                 >

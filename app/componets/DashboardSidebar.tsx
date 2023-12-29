@@ -20,7 +20,7 @@ export default async function DashboardSidebar() {
   const data = [
     {
       name: "Post",
-      path: " ",
+      path: "",
       icon: <PostAddIcon />,
     },
     {
