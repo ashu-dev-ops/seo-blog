@@ -75,7 +75,9 @@ export default async function Category({ params, searchParams }: any) {
                 thumbnail={blog.stats?.thumbnail}
                 slug={blog?.seo?.slug}
                 category={blog?.seo?.category}
+                tags={blog?.seo?.tags}
                 description={blog?.seo?.metaDescription}
+                writtenBy={`${blog.writtenBy.firstName} ${blog.writtenBy.lastName}`}
               />
             );
           })}

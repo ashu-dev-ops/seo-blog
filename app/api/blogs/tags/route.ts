@@ -46,7 +46,20 @@ export const POST = async (request: any) => {
       if (user.role === "team_member" || user.role === "admin") {
         const data = await Team.findOneAndUpdate(
           { _id: user.teamId },
-          { $push: { tags: { name: newTag, slug: slug, by: user._id } } },
+          {
+            $push: {
+              tags: {
+                name: newTag,
+                slug:
+                  slug ||
+                  newTag
+                    .toLowerCase()
+                    .replace(/\s+/g, " ")
+                    .replace(/\s+/g, "-"),
+                by: user._id,
+              },
+            },
+          },
           { new: true }
         ).populate("tags.by");
         console.log("is this null", data);
@@ -55,7 +68,19 @@ export const POST = async (request: any) => {
       } else {
         const data = await User.findOneAndUpdate(
           { email: session?.user?.email },
-          { $push: { tags: { name: newTag, slug: slug } } },
+          {
+            $push: {
+              tags: {
+                name: newTag,
+                slug:
+                  slug ||
+                  newTag
+                    .toLowerCase()
+                    .replace(/\s+/g, " ")
+                    .replace(/\s+/g, "-"),
+              },
+            },
+          },
           { new: true }
         );
         console.log("is this null", data);
@@ -123,7 +148,12 @@ export const PATCH = async (request: any) => {
           {
             $set: {
               "tags.$.name": newTag.name,
-              "tags.$.slug": newTag.slug,
+              "tags.$.slug":
+                newTag.slug ||
+                newTag.name
+                  .toLowerCase()
+                  .replace(/\s+/g, " ")
+                  .replace(/\s+/g, "-"),
               // Update other properties if needed
             },
           },
@@ -142,7 +172,13 @@ export const PATCH = async (request: any) => {
             {
               $set: {
                 "seo.tags.$.name": newTag.name,
-                "seo.tags.$.slug": newTag.slug,
+                "seo.tags.$.slug":
+                  newTag.slug ||
+                  newTag.name
+                    .toLowerCase()
+                    .replace(/\s+/g, " ")
+                    .replace(/\s+/g, "-"),
+
                 // Update other properties if needed
               },
             }

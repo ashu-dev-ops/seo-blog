@@ -5,6 +5,7 @@ import { Box, Container } from "@mui/material";
 import BlogCardTwo from "@/app/componets/BlogCardTwo";
 
 const getData = async (params: any, searchParams: any) => {
+  console.log("get tags data");
   try {
     if (searchParams.userId) {
       const res = await fetch(
@@ -56,7 +57,7 @@ export default async function Category({ params, searchParams }: any) {
           textAlign="center"
           textTransform="capitalize"
         >
-          Tag : {params.id}
+          Tag : {params.id.replace(/-/g, " ")}
         </Box>
         <Box
           display="flex"
@@ -76,7 +77,9 @@ export default async function Category({ params, searchParams }: any) {
                 thumbnail={blog.stats?.thumbnail}
                 slug={blog?.seo?.slug}
                 category={blog?.seo?.category}
+                tags={blog?.seo?.tags}
                 description={blog?.seo?.metaDescription}
+                writtenBy={`${blog.writtenBy.firstName} ${blog.writtenBy.lastName}`}
               />
             );
           })}

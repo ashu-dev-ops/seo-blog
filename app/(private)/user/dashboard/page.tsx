@@ -76,7 +76,7 @@ export default async function page() {
             width="100%"
           >
             <Typography variant="h4" fontWeight={900} color="GrayTexts">
-              Posts
+              Blogs
             </Typography>
             <Stack direction="row" gap={1}>
               <Link href="/user/editor">

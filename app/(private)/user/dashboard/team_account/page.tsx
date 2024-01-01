@@ -67,7 +67,7 @@ export default function TeamAccount() {
               width="100%"
             >
               <Typography variant="h4" fontWeight={900} color="GrayTexts">
-                SheetWA Team Account
+                 Account
               </Typography>
             </Stack>
           </Box>
@@ -91,12 +91,12 @@ export default function TeamAccount() {
               width="100%"
             >
               <Box width={"20%"}>
-                <Typography>first Name</Typography>
+                <Typography>First Name</Typography>
               </Box>
 
               <TextField
                 id="outlined-basic"
-                label="Enter your domain"
+                // label="Enter your domain"
                 variant="outlined"
                 size="small"
                 fullWidth={true}

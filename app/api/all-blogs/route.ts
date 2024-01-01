@@ -36,6 +36,7 @@ export const GET = async (request: any) => {
     }
   }
   if (teamId && (category || tags)) {
+    console.log("running team");
     if (category) {
       console.log("finding category");
       const blogs = await await Blog.find({

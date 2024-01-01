@@ -46,7 +46,7 @@ export default function BlogsStatus({
       <Stack direction="row" gap={1}>
         <Box>
           {" "}
-          {noOfWordsInTitle <= 12 && noOfWordsInTitle >= 7 ? (
+          {noOfWordsInTitle <= 60 && noOfWordsInTitle >= 50 ? (
             <DoneIcon sx={{ color: "green" }} />
           ) : (
             <CloseIcon sx={{ color: "red" }} />
@@ -54,7 +54,7 @@ export default function BlogsStatus({
         </Box>
         <Box>
           <Typography variant="body2" color="GrayText">
-            Title words should be 7 - 12. <br></br> Current:{" "}
+            Title should contain 50 - 60 Characters. <br></br> Current:{" "}
             {`${noOfWordsInTitle ? noOfWordsInTitle : 0}`}
           </Typography>
         </Box>

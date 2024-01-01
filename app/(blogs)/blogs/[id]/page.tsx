@@ -114,20 +114,11 @@ export default async function ReadSingleBlog({ params }: any) {
                 {data2.data.writtenBy.firstName} {data2.data.writtenBy.lastName}
               </Box>{" "}
               - 3 min read
-              <Box
-                component="sapn"
-                sx={{
-                  background: "#daffd2",
-                  color: "green",
-                  width: "fit-content",
-                  borderRadius: "5px",
-                  padding: "2px 8px",
-                  marginTop: "10px",
-                  marginLeft: "5px",
-                  display: { sm: "initial", md: "initial", xs: "none" },
-                }}
-              >
-                {data2.data.seo?.category?.name}
+              <Box component="sapn">
+                <UtilityLinkButton
+                  text={data2.data.seo?.category?.name}
+                  path={`category/${data2.data.seo?.category?.slug}`}
+                />
               </Box>
             </Typography>{" "}
             <Box

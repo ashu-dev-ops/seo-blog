@@ -19,7 +19,7 @@ export default async function DashboardSidebar() {
   console.log("session on dashboard sidebar", session);
   const data = [
     {
-      name: "Post",
+      name: "Blogs",
       path: "",
       icon: <PostAddIcon />,
     },
@@ -75,7 +75,7 @@ export default async function DashboardSidebar() {
             />
             <DashboardNavButton
               path={"/account"}
-              text={"Account"}
+              text={"Team"}
               icon={<AccountCircleIcon />}
             />
           </>

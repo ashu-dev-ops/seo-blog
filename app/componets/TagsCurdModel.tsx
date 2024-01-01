@@ -28,7 +28,8 @@ interface TagsCurdModelProps {
   action?: () => void;
   btnTile?: string;
   btnColor?: string;
-  minimumWidth?:number
+  minimumWidth?: number;
+  disable?: boolean;
 }
 export default function TagsCurdModel({
   open,
@@ -40,7 +41,7 @@ export default function TagsCurdModel({
   btnTile,
   btnColor,
   minimumWidth,
-  
+  disable,
 }: TagsCurdModelProps) {
   const handleClose = () => {
     setOpen(false);
@@ -69,7 +70,10 @@ export default function TagsCurdModel({
         >
           <CloseIcon />
         </IconButton>
-        <DialogContent dividers sx={{ minWidth:minimumWidth?minimumWidth: 450 }}>
+        <DialogContent
+          dividers
+          sx={{ minWidth: minimumWidth ? minimumWidth : 450 }}
+        >
           {children}
         </DialogContent>
         <DialogActions>
@@ -77,6 +81,7 @@ export default function TagsCurdModel({
             <Button
               autoFocus
               variant="contained"
+              disabled={disable||false}
               color={btnColor ? btnColor : "primary"}
               onClick={() => {
                 setOpen(false);

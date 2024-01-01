@@ -1,5 +1,5 @@
 "use client";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Dialog, DialogTitle } from "@mui/material";
 import React, { useRef, useState, useEffect } from "react";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 import { useRouter } from "next/navigation";
@@ -26,6 +26,7 @@ export default function Page() {
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [thumbnail, setThumbnaul] = useState("");
+  const [isImageUploading, setIsImageUploading] = useState(false);
   const {
     metaTitle,
     metaDescription,
@@ -57,18 +58,22 @@ export default function Page() {
       (async () => {
         const formData = new FormData();
         formData.append("file", files[0]);
-
-        const { data } = await axios.post(`/api/file-upload`, formData);
-
-        const res = {
-          result: [
-            {
-              url: data?.url,
-              name: "thumbnail",
-            },
-          ],
-        };
-        uploadHandler(res);
+        setIsImageUploading(true);
+        try {
+          const { data } = await axios.post(`/api/file-upload`, formData);
+          const res = {
+            result: [
+              {
+                url: data?.url,
+                name: "thumbnail",
+              },
+            ],
+          };
+          setIsImageUploading(false);
+          uploadHandler(res);
+        } catch (error) {
+          setIsImageUploading(false);
+        }
       })();
 
       uploadHandler();
@@ -169,6 +174,20 @@ export default function Page() {
           handlePublish={() => handleSave("Publish")}
         />
       </Box>
+      <Dialog open={isImageUploading}>
+        <DialogTitle align="center">Uploading Image</DialogTitle>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "30vh",
+            width: "30vw",
+          }}
+        >
+          <CircularProgress size="5rem" />
+        </Box>
+      </Dialog>
     </>
   );
 }

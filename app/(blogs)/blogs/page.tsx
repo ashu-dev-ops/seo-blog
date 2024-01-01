@@ -4,6 +4,7 @@ import { Box, Stack, Typography, Container, Grid } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import BlogCard from "@/app/componets/BlogCard";
+import { CategoryType } from "@/app/_types/editor_types";
 
 const getData = async (params: any) => {
   try {
@@ -23,9 +24,9 @@ export default async function page({ searchParams }: any) {
 
   // const setBlogOwnerId = useBlogsVisitorStore((state:any) => state.setBlogOwnerId);
   // setBlogOwnerId(data)
-  console.log(data);
+  console.log(data.category);
   const featured = data.data.slice(-1);
-  console.log("featured>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", featured);
+  // console.log("featured>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", featured);
   data.data.pop();
   if (data.data.length === 0 && featured.length === 0) {
     return (
@@ -94,7 +95,7 @@ export default async function page({ searchParams }: any) {
             }}
             gap={2}
           >
-            {featured[0]?.writtenBy?.category.map((category, idx) => {
+            {data.category.map((category:CategoryType , idx: number) => {
               return (
                 <Box
                   key={idx}

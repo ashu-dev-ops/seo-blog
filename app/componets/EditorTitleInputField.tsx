@@ -21,38 +21,36 @@ export default function EditorTitleInputField({
   setTitle,
 }: EditorTitleInputFieldProps) {
   return (
-   
-      <TextField
-        variant="standard" // <== changed this
-        fullWidth
-        multiline
-        focused={false}
-        value={title}
-        onChange={(e) => {
-          setTitle(e.target.value);
-          const stringWithoutSpaces = e.target.value;
+    <TextField
+      variant="standard" // <== changed this
+      fullWidth
+      multiline
+      focused={false}
+      value={title}
+      onChange={(e) => {
+        setTitle(e.target.value);
+        const stringWithoutSpaces = e.target.value;
 
-          const wordsArray = stringWithoutSpaces.trim().split(/\s+/);
-          handleSlug(e.target.value);
-          console.log("array ", wordsArray.length);
-          setNoWordsInTitle(wordsArray.length);
-        }}
-        placeholder="Enter your title"
-        InputProps={{
-          style: {
-            backgroundColor: "transparent",
-            fontSize: "2rem",
-          },
-          disableUnderline: true,
-        }}
-        InputLabelProps={{
-          style: {
-            color: "#919EAB",
-            fontSize: "2rem",
-            fontWeight: "bolder",
-          },
-        }}
-      ></TextField>
-  
+        const wordsArray = stringWithoutSpaces.trim().split(/\s+/);
+        handleSlug(e.target.value);
+        console.log("array ", wordsArray.length);
+        setNoWordsInTitle(e.target.value.length);
+      }}
+      placeholder="Enter your title"
+      InputProps={{
+        style: {
+          backgroundColor: "transparent",
+          fontSize: "2rem",
+        },
+        disableUnderline: true,
+      }}
+      InputLabelProps={{
+        style: {
+          color: "#919EAB",
+          fontSize: "2rem",
+          fontWeight: "bolder",
+        },
+      }}
+    ></TextField>
   );
 }

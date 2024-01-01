@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
+
   Stack,
   TextField,
   Typography,
-  CircularProgress,
+ 
   InputAdornment,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
@@ -27,10 +27,11 @@ export default function AdvanceSettingsSection() {
     useState(false);
   const [isAddCustomSlug, setIsAddCustomSlug] = useState(false);
   const [isAddCononical, setIsAddCoconical] = useState(false);
-  const [metaTitleT, setMetaTitle] = useState<string>(metaTitle || " ");
+  const [isAddMetaTitleOpen, setIsMetaTilteOpen] = useState(false);
+  const [metaTitleT, setMetaTitle] = useState<string>(metaTitle || "");
 
   const [metaDescriptionT, setMetaDesc] = useState<string>(
-    metaDescription || " "
+    metaDescription || ""
   );
   const [cononical, setCononical] = useState(canonical);
 
@@ -50,14 +51,7 @@ export default function AdvanceSettingsSection() {
   };
   return (
     <>
-      {/* <Button
-        variant="outlined"
-        sx={{ margin: "0.5rem" }}
-        onClick={() => setShowAdvance(!showAdvance)}
-      >
-        {showAdvance ? "Hide Settings" : "Advance Settings"}
-      </Button>
-      {showAdvance ? ( */}
+     
       <Box
         sx={{
           borderRadius: "10px",
@@ -91,7 +85,27 @@ export default function AdvanceSettingsSection() {
         </Button> */}
         <Stack direction="row" gap={1} alignItems={"center"}>
           <Box>
-            {metaDescription&&metaTitle ? (
+            {metaTitle || metaTitleT ? (
+              <DoneIcon sx={{ color: "green" }} />
+            ) : (
+              <CloseIcon sx={{ color: "red" }} />
+            )}
+          </Box>
+          <Box>
+            <Box
+              color="GrayText"
+              sx={{ textDecoration: "underline", cursor: "pointer" }}
+              onClick={() => setIsMetaTilteOpen(true)}
+            >
+              <Typography variant="body2" color="GrayText">
+                Set Meta Title
+              </Typography>
+            </Box>
+          </Box>
+        </Stack>
+        <Stack direction="row" gap={1} alignItems={"center"}>
+          <Box>
+            {metaDescription || metaDescriptionT ? (
               <DoneIcon sx={{ color: "green" }} />
             ) : (
               <CloseIcon sx={{ color: "red" }} />
@@ -104,7 +118,7 @@ export default function AdvanceSettingsSection() {
               onClick={() => setIsAddMetaDescriptionOpen(true)}
             >
               <Typography variant="body2" color="GrayText">
-                Custom meta tag
+                Set Meta Description
               </Typography>
             </Box>
           </Box>
@@ -124,7 +138,7 @@ export default function AdvanceSettingsSection() {
               onClick={() => setIsAddCustomSlug(true)}
             >
               <Typography variant="body2" color="GrayText">
-                Custom Slug
+                Set Custom URL Slug
               </Typography>
             </Box>
           </Box>
@@ -144,7 +158,7 @@ export default function AdvanceSettingsSection() {
               onClick={() => setIsAddCoconical(true)}
             >
               <Typography variant="body2" color="GrayText">
-                Custom Canonical
+                Set Canonical URL
               </Typography>
             </Box>
           </Box>
@@ -154,27 +168,16 @@ export default function AdvanceSettingsSection() {
         ""
       )} */}
       <TagsCurdModel
-        title="Advanced SEO Parameters"
+        title="Set Meta Description"
         open={isAddMetaDescriptionOpen}
         setOpen={setIsAddMetaDescriptionOpen}
         btnTile="Save"
         action={handleMetaTagsT}
+        disable={!metaDescriptionT ? true : false}
       >
         <Stack gap={2}>
           <Box>
-            <Typography mb={1}>Meta Title</Typography>
-            <TextField
-              id="outlined-required"
-              // label="Enter Meta Title"
-              size="small"
-              fullWidth
-              value={metaTitleT}
-              onChange={(e) => setMetaTitle(e.target.value)}
-              //   defaultValue="Enter Meta Title"
-            ></TextField>
-          </Box>
-          <Box>
-            <Typography mb={1}>Meta Description</Typography>
+            {/* <Typography mb={1}>Meta Description</Typography> */}
             <TextField
               id="outlined-multiline-flexible"
               // label="Enter Meta Description"
@@ -184,8 +187,34 @@ export default function AdvanceSettingsSection() {
               minRows={3}
               maxRows={4}
               value={metaDescriptionT}
+              helperText="the optimal description tag length for SEO is between 155-160 characters."
+              // error={metaDescriptionT.length<50&&metaDescriptionT.length}
               onChange={(e) => setMetaDesc(e.target.value)}
             />
+          </Box>
+        </Stack>
+      </TagsCurdModel>
+      <TagsCurdModel
+        title="Set Meta Title"
+        open={isAddMetaTitleOpen}
+        setOpen={setIsMetaTilteOpen}
+        btnTile="Save"
+        action={handleMetaTagsT}
+        disable={!metaTitleT ? true : false}
+      >
+        <Stack gap={2}>
+          <Box>
+            <Typography mb={1}></Typography>
+            <TextField
+              id="outlined-required"
+              // label="Enter Meta Title"
+              size="small"
+              fullWidth
+              value={metaTitleT}
+              helperText="the optimal title tag length for SEO is between 50 to 60 characters."
+              onChange={(e) => setMetaTitle(e.target.value)}
+              //   defaultValue="Enter Meta Title"
+            ></TextField>
           </Box>
         </Stack>
       </TagsCurdModel>
