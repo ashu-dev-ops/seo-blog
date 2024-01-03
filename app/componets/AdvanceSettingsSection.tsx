@@ -215,6 +215,7 @@ export default function AdvanceSettingsSection() {
         setOpen={setIsMetaTilteOpen}
         btnTile="Save"
         action={handleMetaTagsT}
+        minimumWidth={500}
         disable={!metaTitleT ? true : false}
       >
         <Stack gap={2}>
@@ -223,9 +224,10 @@ export default function AdvanceSettingsSection() {
             <TextField
               focused
               id="outlined-required"
-              label="The optimal length for an SEO title tag is between 50 and 60 characters."
+              label="The optimal length for an SEO meta title tag is between 50 to 60 characters."
               size="small"
               fullWidth
+              
               value={metaTitleT}
               helperText={`current ${metaTitleT?.length || 0}`}
               onChange={(e) => setMetaTitle(e.target.value)}
