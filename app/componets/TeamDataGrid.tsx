@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import TagsCurdModel from "./TagsCurdModel";
 import axios from "axios";
+import { dateToString } from "../utils/utility";
 export default function TeamDataGrid() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   // console.log("rows>>>>>>>>>>>>>>>>>>>>", rows);
@@ -38,6 +39,11 @@ export default function TeamDataGrid() {
       headerName: "Created At",
       minWidth: 130,
       flex: 0.1,
+      valueGetter: (rowData) => {
+        // console.log("row data", rowData);
+        const date = dateToString(`${rowData.row.createdAt}`);
+        return date;
+      },
     },
     {
       field: "edit",
