@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import { Stack, IconButton, TextField, Button } from "@mui/material";
+import { Stack, IconButton, TextField, Button, CircularProgress ,Box} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DasboarCardStyle } from "./style-components/DashboarCard";
@@ -157,23 +157,40 @@ export default function CategoryDatagrid() {
             </Button>
           </Stack>
           <div style={{ flexGrow: 1, width: "100%", overflow: "hidden" }}>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              getRowId={(row) => row._id}
-              loading={isLoading}
-              initialState={{
-                pagination: {
-                  paginationModel: { page: 0, pageSize: 5 },
-                },
-              }}
-              pageSizeOptions={[5, 10]}
-              checkboxSelection
-              sx={{
-                "&, [class^=MuiDataGrid]": { border: "none" },
-                minHeight: "400px",
-              }}
-            />
+            {rows.length === 0 ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+
+                  justifyContent: "center",
+                  minHeight: "400px",
+                  // backgroundColor: "#E2E8F0",
+                  // paddingTop: "20vh",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            ) : (
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                getRowId={(row) => row._id}
+                loading={isLoading}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 5 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+                checkboxSelection
+                sx={{
+                  "&, [class^=MuiDataGrid]": { border: "none" },
+                  minHeight: "400px",
+                }}
+              />
+            )}
           </div>
         </DasboarCardStyle>
       </div>

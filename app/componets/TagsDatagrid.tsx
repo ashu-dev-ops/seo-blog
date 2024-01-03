@@ -8,6 +8,7 @@ import {
   Button,
   Box,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -120,7 +121,7 @@ export default function TagsDatagrid() {
         newTag: selectedData,
       })
       .then((data) => {
-        console.log("check data",data);
+        console.log("check data", data);
         rows.forEach((i: any) => {
           if (i._id === selectedData._id) {
             i = selectedData;
@@ -198,9 +199,7 @@ export default function TagsDatagrid() {
                 // paddingTop: "20vh",
               }}
             >
-              <Typography variant="h2" textAlign="center" mb={3}>
-                No Tags Found
-              </Typography>
+              <CircularProgress />
             </Box>
           ) : (
             <DataGrid
@@ -234,7 +233,6 @@ export default function TagsDatagrid() {
         <Stack></Stack>
         <TextField
           id="outlined-basic"
-        
           variant="outlined"
           fullWidth
           size="small"

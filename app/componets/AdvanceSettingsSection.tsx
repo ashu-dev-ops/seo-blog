@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
-
   Stack,
   TextField,
   Typography,
- 
   InputAdornment,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import TagsCurdModel from "./TagsCurdModel";
 import { useUserContext } from "../store/editorContext";
+import axios from "axios";
 export default function AdvanceSettingsSection() {
   const {
     handleCononical,
@@ -29,6 +28,7 @@ export default function AdvanceSettingsSection() {
   const [isAddCononical, setIsAddCoconical] = useState(false);
   const [isAddMetaTitleOpen, setIsMetaTilteOpen] = useState(false);
   const [metaTitleT, setMetaTitle] = useState<string>(metaTitle || "");
+  const [domain, setDomain] = useState("");
 
   const [metaDescriptionT, setMetaDesc] = useState<string>(
     metaDescription || ""
@@ -49,9 +49,20 @@ export default function AdvanceSettingsSection() {
   const handleSlugT = async () => {
     handleSlug(slug);
   };
+  const getUserDomain = async () => {
+    const data = await axios.get("/api/user");
+    if (data.data.data.domain) {
+      setDomain(data.data.data.domain);
+
+      // setIsDomainExist(true);
+    }
+  };
+  useEffect(() => {
+    getUserDomain();
+  }, []);
+
   return (
     <>
-     
       <Box
         sx={{
           borderRadius: "10px",
@@ -172,6 +183,7 @@ export default function AdvanceSettingsSection() {
         open={isAddMetaDescriptionOpen}
         setOpen={setIsAddMetaDescriptionOpen}
         btnTile="Save"
+        minimumWidth={500}
         action={handleMetaTagsT}
         disable={!metaDescriptionT ? true : false}
       >
@@ -181,13 +193,16 @@ export default function AdvanceSettingsSection() {
             <TextField
               id="outlined-multiline-flexible"
               // label="Enter Meta Description"
+              label="The optimal description tag length for SEO is between 155-160 characters."
               multiline
               fullWidth
+              focused
               size="small"
               minRows={3}
               maxRows={4}
               value={metaDescriptionT}
-              helperText="the optimal description tag length for SEO is between 155-160 characters."
+              // helperText="the optimal description tag length for SEO is between 155-160 characters."
+              helperText={`current ${metaDescriptionT?.length || 0}`}
               // error={metaDescriptionT.length<50&&metaDescriptionT.length}
               onChange={(e) => setMetaDesc(e.target.value)}
             />
@@ -206,12 +221,13 @@ export default function AdvanceSettingsSection() {
           <Box>
             <Typography mb={1}></Typography>
             <TextField
+              focused
               id="outlined-required"
-              // label="Enter Meta Title"
+              label="The optimal length for an SEO title tag is between 50 and 60 characters."
               size="small"
               fullWidth
               value={metaTitleT}
-              helperText="the optimal title tag length for SEO is between 50 to 60 characters."
+              helperText={`current ${metaTitleT?.length || 0}`}
               onChange={(e) => setMetaTitle(e.target.value)}
               //   defaultValue="Enter Meta Title"
             ></TextField>
@@ -219,7 +235,7 @@ export default function AdvanceSettingsSection() {
         </Stack>
       </TagsCurdModel>
       <TagsCurdModel
-        title="Set Custom Slug"
+        title="Set Custom URL Slug"
         open={isAddCustomSlug}
         setOpen={setIsAddCustomSlug}
         btnTile="Set Custom Slug"
@@ -227,24 +243,29 @@ export default function AdvanceSettingsSection() {
         action={handleSlugT}
       >
         <TextField
-          // label="Enter your slug"
+          label="The ideal URL slug length for SEO should be between 30 - 70 characters"
           id="outlined-start-adornment"
+          focused
           fullWidth
           value={slug}
           onChange={(e) => {
             handleSlug(e.target.value);
           }}
+          helperText={`current ${slug?.replace(/-/g, "").length || 0}`}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                wwww.example.com/blogs/
+                {domain ? domain : `wwww.example.com`}blogs/
               </InputAdornment>
             ),
           }}
         />
         <Stack direction="row" gap={2} mt={1} mr={1}>
           <Typography fontWeight="bold"> url</Typography>
-          <Typography> wwww.example.com/blogs/{slug}</Typography>
+          <Typography>
+            {" "}
+            {domain ? domain : `wwww.example.com`}blogs/{slug}
+          </Typography>
         </Stack>
       </TagsCurdModel>
       <TagsCurdModel

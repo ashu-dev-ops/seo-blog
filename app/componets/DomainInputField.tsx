@@ -8,6 +8,7 @@ import {
   Button,
   TextField,
   CircularProgress,
+  Skeleton,
 } from "@mui/material";
 import axios from "axios";
 export default function DomainInputField() {
@@ -15,6 +16,7 @@ export default function DomainInputField() {
   const [isDomainExist, setIsDomainExist] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [editDomain, setEditDomain] = useState(false);
+  // const [editDomai, setEditDomain] = useState(false);
   const handleAddDomain = async () => {
     console.log("runing>>>>>>>>>>>>>>>>>>>>>>>>>...");
     axios
@@ -86,21 +88,28 @@ export default function DomainInputField() {
   }, []);
   return (
     <Stack gap={1} width="100%">
-      <TextField
-        id="outlined-basic"
-        label="Enter your domain"
-        placeholder="https://power-blog.com"
-        variant="outlined"
-        size="small"
-        fullWidth={true}
-        type="text"
-        focused
-        value={domain}
-        onChange={(e) => handleDomainChange(e.target.value)}
-        disabled={isDomainExist && !editDomain}
-        error={!isDomainValid && editDomain}
-        helperText={isDomainValid || editDomain ? "" : "Invalid domain format"}
-      />
+      {isDomainExist ? (
+        <TextField
+          id="outlined-basic"
+          label="Enter your domain"
+          placeholder="https://power-blog.com"
+          variant="outlined"
+          size="small"
+          fullWidth={true}
+          type="text"
+          focused
+          value={domain}
+          onChange={(e) => handleDomainChange(e.target.value)}
+          disabled={isDomainExist && !editDomain}
+          error={!isDomainValid && editDomain}
+          helperText={
+            isDomainValid || editDomain ? "" : "Invalid domain format"
+          }
+        />
+      ) : (
+        <Skeleton variant="rectangular" width="100%" height={40} />
+      )}
+
       <Stack direction="row" gap={1}>
         {isDomainExist && (
           <Button

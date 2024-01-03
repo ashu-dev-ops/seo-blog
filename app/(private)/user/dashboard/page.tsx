@@ -80,7 +80,7 @@ export default async function page() {
             </Typography>
             <Stack direction="row" gap={1}>
               <Link href="/user/editor">
-                <Button variant="contained">Write New Post</Button>
+                <Button variant="contained">Write New Blog</Button>
               </Link>
               {/* <Link href={`/blogs?userId=${data.data[0].writtenBy._id}`}>
                 <Button variant="outlined">View Blog</Button>

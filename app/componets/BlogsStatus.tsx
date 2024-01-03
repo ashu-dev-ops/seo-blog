@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
@@ -54,7 +53,7 @@ export default function BlogsStatus({
         </Box>
         <Box>
           <Typography variant="body2" color="GrayText">
-            Title should contain 50 - 60 Characters. <br></br> Current:{" "}
+            Title should contain (50 - 60) Chars. <br></br> Current:{" "}
             {`${noOfWordsInTitle ? noOfWordsInTitle : 0}`}
           </Typography>
         </Box>
@@ -140,7 +139,7 @@ export default function BlogsStatus({
           </Typography>
         </Box>
       </Stack>
-     
+
       <AdvanceSettingsSection />
       <TagsCurdModel
         title="Advanced SEO Parameters"

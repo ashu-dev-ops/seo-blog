@@ -6,7 +6,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 // import { DasboarCardStyle } from "./style-components/DashboarCard";
 import AddIcon from "@mui/icons-material/Add";
-import { Button, IconButton, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  IconButton,
+  Stack,
+  TextField,
+  Box,
+} from "@mui/material";
 import TagsCurdModel from "./TagsCurdModel";
 import axios from "axios";
 export default function TeamDataGrid() {
@@ -143,7 +150,22 @@ export default function TeamDataGrid() {
             Delete
           </Button>
         </Stack>
-        {rows.length > 0 && (
+        {rows.length === 0 ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+
+              justifyContent: "center",
+              minHeight: "400px",
+              // backgroundColor: "#E2E8F0",
+              // paddingTop: "20vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
           <DataGrid
             rows={rows}
             columns={columns}
