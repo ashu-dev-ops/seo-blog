@@ -193,7 +193,7 @@ export default function AdvanceSettingsSection() {
             <TextField
               id="outlined-multiline-flexible"
               // label="Enter Meta Description"
-              label="The optimal description tag length for SEO is between 155-160 characters."
+              label="The optimal length for SEO meta description tag is between 155-160 characters."
               multiline
               fullWidth
               focused
@@ -227,7 +227,6 @@ export default function AdvanceSettingsSection() {
               label="The optimal length for an SEO meta title tag is between 50 to 60 characters."
               size="small"
               fullWidth
-              
               value={metaTitleT}
               helperText={`current ${metaTitleT?.length || 0}`}
               onChange={(e) => setMetaTitle(e.target.value)}
