@@ -201,7 +201,7 @@ export default function AdvanceSettingsSection() {
               minRows={3}
               maxRows={4}
               value={metaDescriptionT}
-              // helperText="the optimal description tag length for SEO is between 155-160 characters."
+              // helperText="the optimal comdescription tag length for SEO is between 155-160 characters."
               helperText={`current ${metaDescriptionT?.length || 0}`}
               // error={metaDescriptionT.length<50&&metaDescriptionT.length}
               onChange={(e) => setMetaDesc(e.target.value)}

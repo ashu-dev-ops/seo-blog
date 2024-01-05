@@ -10,6 +10,7 @@ const getData = async () => {
     const res = await fetch(`${process.env.BASE_URL}/api/blogs`, {
       method: "GET",
       headers: headers(),
+      cache: "no-store",
     });
     if (res) {
       // console.log("res we get from fetch on deploy ", res);
